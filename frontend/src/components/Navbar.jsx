@@ -365,7 +365,7 @@ const Navbar = () => {
                 <a>Register</a>
               </li>
             </ul>
-            <a className='btn hidden sm:flex bg-black text-white hover:bg-slate-700'>
+            <a className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'>
               Get Started{' '}
               <span className='font-normal hidden md:block '>-- it's free</span>{' '}
             </a>
