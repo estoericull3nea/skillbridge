@@ -10,8 +10,7 @@ export default {
         },
       },
       colors: {
-        primary: '#a53232',
-        'primary-hover': 'rgb(120, 52, 52)',
+        main: '#df0001',
       },
       fontFamily: {
         poppins: ['Poppins', 'sans-serif'],

@@ -214,7 +214,7 @@ const Navbar = () => {
                   </div>
                   <ul
                     tabIndex={0}
-                    className='dropdown-content menu rounded-box z-[1] mt-[43.9rem] shadow-xl translate-x-[-26rem]'
+                    className='dropdown-content menu rounded-box z-10 mt-[44rem] shadow-2xl bg-base-100 translate-x-[-26rem]'
                   >
                     <ul className='menu menu-horizontal rounded-box lg:min-w-max w-full'>
                       <li>
@@ -365,7 +365,7 @@ const Navbar = () => {
                 <a>Register</a>
               </li>
             </ul>
-            <a className='btn hidden sm:flex'>
+            <a className='btn hidden sm:flex bg-black text-white hover:bg-slate-700'>
               Get Started{' '}
               <span className='font-normal hidden md:block '>-- it's free</span>{' '}
             </a>
