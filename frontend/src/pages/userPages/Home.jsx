@@ -3,6 +3,7 @@ import Hero from '../../components/Hero'
 import WhyChooseSkillBridge from '../../components/LandingPage/WhyChooseSkillBridge'
 import BridgingTalent from '../../components/LandingPage/BridgingTalent'
 import Services from '../../components/LandingPage/Services'
+import Partnership from '../../components/LandingPage/Partnership'
 
 const Home = () => {
   return (
@@ -11,6 +12,7 @@ const Home = () => {
       <WhyChooseSkillBridge />
       <BridgingTalent />
       <Services />
+      <Partnership />
     </div>
   )
 }

@@ -30,12 +30,12 @@ const Footer = () => {
               </a>
             </nav>
             <nav>
-              <h6 className='footer-title max-w-[300px] font-medium leading-relaxed text-lg'>
+              <h6 className='footer-title max-w-[300px] font-normal leading-loose text-lg capitalize'>
                 Your one-stop shop for marketing success
               </h6>
             </nav>
             <nav>
-              <h6 className='footer-title max-w-[300px] font-medium leading-relaxed text-lg'>
+              <h6 className='footer-title max-w-[300px] font-normal leading-loose text-lg capitalize'>
                 At Skill Bridge, we are a proud Filipino professional, reliable,
                 and friendly. They're the backbone of our success, delivering
                 top-notch service with a smile! Join us and experience their

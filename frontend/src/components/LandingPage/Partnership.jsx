@@ -1,0 +1,22 @@
+import React from 'react'
+
+import Techaronic from '../../assets/images/techaronic.png'
+import Zimrii from '../../assets/images/zimrii.png'
+
+const Partnership = () => {
+  return (
+    <>
+      <div className='my-20'>
+        <h1 className=' text-center text-3xl mb-10 font-semibold tracking-wide  '>
+          Partnership
+        </h1>
+        <div className='flex items-center justify-center gap-x-10'>
+          <img src={Techaronic} alt='' className='w-24' />
+          <img src={Zimrii} alt='' className='w-16' />
+        </div>
+      </div>
+    </>
+  )
+}
+
+export default Partnership
