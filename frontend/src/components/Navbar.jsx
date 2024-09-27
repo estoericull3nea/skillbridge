@@ -4,9 +4,9 @@ import { IoIosArrowDown } from 'react-icons/io'
 
 const Navbar = () => {
   return (
-    <>
+    <div className='container'>
       <div>
-        <div className='navbar bg-base-100'>
+        <div className='navbar bg-base-100 '>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>
               <div className='drawer z-10 md:hidden'>
@@ -372,7 +372,7 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
 

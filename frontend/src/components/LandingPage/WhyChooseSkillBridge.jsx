@@ -4,9 +4,9 @@ import WhyChoose from '../../assets/images/why_choose.jpg'
 
 const WhyChooseSkillBridge = () => {
   return (
-    <div className=' grid grid-cols-1 lg:grid-cols-2 items-center mt-10'>
+    <div className=' grid grid-cols-1 lg:grid-cols-2 items-center mt-28 lg:mt-10'>
       <div className='left space-y-5 order-2 lg:order-1'>
-        <p className='font-medium'>Why Choose Us</p>
+        <p className='font-medium mt-5 lg:mt-0'>Why Choose Us</p>
         {/* <h1 className='font-bold text-2xl mt-3 lg:mt-0 lg:text-3xl max-w-[500px]'>
           Why Choose <span className='text-main'>Skill Bridge</span>
         </h1> */}
