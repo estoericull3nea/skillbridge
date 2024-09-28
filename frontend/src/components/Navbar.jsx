@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 import { IoIosArrowDown } from 'react-icons/io'
 
@@ -43,10 +44,12 @@ const Navbar = () => {
                   <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4'>
                     {/* Sidebar content here */}
 
-                    <h1 className='text-3xl font-bold my-3'>Skill Bridge</h1>
+                    <Link to='/' className='text-3xl font-bold my-3'>
+                      SkillBridge
+                    </Link>
 
                     <li>
-                      <a>Home</a>
+                      <Link to='/'>Home</Link>
                     </li>
                     <li>
                       <details>
@@ -193,14 +196,16 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <a className='btn btn-ghost text-xl'>SkillBridge</a>
+              <Link to='/' className='btn btn-ghost text-xl'>
+                SkillBridge
+              </Link>
             </div>
           </div>
 
           <div className='navbar-center hidden lg:flex'>
             <ul className='menu menu-horizontal px-1'>
               <li>
-                <a>Home</a>
+                <Link to='/'>Home</Link>
               </li>
               <li>
                 <div className='dropdown dropdown-hover'>
@@ -359,10 +364,10 @@ const Navbar = () => {
           <div className='navbar-end'>
             <ul className='menu menu-horizontal px-1 min-w-max'>
               <li>
-                <a>Login</a>
+                <Link to='/login'>Login</Link>
               </li>
               <li className='hidden md:block  '>
-                <a>Register</a>
+                <Link to='/register'>Register</Link>
               </li>
             </ul>
             <a className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'>
