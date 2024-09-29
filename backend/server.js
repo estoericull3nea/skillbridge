@@ -7,7 +7,8 @@ import { fileURLToPath } from 'url'
 
 // Routes
 import bookRouter from './api/routes/booking.route.js'
-// import authRouter from './api/routes/auth.route.js'
+import authRouter from './api/routes/auth.route.js'
+import userRouter from './api/routes/user.route.js'
 // import loginHistoryRouter from './api/routes/loginHistory.route.js'
 // import feedbackRouter from './api/routes/feedback.route.js'
 // import contactRouter from './api/routes/contact.route.js'
@@ -54,7 +55,8 @@ app.use(express.urlencoded({ extended: true }))
 
 // Using Routes
 app.use('/api/book', bookRouter)
-// app.use('/api/auth', authRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/users', userRouter)
 // app.use('/api/feedbacks', feedbackRouter)
 // app.use('/api/contacts', contactRouter)
 // app.use('/api/logins/history', loginHistoryRouter)
