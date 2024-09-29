@@ -7,6 +7,9 @@ import Register from './pages/userPages/Register'
 import Login from './pages/userPages/Login'
 import ForgotPassword from './pages/userPages/ForgotPassword'
 import ResetPassword from './pages/userPages/ResetPassword'
+import Policy from './pages/userPages/Policy'
+import Terms from './pages/userPages/Terms'
+import CookiePolicy from './pages/userPages/CookiePolicy'
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -28,6 +31,9 @@ const App = () => {
           <Route exact path='/login' element={<Login />} />
           <Route exact path='/forgot' element={<ForgotPassword />} />
           <Route exact path='/reset' element={<ResetPassword />} />
+          <Route exact path='/privacy-policy' element={<Policy />} />
+          <Route exact path='/terms' element={<Terms />} />
+          <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
         <Footer />

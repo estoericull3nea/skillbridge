@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 import { IoIosArrowDown } from 'react-icons/io'
+import SBLogo from '../assets/icons/sb_logo.png'
 
 const Navbar = () => {
   return (
@@ -44,7 +45,11 @@ const Navbar = () => {
                   <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4'>
                     {/* Sidebar content here */}
 
-                    <Link to='/' className='text-3xl font-bold my-3'>
+                    <Link
+                      to='/'
+                      className='btn btn-ghost text-xl justify-start'
+                    >
+                      <img src={SBLogo} alt='' className='w-9' />
                       SkillBridge
                     </Link>
 
@@ -197,6 +202,7 @@ const Navbar = () => {
               </div>
 
               <Link to='/' className='btn btn-ghost text-xl'>
+                <img src={SBLogo} alt='' className='w-9' />
                 SkillBridge
               </Link>
             </div>

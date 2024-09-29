@@ -4,7 +4,7 @@ import WhereMeets from '../../assets/images/where_meets.jpg'
 
 const BridgingTalent = () => {
   return (
-    <div className='my-36 grid grid-cols-1 lg:grid-cols-2 items-center'>
+    <div className='my-20 lg:my-36 grid grid-cols-1 lg:grid-cols-2 items-center'>
       <div className='right '>
         <img src={WhereMeets} alt='' />
       </div>

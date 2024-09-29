@@ -9,13 +9,13 @@ const Services = () => {
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-3  my-10'>
         <div className='left  flex items-center max-w-[650px]'>
-          <h1 className='text-6xl leading-tight '>
+          <h1 className='text-3xl mb-8 lg:mb-0 lg:text-6xl leading-tight '>
             Delve into a variety of services designed to elevate your brand
             presence to the ultimate level.
           </h1>
         </div>
-        <div className='right grid grid-cols-2 gap-x-3'>
-          <div>
+        <div className='right grid grid-cols-1 md:grid-cols-2 gap-x-3'>
+          <div className='mb-10 md:mb-0'>
             <h2 className='bg-base-200 p-8 font-medium text-xl tracking-wide'>
               Virtual Assistance
             </h2>

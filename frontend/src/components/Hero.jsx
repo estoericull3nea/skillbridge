@@ -4,7 +4,7 @@ import HeroImage from '../assets/images/hero_section_img.png'
 
 const Hero = () => {
   return (
-    <div className='min-h-[calc(100vh-68px)] grid grid-cols-1 lg:grid-cols-2 items-center'>
+    <div className='min-h-[calc(100vh-68px)] grid grid-cols-1 lg:grid-cols-2 items-center my-8 lg:my-0'>
       <div className='left  space-y-5 '>
         <h1 className='font-semibold text-4xl mt-3 lg:mt-0 lg:text-5xl max-w-[500px]'>
           <span className='text-main'>Skill Bridge</span> Virtual Careers

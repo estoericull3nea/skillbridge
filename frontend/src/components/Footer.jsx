@@ -1,11 +1,22 @@
 import React from 'react'
+import SBLogo from '../assets/icons/sb_logo.png'
+
+import { Link } from 'react-router-dom'
 
 const Footer = () => {
   return (
     <div className='bg-base-200'>
       <div className='max-w-[1500px] mx-auto'>
         <div className=''>
-          <h1 className='ps-10 pt-10 text-xl font-bold'>SkillBridge</h1>
+          {/* <h1 className='ps-10 pt-10 text-xl font-bold'>SkillBridge</h1> */}
+
+          <Link
+            to='/'
+            className='text-xl ps-10 pt-10 flex items-center gap-x-3 font-medium'
+          >
+            <img src={SBLogo} alt='' className='w-9' />
+            SkillBridge
+          </Link>
 
           <footer className='footer bg-base-200 text-base-content p-10'>
             <nav>
@@ -52,9 +63,9 @@ const Footer = () => {
             </aside>
             <nav className='md:place-self-center md:justify-self-end'>
               <div className='grid grid-flow-col gap-4'>
-                <a>Privacy Policy</a>
-                <a>Cookie Policy</a>
-                <a>Terms of Service</a>
+                <Link to='/privacy-policy'>Privacy Policy</Link>
+                <Link to='/cookie-policy'>Cookie Policy</Link>
+                <Link to='/terms'>Terms of Service</Link>
               </div>
             </nav>
           </footer>
