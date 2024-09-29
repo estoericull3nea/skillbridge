@@ -79,7 +79,9 @@ export const verifyEmail = async (req, res) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-      return res.status(404).json({ message: 'User Not Found' })
+      return res
+        .status(404)
+        .json({ message: 'User Not Found or Expired Token' })
     }
 
     if (user.isVerified) {
@@ -93,6 +95,77 @@ export const verifyEmail = async (req, res) => {
     await user.save()
 
     return res.status(200).json({ message: 'Email Verified Successfully' })
+  } catch (error) {
+    return res.status(500).json({ message: error })
+  }
+}
+
+export const login = async (req, res) => {
+  const { email, password } = req.body
+
+  try {
+    const thisUser = await User.findOne({ email })
+
+    if (!thisUser) {
+      return res.status(404).json({ message: 'User not found with this email' })
+    }
+
+    if (!thisUser.isVerified) {
+      return res
+        .status(403)
+        .json({ message: 'Please verify your account before logging in.' })
+    }
+
+    const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
+
+    if (isLocked) {
+      const lockDuration = Math.ceil(
+        (thisUser.lockUntil - Date.now()) / 1000 / 60
+      )
+      return res.status(403).json({
+        message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
+      })
+    }
+
+    const isPasswordCorrect = await bcrypt.compare(password, thisUser.password)
+
+    if (!isPasswordCorrect) {
+      thisUser.failedLoginAttempts += 1
+
+      if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
+        thisUser.lockUntil = Date.now() + LOCK_TIME // Lock the account for 15 minutes
+      }
+
+      await thisUser.save()
+
+      return res.status(401).json({
+        message:
+          thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
+            ? `Too many login attempts. Try again after 15 minutes.`
+            : 'Incorrect email or password.',
+      })
+    }
+
+    thisUser.failedLoginAttempts = 0
+    thisUser.lockUntil = undefined
+    await thisUser.save()
+
+    const token = jwt.sign(
+      {
+        id: thisUser._id,
+        email: thisUser.email,
+        firstName: thisUser.firstName,
+        lastName: thisUser.lastName,
+        role: thisUser.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    )
+
+    return res.status(200).json({
+      message: 'Login Successful',
+      token,
+    })
   } catch (error) {
     return res.status(500).json({ message: error })
   }
