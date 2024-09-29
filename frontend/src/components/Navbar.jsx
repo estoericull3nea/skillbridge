@@ -5,8 +5,8 @@ import { IoIosArrowDown } from 'react-icons/io'
 
 const Navbar = () => {
   return (
-    <div className='container'>
-      <div>
+    <div className='shadow'>
+      <div className='container'>
         <div className='navbar bg-base-100 '>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>

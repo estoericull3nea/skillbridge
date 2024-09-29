@@ -6,7 +6,7 @@ import Zimrii from '../../assets/images/zimrii.png'
 const Partnership = () => {
   return (
     <>
-      <div className='my-20'>
+      <div className='my-32'>
         <h1 className=' text-center text-3xl mb-10 font-semibold tracking-wide  '>
           Partnership
         </h1>
