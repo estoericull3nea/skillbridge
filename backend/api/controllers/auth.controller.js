@@ -69,3 +69,31 @@ export const register = async (req, res) => {
     return res.status(500).json({ message: error })
   }
 }
+
+export const verifyEmail = async (req, res) => {
+  const { token } = req.query
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const { email } = decoded
+
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User Not Found' })
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'User Already Verified' })
+    }
+
+    user.isVerified = true
+    user.verificationToken = undefined
+    user.verificationTokenExpires = undefined
+
+    await user.save()
+
+    return res.status(200).json({ message: 'Email Verified Successfully' })
+  } catch (error) {
+    return res.status(500).json({ message: error })
+  }
+}
