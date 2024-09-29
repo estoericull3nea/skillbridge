@@ -19,7 +19,7 @@ const Register = () => {
               </h1>
 
               <button className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'>
-                <FcGoogle className='text-xl' /> Sign up with Google
+                <FcGoogle className='text-xl' /> Register with Google
               </button>
 
               <div className='divider'>or</div>

@@ -65,7 +65,7 @@ const Footer = () => {
               <div className='grid grid-flow-col gap-4'>
                 <Link to='/privacy-policy'>Privacy Policy</Link>
                 <Link to='/cookie-policy'>Cookie Policy</Link>
-                <Link to='/terms'>Terms of Service</Link>
+                <Link to='/terms'>Terms</Link>
               </div>
             </nav>
           </footer>

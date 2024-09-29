@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 const Policy = () => {
   useEffect(() => {
-    document.title = 'Privacy Policy'
+    document.title = 'Cookie Policy'
   }, [])
   return (
     <>
@@ -50,7 +50,7 @@ const Policy = () => {
               Personal Information
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               This may include your name, email address, phone number, mailing
               address, and other contact details that you provide to us when
               signing up for our services, contacting us through our website, or
@@ -62,7 +62,7 @@ const Policy = () => {
               Billing Information
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               If you engage in transactions with us, we may collect billing
               information, such as credit card details or other payment
               information necessary to process payments and fulfill orders.
@@ -73,7 +73,7 @@ const Policy = () => {
               Usage Data
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We collect information about how you interact with our website,
               including pages visited, links clicked, and other actions taken.
               This data helps us analyze user behavior, improve our website's
@@ -85,7 +85,7 @@ const Policy = () => {
               Device and Browser Information
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We may automatically collect information about the device you use
               to access our website, such as your IP address, device type,
               browser type, operating system, and other technical details. This
@@ -98,7 +98,7 @@ const Policy = () => {
               Cookies and Tracking Technologies
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               Like many websites, we use cookies and similar tracking
               technologies to enhance your browsing experience and collect
               information about your preferences and activities on our website.
@@ -111,7 +111,7 @@ const Policy = () => {
               Feedback and Communications
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               If you choose to provide feedback, submit inquiries, or
               communicate with us through our website or other channels, we may
               collect the content of your messages and any other information you
@@ -136,7 +136,7 @@ const Policy = () => {
               Voluntary Information Submission
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We may collect information that you voluntarily provide to us when
               you interact with our website or services. This includes filling
               out forms, signing up for an account, subscribing to our
@@ -149,7 +149,7 @@ const Policy = () => {
               Automated Data Collection
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               When you visit our website, we may automatically collect certain
               information about your interactions with our site using cookies,
               web beacons, and other tracking technologies. This may include
@@ -164,7 +164,7 @@ const Policy = () => {
               Communication Channels
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We may collect information when you communicate with us through
               various channels, such as email, phone, or live chat. This
               includes the content of your messages, as well as any attachments
@@ -190,7 +190,7 @@ const Policy = () => {
               Providing Services
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We collect information to provide virtual assistant services to
               our clients effectively. This includes tasks such as
               administrative support, customer service, scheduling, research,
@@ -202,7 +202,7 @@ const Policy = () => {
               Communication
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We may use your contact information to communicate with you about
               our services, updates, promotions, or important announcements.
               This includes responding to inquiries, resolving issues, and
@@ -214,7 +214,7 @@ const Policy = () => {
               Improving User Experience
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We collect data to analyze user behavior, preferences, and trends
               to improve our website's functionality, usability, and content.
               This helps us tailor our services to better meet the needs and
@@ -227,7 +227,7 @@ const Policy = () => {
               Personalization
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We may use information collected to personalize your experience on
               our website and services, such as providing targeted content,
               recommendations, or advertisements based on your interests and
@@ -259,7 +259,7 @@ const Policy = () => {
               Encryption
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We use industry-standard encryption protocols to secure data
               transmission and protect sensitive information submitted through
               our website. This includes Secure Socket Layer (SSL) technology to
@@ -271,7 +271,7 @@ const Policy = () => {
               Access Controls
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               Access to personal information is restricted to authorized
               personnel who require access to perform their duties. We enforce
               strict access controls and authentication mechanisms to prevent
@@ -283,7 +283,7 @@ const Policy = () => {
               Employee Training and Awareness
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               We provide ongoing training and awareness programs to our
               employees to ensure they understand their responsibilities
               regarding data protection and security. This includes training on
@@ -313,7 +313,7 @@ const Policy = () => {
               Right to Access
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               You have the right to request access to the personal information
               we hold about you. Upon request, we will provide you with details
               about the types of information we have collected, the purposes for
@@ -325,7 +325,7 @@ const Policy = () => {
               Right to Rectification
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               If you believe that any of the personal information we hold about
               you is inaccurate, incomplete, or outdated, you have the right to
               request corrections or updates to your data. We will promptly
@@ -338,7 +338,7 @@ const Policy = () => {
               Right to Erasure
             </span>
             <br />
-            <span>
+            <span className='block mt-3'>
               You have the right to request the deletion of your personal
               information from our systems under certain circumstances. This
               includes situations where the data is no longer necessary for the
@@ -376,7 +376,7 @@ const Policy = () => {
             following rights:
           </p>
           <p className='text-sm leading-relaxed'>
-            <span>
+            <span className='block mt-3'>
               We may update this privacy policy from time to time to reflect
               changes in our data practices, legal requirements, or business
               operations. We encourage you to review this policy periodically to
@@ -385,7 +385,7 @@ const Policy = () => {
             </span>
           </p>
           <p className='text-sm leading-relaxed'>
-            <span>
+            <span className='block mt-3'>
               When we make material changes to this privacy policy, we will
               notify you by posting a prominent notice on our website or by
               sending you a direct communication. We may also update the "Last
@@ -394,7 +394,7 @@ const Policy = () => {
             </span>
           </p>
           <p className='text-sm leading-relaxed'>
-            <span>
+            <span className='block mt-3'>
               Your continued use of our website and services after the posting
               of any updates to this privacy policy will constitute your
               acceptance of those changes. If you do not agree with any
