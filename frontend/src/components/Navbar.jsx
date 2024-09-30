@@ -376,10 +376,13 @@ const Navbar = () => {
                 <Link to='/register'>Register</Link>
               </li>
             </ul>
-            <a className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'>
+            <Link
+              to='/book-appointment'
+              className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
+            >
               Get Started{' '}
               <span className='font-normal hidden md:block '>-- it's free</span>{' '}
-            </a>
+            </Link>
           </div>
         </div>
       </div>
