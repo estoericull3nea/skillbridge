@@ -2,3 +2,5 @@ https://github.com/estoericull3nea/skillbridge.git
 
 cd frontend && pnpm run dev
 https://flowbite.com/blocks/marketing/register/
+
+make the calendar UI beaty
