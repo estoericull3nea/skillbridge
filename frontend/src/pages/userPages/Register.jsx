@@ -12,7 +12,6 @@ const Register = () => {
     document.title = 'Register'
   }, [])
 
-  // Form state to track input values
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -22,7 +21,6 @@ const Register = () => {
     terms: false,
   })
 
-  // Handle input change
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
     setFormData((prev) => ({
@@ -31,7 +29,6 @@ const Register = () => {
     }))
   }
 
-  // API call using React Query mutation
   const mutation = useMutation({
     mutationFn: (newUser) =>
       axios.post('http://localhost:5000/api/auth/register', newUser),
@@ -52,7 +49,6 @@ const Register = () => {
     },
   })
 
-  // Form submit handler
   const handleSubmit = (e) => {
     e.preventDefault()
 
@@ -80,7 +76,6 @@ const Register = () => {
       return
     }
 
-    // Prepare the data to send to the backend
     const userData = {
       firstName: formData.firstName,
       lastName: formData.lastName,
@@ -88,14 +83,13 @@ const Register = () => {
       password: formData.password,
     }
 
-    // Trigger mutation to register the user
     mutation.mutate(userData)
   }
 
   return (
     <div className='my-16'>
       <section className='lg:py-10'>
-        <div className='flex flex-col items-center justify-center px-6 lg:py-8 mx-auto md:h-screen lg:py-0'>
+        <div className='flex flex-col items-center justify-center px-6 lg:py-8 mx-auto md:h-screen '>
           <div className='w-full bg-white rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0  '>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
               <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl '>
@@ -228,7 +222,7 @@ const Register = () => {
                 <button
                   type='submit'
                   className='btn bg-black text-white rounded-full hover:bg-transparent hover:text-black hover:border-black w-full'
-                  disabled={mutation.isPending} // Disable button when loading
+                  disabled={mutation.isPending}
                 >
                   {mutation.isPending
                     ? 'Creating account...'

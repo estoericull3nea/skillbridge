@@ -77,7 +77,7 @@ export const book = async (req, res) => {
     await session.commitTransaction()
     session.endSession()
 
-    return res.status(201).json(newBooking)
+    return res.status(201).json({ message: 'Successfully Booked', newBooking })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
@@ -151,33 +151,25 @@ export const getAllBookingsByDate = async (req, res) => {
 
 export const getAllAvailableTimesByDate = async (req, res) => {
   const { date } = req.query
-
   try {
     if (!date) {
       return res.status(400).json({ message: 'Date is required.' })
     }
-
     const [month, day, year] = date.split('/')
     const parsedDate = new Date(`${year}-${month}-${day}`)
-
     if (isNaN(parsedDate.getTime())) {
       return res
         .status(400)
         .json({ message: 'Invalid date format. Use MM/DD/YYYY.' })
     }
-
     const availableTimeSlots = Booking.schema.path('time').enumValues
-
     const bookedTimes = await Booking.find({
       date: parsedDate,
     }).select('time')
-
     const bookedTimeSlots = bookedTimes.map((booking) => booking.time)
-
     const availableTimes = availableTimeSlots.filter(
       (time) => !bookedTimeSlots.includes(time)
     )
-
     return res.status(200).json({ availableTimes })
   } catch (error) {
     return res.status(500).json({ message: error.message })

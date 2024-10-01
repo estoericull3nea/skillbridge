@@ -1,12 +1,46 @@
 import React, { useState } from 'react'
-import { CSSTransition } from 'react-transition-group' // For transitions
-import Calendar from 'react-calendar' // You can use a calendar library like 'react-calendar'
-import 'react-calendar/dist/Calendar.css' // Make sure to import the styles
+import { useQuery, useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css'
+
+const fetchAvailableTimes = async ({ queryKey }) => {
+  const date = queryKey[1]
+  if (!date) return { availableTimes: [] }
+  const formattedDate = date.toLocaleDateString('en-US')
+  const response = await axios.get(
+    `${
+      import.meta.env.VITE_DEV_BACKEND_URL
+    }book/get-available-time-by-date/time?date=${formattedDate}`
+  )
+  return response.data
+}
+
+const API_KEY = 'f6r5NJwnrInzrVOpP0dUBGx63zNMl4AJ'
+
+const fetchHolidays = async () => {
+  const response = await axios.get(`https://calendarific.com/api/v2/holidays`, {
+    params: {
+      api_key: API_KEY,
+      country: 'PH',
+      year: 2024,
+    },
+  })
+  return response.data.response.holidays
+}
+
+const submitBooking = async (bookingData) => {
+  const response = await axios.post(
+    `${import.meta.env.VITE_DEV_BACKEND_URL}book`,
+    bookingData
+  )
+  return response.data
+}
 
 const BookAppointment = () => {
-  const [step, setStep] = useState(1) // Track the current step
+  const [step, setStep] = useState(1)
   const [selectedService, setSelectedService] = useState('')
-  const [selectedDate, setSelectedDate] = useState(null) // To track the selected date
+  const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState('')
   const [formData, setFormData] = useState({
     firstName: '',
@@ -16,35 +50,20 @@ const BookAppointment = () => {
     notes: '',
   })
 
-  // Time slots for demonstration purposes
-  const availableTimeSlots = [
-    '8:00',
-    '9:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00',
-    '17:00',
-  ]
+  const { data, isLoading: loadingTimes } = useQuery({
+    queryKey: ['availableTimes', selectedDate],
+    queryFn: fetchAvailableTimes,
+    enabled: !!selectedDate,
+  })
+
+  const mutation = useMutation({
+    mutationFn: submitBooking,
+    onSuccess: () => setStep(4),
+  })
 
   const handleServiceChange = (event) => {
     setSelectedService(event.target.value)
-    handleNextStep() // Automatically move to the next step after selecting a service
-  }
-
-  const handleNextStep = () => {
-    setStep((prevStep) => prevStep + 1)
-  }
-
-  const handlePreviousStep = () => {
-    setStep((prevStep) => prevStep - 1)
-  }
-
-  const handleDateChange = (date) => {
-    setSelectedDate(date)
+    handleNextStep()
   }
 
   const handleTimeSelect = (time) => {
@@ -56,42 +75,79 @@ const BookAppointment = () => {
     setFormData((prevData) => ({ ...prevData, [name]: value }))
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    alert(`Booking Details:
-    Service: ${selectedService}
-    Date: ${selectedDate.toLocaleDateString()}
-    Time: ${selectedTime}
-    First Name: ${formData.firstName}
-    Last Name: ${formData.lastName}
-    Email: ${formData.email}
-    Phone Number: ${formData.phoneNumber}
-    Notes: ${formData.notes}`)
+  const handleNextStep = () => {
+    setStep((prevStep) => prevStep + 1)
   }
 
+  const handlePreviousStep = () => {
+    setStep((prevStep) => prevStep - 1)
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const bookingData = {
+      service: selectedService,
+      date: selectedDate,
+      time: selectedTime,
+      ...formData,
+    }
+    mutation.mutate(bookingData)
+  }
+
+  const {
+    data: holidays,
+    error,
+    isLoading: loadingHolidays,
+  } = useQuery({
+    queryKey: ['holidays'],
+    queryFn: fetchHolidays,
+  })
+
+  if (loadingHolidays) return <div>Loading Holidays</div>
+  if (error) return <div>Error fetching holidays</div>
+
+  console.log(holidays)
+
   return (
-    <div className='my-40 max-w-[900px] mx-auto'>
-      {/* Step Indicator */}
-      <ul className='steps mb-10'>
-        <li className={`step ${step >= 1 ? 'step-primary' : ''}`}>
-          Select Service
+    <div className='lg:my-40 max-w-[1000px] mx-auto py-10 px-3 lg:p-10'>
+      <ul className='steps mb-10 w-full'>
+        <li
+          className={`step text-xs md:text-lg ${
+            step >= 1 ? 'step-neutral' : ''
+          }`}
+        >
+          <span className='block md:hidden text-xs'>Service</span>
+          <span className='hidden md:block md:text-lg'>Select Service</span>
         </li>
-        <li className={`step ${step >= 2 ? 'step-primary' : ''}`}>
-          Select Date & Time
+        <li
+          className={`step text-xs md:text-lg ${
+            step >= 2 ? 'step-neutral' : ''
+          }`}
+        >
+          <span className='block md:hidden text-xs'>Date & Time</span>
+          <span className='hidden md:block md:text-lg'>Select Date & Time</span>
         </li>
-        <li className={`step ${step >= 3 ? 'step-primary' : ''}`}>
-          Enter Details
+        <li
+          className={`step text-xs md:text-lg ${
+            step >= 3 ? 'step-neutral' : ''
+          }`}
+        >
+          <span className='block md:hidden text-xs'>Details</span>
+          <span className='hidden md:block md:text-lg'> Enter Details</span>
         </li>
-        <li className={`step ${step >= 4 ? 'step-primary' : ''}`}>
+        <li
+          className={`step text-xs md:text-lg ${
+            step >= 4 ? 'step-neutral' : ''
+          }`}
+        >
           Review & Submit
         </li>
       </ul>
 
-      {/* Step 1: Select a Service */}
       {step === 1 && (
         <div>
           <h2 className='text-2xl mb-5'>Select a Service</h2>
-          <form className='grid grid-cols-1 lg:grid-cols-2 gap-10 place-items-center'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 place-items-center'>
             <div
               className={`border rounded-lg shadow-md bg-white cursor-pointer w-[450px] ${
                 selectedService === 'virtual_assistance'
@@ -141,42 +197,59 @@ const BookAppointment = () => {
                 </div>
               </label>
             </div>
-          </form>
+          </div>
         </div>
       )}
 
-      {/* Step 2: Select a Date and Time */}
       {step === 2 && (
-        <div className='grid grid-cols-2 gap-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
           <div>
-            <h2 className='text-2xl mb-5'>Select a Date</h2>
+            <h2 className='text-xl mb-3'>Select a Date</h2>
+
             <Calendar
-              onChange={handleDateChange}
+              tileContent={({ date }) => {
+                const holiday = holidays.find(
+                  (h) =>
+                    new Date(h.date.iso).toDateString() === date.toDateString()
+                )
+                return holiday ? (
+                  <div className='text-red-500 font-bold'>{holiday.name}</div>
+                ) : null
+              }}
+              onChange={setSelectedDate}
               value={selectedDate}
-              tileDisabled={({ date }) => date < new Date()} // Disable past dates
-              className='custom-calendar' // Custom class for styling
+              tileDisabled={({ date }) => {
+                const isPastDate = date < new Date()
+                const isSunday = date.getDay() === 0
+                return isPastDate || isSunday
+              }}
+              className='custom-calendar border-0 p-3'
             />
           </div>
           <div>
-            <h2 className='text-2xl mb-5'>Select a Time Slot</h2>
-            <div className='grid grid-cols-4 gap-4'>
-              {availableTimeSlots.map((time) => (
-                <button
-                  key={time}
-                  className={`p-2 border ${
-                    selectedTime === time ? 'border-black' : ''
-                  }`}
-                  onClick={() => handleTimeSelect(time)}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
+            <h2 className='text-xl mb-3'>Select a Time Slot</h2>
+            {loadingTimes ? (
+              <p>Loading available times...</p>
+            ) : (
+              <div className='grid grid-cols-4 gap-4'>
+                {data?.availableTimes?.map((time) => (
+                  <button
+                    key={time}
+                    className={`p-2 border ${
+                      selectedTime === time ? 'border-black' : ''
+                    }`}
+                    onClick={() => handleTimeSelect(time)}
+                    disabled={!data.availableTimes.includes(time)}
+                  >
+                    {time}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Step 3: Show Review (Service, Date, and Time) on the left and Form on the right */}
       {step === 3 && (
         <div className='grid grid-cols-2 gap-10'>
           <div>
@@ -231,7 +304,6 @@ const BookAppointment = () => {
         </div>
       )}
 
-      {/* Step 4: Final Review */}
       {step === 4 && (
         <div>
           <h2 className='text-2xl mb-5'>Final Review</h2>
@@ -254,7 +326,6 @@ const BookAppointment = () => {
         </div>
       )}
 
-      {/* Navigation buttons */}
       <div className='mt-10 flex justify-between'>
         {step > 1 && (
           <button className='btn' onClick={handlePreviousStep}>

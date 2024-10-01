@@ -6,28 +6,18 @@
   @apply font-poppins;
 }
 
-.fade-enter {
-  opacity: 0;
-  transform: translateX(100%); /* Start from the right */
-}
-
-.fade-enter-active {
-  opacity: 1;
-  transform: translateX(0); /* Move to its original position */
-  transition: opacity 300ms, transform 300ms; /* Apply the transition */
-}
-
-.fade-exit {
-  opacity: 1;
-  transform: translateX(0); /* Start from the original position */
-}
-
-.fade-exit-active {
-  opacity: 0;
-  transform: translateX(-100%); /* Move to the left */
-  transition: opacity 300ms, transform 300ms; /* Apply the transition */
-}
-
 .react-calendar {
   width: 100%;
+}
+
+.react-calendar__month-view__weekdays {
+  text-transform: unset;
+}
+
+.react-calendar__tile--active {
+  background: #df0001 !important;
+}
+
+.react-calendar__month-view__days__day--weekend {
+  color: unset;
 }
