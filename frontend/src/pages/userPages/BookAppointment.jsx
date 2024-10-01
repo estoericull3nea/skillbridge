@@ -4,6 +4,7 @@ import axios from 'axios'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
+import { GiCheckMark } from 'react-icons/gi'
 import { toast } from 'react-hot-toast'
 import { formatDate } from '../../utils/formatDate'
 
@@ -19,18 +20,19 @@ const fetchAvailableTimes = async ({ queryKey }) => {
   return response.data
 }
 
-const fetchHolidays = async () => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_DEV_BACKEND_URL}book/get/holidays`
-  )
-  return response.data
-}
+// const fetchHolidays = async () => {
+//   const response = await axios.get(
+//     `${import.meta.env.VITE_DEV_BACKEND_URL}book/get/holidays`
+//   )
+//   return response.data
+// }
 
 const submitBooking = async (bookingData) => {
   const response = await axios.post(
     `${import.meta.env.VITE_DEV_BACKEND_URL}book`,
     bookingData
   )
+
   return response.data
 }
 
@@ -55,7 +57,23 @@ const BookAppointment = () => {
 
   const mutation = useMutation({
     mutationFn: submitBooking,
-    onSuccess: () => setStep(4),
+    onSuccess: () => {
+      toast.success('Booking submitted successfully!')
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phoneNumber: '',
+        notes: '',
+      })
+      setSelectedDate(null)
+      setSelectedTime('')
+      setSelectedService('')
+      setStep(1)
+    },
+    onError: (error) => {
+      toast.error(`${error.response?.data?.message || 'An error occurred'}`)
+    },
   })
 
   const handleServiceChange = (event) => {
@@ -73,7 +91,15 @@ const BookAppointment = () => {
   }
 
   const handleNextStep = () => {
-    setStep((prevStep) => prevStep + 1)
+    if (step === 3) {
+      const formErrors = validateForm()
+      if (Object.keys(formErrors).length > 0) {
+        setErrors(formErrors) // If errors exist, show them
+        return
+      }
+    }
+    setStep((prevStep) => prevStep + 1) // Move to the next step
+    setErrors({}) // Clear errors on successful validation
   }
 
   const handlePreviousStep = () => {
@@ -91,21 +117,35 @@ const BookAppointment = () => {
     mutation.mutate(bookingData)
   }
 
-  const {
-    data: holidays,
-    error,
-    isLoading: loadingHolidays,
-  } = useQuery({
-    queryKey: ['holidays'],
-    queryFn: fetchHolidays,
-  })
+  const [errors, setErrors] = useState({})
 
-  if (loadingHolidays) return <div>Loading Holidays</div>
+  const validateForm = () => {
+    let formErrors = {}
+    if (!formData.firstName.trim())
+      formErrors.firstName = 'First Name is required'
+    if (!formData.lastName.trim()) formErrors.lastName = 'Last Name is required'
+    if (!formData.email.trim()) formErrors.email = 'Email is required'
+    // if (!formData.phoneNumber.trim())
+    //   formErrors.phoneNumber = 'Phone Number is required'
+    // if (!formData.notes.trim()) formErrors.notes = 'Notes is required'
+    return formErrors
+  }
+
+  // const {
+  //   data: holidays,
+  //   error,
+  //   isLoading: loadingHolidays,
+  // } = useQuery({
+  //   queryKey: ['holidays'],
+  //   queryFn: fetchHolidays,
+  // })
+
+  // if (loadingHolidays) return <div>Loading Holidays</div>
   // if (error) return <div>Error fetching holidays</div>
 
   return (
-    <div className='lg:my-40 max-w-[1300px] mx-auto py-10 px-3 lg:p-10'>
-      <ul className='steps mb-10 w-full'>
+    <div className='lg:my-20 max-w-[1300px] mx-auto  px-3 my-10  '>
+      <ul className='steps mb-14 lg:mb-32 w-full'>
         <li
           className={`step text-xs md:text-lg ${
             step >= 1 ? 'step-neutral' : ''
@@ -140,7 +180,7 @@ const BookAppointment = () => {
       </ul>
 
       {step === 1 && (
-        <div>
+        <div className='max-w-[900px] mx-auto'>
           <h2 className='text-xl mb-3'>Select a Service</h2>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 place-items-center  overflow-hidden'>
             <div
@@ -168,13 +208,39 @@ const BookAppointment = () => {
                     <li>
                       <ul>
                         <li>
-                          <a>Item 1</a>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Administrative Support
+                          </a>
                         </li>
                         <li>
-                          <a>Item 2</a>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Customer Service
+                          </a>
                         </li>
                         <li>
-                          <a>Item 3</a>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Writing and Editing
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Social Media Management
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Technical Skills
+                          </a>
                         </li>
                       </ul>
                     </li>
@@ -182,9 +248,8 @@ const BookAppointment = () => {
                 </div>
               </label>
             </div>
-
             <div
-              className={`border rounded-lg shadow-md bg-white cursor-pointer w-[450px]  ${
+              className={`border rounded-lg shadow-md bg-white cursor-pointer max-w-[400px] w-full ${
                 selectedService === 'recruitment_services'
                   ? 'border-black border-2'
                   : ''
@@ -201,9 +266,50 @@ const BookAppointment = () => {
                   onChange={handleServiceChange}
                 />
                 <div className='text-center'>
-                  <h2 className='text-xl tracking-wide font-medium py-3 border-b'>
+                  <h2 className='text-xl tracking-wide font-medium py-3 '>
                     Recruitment Services
                   </h2>
+                  <ul className='menu  rounded-box '>
+                    <li>
+                      <ul>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Talent Sourcing
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Talent Screen
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Interviewing and Assessment
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Endorsement
+                          </a>
+                        </li>
+                        <li>
+                          <a className='hover:bg-white'>
+                            {' '}
+                            <GiCheckMark />
+                            Onboarding (optional)
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </div>
               </label>
             </div>
@@ -217,36 +323,36 @@ const BookAppointment = () => {
             <h2 className='text-xl mb-3'>Select a Date</h2>
 
             <Calendar
-              tileContent={({ date }) => {
-                const holiday = holidays.find(
-                  (h) =>
-                    new Date(h.date.iso).toDateString() === date.toDateString()
-                )
+              // tileContent={({ date }) => {
+              //   const holiday = holidays.find(
+              //     (h) =>
+              //       new Date(h.date.iso).toDateString() === date.toDateString()
+              //   )
 
-                if (holiday) {
-                  return (
-                    <div className='relative'>
-                      <div className='md:hidden text-red-500 text-xs'>•</div>
+              //   if (holiday) {
+              //     return (
+              //       <div className='relative'>
+              //         <div className='md:hidden text-red-500 text-xs'>•</div>
 
-                      <div className='hidden md:block text-red-500 font-medium text-xs'>
-                        {holiday.name}
-                      </div>
+              //         <div className='hidden md:block text-red-500 font-medium text-xs'>
+              //           {holiday.name}
+              //         </div>
 
-                      <div
-                        className='absolute inset-0 flex justify-center items-center'
-                        onClick={() =>
-                          toast(`${holiday.name}`, {
-                            duration: 3000,
-                          })
-                        }
-                      >
-                        <div className='md:hidden text-red-500 text-xs cursor-pointer'></div>
-                      </div>
-                    </div>
-                  )
-                }
-                return null
-              }}
+              //         <div
+              //           className='absolute inset-0 flex justify-center items-center'
+              //           onClick={() =>
+              //             toast(`${holiday.name}`, {
+              //               duration: 3000,
+              //             })
+              //           }
+              //         >
+              //           <div className='md:hidden text-red-500 text-xs cursor-pointer'></div>
+              //         </div>
+              //       </div>
+              //     )
+              //   }
+              //   return null
+              // }}
               onChange={setSelectedDate}
               value={selectedDate}
               tileDisabled={({ date }) => {
@@ -282,7 +388,7 @@ const BookAppointment = () => {
       )}
 
       {step === 3 && (
-        <div className='grid grid-cols-1 gap-10'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 px-3 gap-10 max-w-[900px] mx-auto'>
           <div>
             <h2 className='text-xl mb-3'>Review Your Selection</h2>
             <ul>
@@ -293,10 +399,7 @@ const BookAppointment = () => {
                   : `Virtual Assistant`}
               </li>
               <li>
-                Date:{' '}
-                {selectedDate
-                  ? formatDate(selectedDate.toLocaleDateString())
-                  : ''}
+                Date: {selectedDate ? selectedDate.toLocaleDateString() : ''}
               </li>
               <li>Time: {selectedTime}</li>
             </ul>
@@ -304,52 +407,124 @@ const BookAppointment = () => {
           <div>
             <h2 className='text-xl mb-3'>Enter Your Details</h2>
             <form className='grid grid-cols-1 gap-5'>
-              <input
-                type='text'
-                name='firstName'
-                placeholder='First Name'
-                value={formData.firstName}
-                onChange={handleInputChange}
-                className='input input-bordered w-full '
-              />
-              <input
-                type='text'
-                name='lastName'
-                placeholder='Last Name'
-                value={formData.lastName}
-                onChange={handleInputChange}
-                className='input input-bordered w-full '
-              />
-              <input
-                type='email'
-                name='email'
-                placeholder='Email'
-                value={formData.email}
-                onChange={handleInputChange}
-                className='input input-bordered w-full '
-              />
-              <input
-                type='tel'
-                name='phoneNumber'
-                placeholder='Phone Number'
-                value={formData.phoneNumber}
-                onChange={handleInputChange}
-                className='input input-bordered w-full '
-              />
-              <textarea
-                name='notes'
-                placeholder='Notes'
-                value={formData.notes}
-                onChange={handleInputChange}
-                className='input input-bordered w-full h-24'
-              ></textarea>
+              <div className='flex gap-x-3'>
+                <div>
+                  <label
+                    htmlFor='firstName'
+                    className='block mb-2 text-sm font-medium text-gray-900 '
+                  >
+                    First Name
+                  </label>
+                  <input
+                    type='text'
+                    name='firstName'
+                    id='firstName'
+                    placeholder='John'
+                    value={formData.firstName}
+                    onChange={handleInputChange}
+                    className='input input-bordered w-full '
+                  />
+                  {errors.firstName && (
+                    <p className='text-red-500 text-sm mt-1'>
+                      {errors.firstName}
+                    </p>
+                  )}
+                </div>
+
+                <div>
+                  <label
+                    htmlFor='lastName'
+                    className='block mb-2 text-sm font-medium text-gray-900 '
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    type='text'
+                    name='lastName'
+                    id='lastName'
+                    placeholder='Doe'
+                    value={formData.lastName}
+                    onChange={handleInputChange}
+                    className='input input-bordered w-full '
+                  />
+                  {errors.lastName && (
+                    <p className='text-red-500 text-sm mt-1'>
+                      {errors.lastName}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor='email'
+                  className='block mb-2 text-sm font-medium text-gray-900 '
+                >
+                  Email
+                </label>
+                <input
+                  type='email'
+                  name='email'
+                  id='email'
+                  placeholder='john@example.com'
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className='input input-bordered w-full '
+                />
+                {errors.email && (
+                  <p className='text-red-500 text-sm mt-1'>{errors.email}</p>
+                )}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='phoneNumber'
+                  className='block mb-2 text-sm font-medium text-gray-900 '
+                >
+                  Phone Number
+                </label>
+                <input
+                  type='tel'
+                  name='phoneNumber'
+                  id='phoneNumber'
+                  placeholder='Type here...'
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  className='input input-bordered w-full '
+                />
+                {/* {errors.phoneNumber && (
+                  <p className='text-red-500 text-sm mt-1'>
+                    {errors.phoneNumber}
+                  </p>
+                )} */}
+              </div>
+
+              <div>
+                <label
+                  htmlFor='notes'
+                  className='block mb-2 text-sm font-medium text-gray-900 '
+                >
+                  Notes
+                </label>
+                <textarea
+                  name='notes'
+                  id='notes'
+                  placeholder='Notes here...'
+                  value={formData.notes}
+                  onChange={handleInputChange}
+                  className='input input-bordered w-full h-24'
+                ></textarea>
+                {/* {errors.notes && (
+                  <p className='text-red-500 text-sm mt-1'>{errors.notes}</p>
+                )} */}
+              </div>
             </form>
           </div>
         </div>
       )}
 
       {step === 4 && (
-        <div>
+        <div className='max-w-[900px] mx-auto'>
           <h2 className='text-xl mb-3'>Final Review</h2>
           <ul>
             <h6 className='text-sm text-slate-400 italic'>Service Details</h6>
@@ -378,13 +553,17 @@ const BookAppointment = () => {
             </li>
             <li>Notes: {formData.notes ? formData.notes : `N/A`}</li>
           </ul>
-          <button className='mt-10 btn' onClick={handleSubmit}>
-            Submit
+          <button
+            className='mt-10 btn'
+            onClick={handleSubmit}
+            disabled={mutation.isLoading}
+          >
+            {mutation.isLoading ? 'Submitting...' : 'Submit'}
           </button>
         </div>
       )}
 
-      <div className='mt-10 flex justify-between'>
+      <div className='mt-10 flex justify-end gap-x-3'>
         {step > 1 && (
           <button className='btn' onClick={handlePreviousStep}>
             Prev
