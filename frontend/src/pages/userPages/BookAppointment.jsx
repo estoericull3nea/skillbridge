@@ -18,17 +18,11 @@ const fetchAvailableTimes = async ({ queryKey }) => {
   return response.data
 }
 
-const API_KEY = 'f6r5NJwnrInzrVOpP0dUBGx63zNMl4AJ'
-
 const fetchHolidays = async () => {
-  const response = await axios.get(`https://calendarific.com/api/v2/holidays`, {
-    params: {
-      api_key: API_KEY,
-      country: 'US',
-      year: 2024,
-    },
-  })
-  return response.data.response.holidays
+  const response = await axios.get(
+    `${import.meta.env.VITE_DEV_BACKEND_URL}book/get/holidays`
+  )
+  return response.data
 }
 
 const submitBooking = async (bookingData) => {
@@ -107,8 +101,6 @@ const BookAppointment = () => {
 
   if (loadingHolidays) return <div>Loading Holidays</div>
   if (error) return <div>Error fetching holidays</div>
-
-  console.log(holidays)
 
   return (
     <div className='lg:my-40 max-w-[1300px] mx-auto py-10 px-3 lg:p-10'>

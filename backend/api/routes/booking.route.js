@@ -9,6 +9,7 @@ import {
   updateBookingStatus,
   getSingleBooking,
   getBookingsByUser,
+  getHolidaysBasedOnUserIp,
 } from '../controllers/booking.controller.js'
 const router = express.Router()
 
@@ -21,5 +22,6 @@ router.get('/get-available-time-by-date/time', getAllAvailableTimesByDate)
 router.patch('/update-status/:bookingId', updateBookingStatus)
 router.get('/status/:status', getAllBookingsByStatus)
 router.get('/users-book/:email', getBookingsByUser)
+router.get('/get/holidays', getHolidaysBasedOnUserIp)
 
 export default router

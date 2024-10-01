@@ -1,5 +1,6 @@
 import Booking from '../models/booking.model.js'
 import mongoose from 'mongoose'
+import axios from 'axios'
 
 export const book = async (req, res) => {
   const {
@@ -273,6 +274,37 @@ export const getBookingsByUser = async (req, res) => {
     }
 
     return res.status(200).json(bookings)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const getHolidaysBasedOnUserIp = async (req, res) => {
+  const API_KEY = 'f6r5NJwnrInzrVOpP0dUBGx63zNMl4AJ'
+  const IPINFO_TOKEN = 'e1755304cd9acc'
+
+  try {
+    const ip =
+      req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress
+
+    const geoResponse = await axios.get(
+      `https://ipinfo.io/${ip}?token=${IPINFO_TOKEN}`
+    )
+    const countryCode = geoResponse.data.country || 'PH'
+
+    const holidayResponse = await axios.get(
+      `https://calendarific.com/api/v2/holidays`,
+      {
+        params: {
+          api_key: API_KEY,
+          country: countryCode,
+          year: 2024,
+        },
+      }
+    )
+
+    // Send the holidays data back to the frontend
+    res.json(holidayResponse.data.response.holidays)
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
