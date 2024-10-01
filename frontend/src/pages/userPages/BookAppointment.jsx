@@ -5,6 +5,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
 import { toast } from 'react-hot-toast'
+import { formatDate } from '../../utils/formatDate'
 
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
@@ -100,7 +101,7 @@ const BookAppointment = () => {
   })
 
   if (loadingHolidays) return <div>Loading Holidays</div>
-  if (error) return <div>Error fetching holidays</div>
+  // if (error) return <div>Error fetching holidays</div>
 
   return (
     <div className='lg:my-40 max-w-[1300px] mx-auto py-10 px-3 lg:p-10'>
@@ -140,10 +141,10 @@ const BookAppointment = () => {
 
       {step === 1 && (
         <div>
-          <h2 className='text-2xl mb-5'>Select a Service</h2>
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-10 place-items-center'>
+          <h2 className='text-xl mb-3'>Select a Service</h2>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 place-items-center  overflow-hidden'>
             <div
-              className={`border rounded-lg shadow-md bg-white cursor-pointer w-[450px] ${
+              className={`border rounded-lg shadow-md bg-white cursor-pointer max-w-[400px] w-full ${
                 selectedService === 'virtual_assistance'
                   ? 'border-black border-2'
                   : ''
@@ -160,15 +161,30 @@ const BookAppointment = () => {
                   onChange={handleServiceChange}
                 />
                 <div className='text-center'>
-                  <h2 className='text-xl tracking-wide font-medium py-3 border-b'>
+                  <h2 className='text-xl tracking-wide font-medium py-3 '>
                     Virtual Assistance
                   </h2>
+                  <ul className='menu  rounded-box '>
+                    <li>
+                      <ul>
+                        <li>
+                          <a>Item 1</a>
+                        </li>
+                        <li>
+                          <a>Item 2</a>
+                        </li>
+                        <li>
+                          <a>Item 3</a>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </div>
               </label>
             </div>
 
             <div
-              className={`border rounded-lg shadow-md bg-white cursor-pointer w-[450px] ${
+              className={`border rounded-lg shadow-md bg-white cursor-pointer w-[450px]  ${
                 selectedService === 'recruitment_services'
                   ? 'border-black border-2'
                   : ''
@@ -241,7 +257,7 @@ const BookAppointment = () => {
               className='custom-calendar border-0 p-3'
             />
           </div>
-          <div>
+          <div className=' flex flex-col justify-center'>
             <h2 className='text-xl mb-3'>Select a Time Slot</h2>
             {loadingTimes ? (
               <p>Loading available times...</p>
@@ -266,19 +282,27 @@ const BookAppointment = () => {
       )}
 
       {step === 3 && (
-        <div className='grid grid-cols-2 gap-10'>
+        <div className='grid grid-cols-1 gap-10'>
           <div>
-            <h2 className='text-2xl mb-5'>Review Your Selection</h2>
+            <h2 className='text-xl mb-3'>Review Your Selection</h2>
             <ul>
-              <li>Service: {selectedService}</li>
               <li>
-                Date: {selectedDate ? selectedDate.toLocaleDateString() : ''}
+                Service:{' '}
+                {selectedService === `recruitment_services`
+                  ? `Recruitment Services`
+                  : `Virtual Assistant`}
+              </li>
+              <li>
+                Date:{' '}
+                {selectedDate
+                  ? formatDate(selectedDate.toLocaleDateString())
+                  : ''}
               </li>
               <li>Time: {selectedTime}</li>
             </ul>
           </div>
           <div>
-            <h2 className='text-2xl mb-5'>Enter Your Details</h2>
+            <h2 className='text-xl mb-3'>Enter Your Details</h2>
             <form className='grid grid-cols-1 gap-5'>
               <input
                 type='text'
@@ -286,6 +310,7 @@ const BookAppointment = () => {
                 placeholder='First Name'
                 value={formData.firstName}
                 onChange={handleInputChange}
+                className='input input-bordered w-full '
               />
               <input
                 type='text'
@@ -293,6 +318,7 @@ const BookAppointment = () => {
                 placeholder='Last Name'
                 value={formData.lastName}
                 onChange={handleInputChange}
+                className='input input-bordered w-full '
               />
               <input
                 type='email'
@@ -300,6 +326,7 @@ const BookAppointment = () => {
                 placeholder='Email'
                 value={formData.email}
                 onChange={handleInputChange}
+                className='input input-bordered w-full '
               />
               <input
                 type='tel'
@@ -307,12 +334,14 @@ const BookAppointment = () => {
                 placeholder='Phone Number'
                 value={formData.phoneNumber}
                 onChange={handleInputChange}
+                className='input input-bordered w-full '
               />
               <textarea
                 name='notes'
                 placeholder='Notes'
                 value={formData.notes}
                 onChange={handleInputChange}
+                className='input input-bordered w-full h-24'
               ></textarea>
             </form>
           </div>
@@ -321,19 +350,33 @@ const BookAppointment = () => {
 
       {step === 4 && (
         <div>
-          <h2 className='text-2xl mb-5'>Final Review</h2>
+          <h2 className='text-xl mb-3'>Final Review</h2>
           <ul>
-            <li>Service: {selectedService}</li>
+            <h6 className='text-sm text-slate-400 italic'>Service Details</h6>
             <li>
-              Date: {selectedDate ? selectedDate.toLocaleDateString() : ''}
+              Service:{' '}
+              {selectedService === `recruitment_services`
+                ? `Recruitment Services`
+                : `Virtual Assistant`}
+            </li>
+            <li>
+              Date:{' '}
+              {selectedDate
+                ? formatDate(selectedDate.toLocaleDateString())
+                : ''}
             </li>
             <li>Time: {selectedTime}</li>
             <li>
+              <h6 className='text-sm text-slate-400 italic mt-3'>
+                User Details
+              </h6>
               Name: {formData.firstName} {formData.lastName}
             </li>
             <li>Email: {formData.email}</li>
-            <li>Phone: {formData.phoneNumber}</li>
-            <li>Notes: {formData.notes}</li>
+            <li>
+              Phone: {formData.phoneNumber ? formData.phoneNumber : `N/A`}
+            </li>
+            <li>Notes: {formData.notes ? formData.notes : `N/A`}</li>
           </ul>
           <button className='mt-10 btn' onClick={handleSubmit}>
             Submit

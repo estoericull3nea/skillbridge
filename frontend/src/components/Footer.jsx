@@ -12,13 +12,13 @@ const Footer = () => {
 
           <Link
             to='/'
-            className='text-xl ps-10 pt-10 flex items-center gap-x-3 font-medium'
+            className='text-xl ps-6 pt-10 flex items-center gap-x-3 font-medium'
           >
             <img src={SBLogo} alt='' className='w-9' />
             SkillBridge
           </Link>
 
-          <footer className='footer bg-base-200 text-base-content p-10'>
+          <footer className='footer bg-base-200 text-base-content p-6'>
             <nav>
               <h6 className='footer-title'>Quick Links</h6>
               <a className='link link-hover'>Home</a>
@@ -54,14 +54,14 @@ const Footer = () => {
               </h6>
             </nav>
           </footer>
-          <footer className='footer bg-base-200 text-base-content border-base-300 border-t px-10 py-4'>
-            <aside className='grid-flow-col items-center'>
+          <footer className='footer bg-base-200 text-base-content border-base-300 border-t px-6 py-4'>
+            <aside className='grid-flow-col items-center text-center '>
               <p>
                 v1.0.2.1 © 2024 Skill Bridge | All Rights Reserved
                 <br />
               </p>
             </aside>
-            <nav className='md:place-self-center md:justify-self-end'>
+            <nav className='md:place-self-center md:justify-self-end '>
               <div className='grid grid-flow-col gap-4'>
                 <Link to='/privacy-policy'>Privacy Policy</Link>
                 <Link to='/cookie-policy'>Cookie Policy</Link>

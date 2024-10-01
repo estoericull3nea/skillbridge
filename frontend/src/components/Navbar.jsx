@@ -42,7 +42,7 @@ const Navbar = () => {
                     aria-label='close sidebar'
                     className='drawer-overlay'
                   ></label>
-                  <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4'>
+                  <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4 '>
                     {/* Sidebar content here */}
 
                     <Link
@@ -53,16 +53,18 @@ const Navbar = () => {
                       SkillBridge
                     </Link>
 
-                    <li>
+                    <li className='mt-3'>
                       <Link to='/'>Home</Link>
                     </li>
                     <li>
                       <details>
-                        <summary>Services</summary>
+                        <summary className='cursor-pointer'>Services</summary>
                         <ul>
                           <li>
                             <details>
-                              <summary>Virtual Assistance</summary>
+                              <summary className='cursor-pointer'>
+                                Virtual Assistance
+                              </summary>
                               <ul>
                                 <li>
                                   <a>Administrative Support</a>
@@ -84,7 +86,9 @@ const Navbar = () => {
                           </li>
                           <li>
                             <details>
-                              <summary>Recruitment Services</summary>
+                              <summary className='cursor-pointer'>
+                                Recruitment Services
+                              </summary>
                               <ul>
                                 <li>
                                   <a>Talent Sourcing</a>
@@ -106,7 +110,9 @@ const Navbar = () => {
                           </li>
                           <li>
                             <details>
-                              <summary>Web Development Services</summary>
+                              <summary className='cursor-pointer'>
+                                Web Development Services
+                              </summary>
                               <ul>
                                 <li>
                                   <details>
@@ -195,6 +201,23 @@ const Navbar = () => {
                       </li>
                       <li>
                         <a>Contact</a>
+                      </li>
+                      <li>
+                        <a>Register</a>
+                      </li>
+                      <li>
+                        <a>Login</a>
+                      </li>
+                      <li>
+                        <Link
+                          to='/book-appointment'
+                          className='py-0 btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
+                        >
+                          Get Started{' '}
+                          <span className='font-normal  md:block '>
+                            -- it's free
+                          </span>{' '}
+                        </Link>
                       </li>
                     </ul>
                   </ul>

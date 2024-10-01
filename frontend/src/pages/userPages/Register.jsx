@@ -117,7 +117,7 @@ const Register = () => {
                     <input
                       type='text'
                       name='firstName'
-                      placeholder='First Name'
+                      placeholder='John'
                       value={formData.firstName}
                       onChange={handleChange}
                       className='input input-bordered w-full '
@@ -133,7 +133,7 @@ const Register = () => {
                     <input
                       type='text'
                       name='lastName'
-                      placeholder='Last Name'
+                      placeholder='Doe'
                       value={formData.lastName}
                       onChange={handleChange}
                       className='input input-bordered w-full '
@@ -151,7 +151,7 @@ const Register = () => {
                   <input
                     type='email'
                     name='email'
-                    placeholder='Email'
+                    placeholder='john@example.com'
                     value={formData.email}
                     onChange={handleChange}
                     className='input input-bordered w-full '
@@ -168,7 +168,7 @@ const Register = () => {
                   <input
                     type='password'
                     name='password'
-                    placeholder='Password'
+                    placeholder='Enter Password'
                     value={formData.password}
                     onChange={handleChange}
                     className='input input-bordered w-full '
@@ -185,7 +185,7 @@ const Register = () => {
                   <input
                     type='password'
                     name='confirmPassword'
-                    placeholder='Confirm Password'
+                    placeholder='Re-enter Password'
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     className='input input-bordered w-full '
