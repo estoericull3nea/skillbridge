@@ -4,6 +4,8 @@ import axios from 'axios'
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 
+import { toast } from 'react-hot-toast'
+
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
   if (!date) return { availableTimes: [] }
@@ -22,7 +24,7 @@ const fetchHolidays = async () => {
   const response = await axios.get(`https://calendarific.com/api/v2/holidays`, {
     params: {
       api_key: API_KEY,
-      country: 'PH',
+      country: 'US',
       year: 2024,
     },
   })
@@ -109,7 +111,7 @@ const BookAppointment = () => {
   console.log(holidays)
 
   return (
-    <div className='lg:my-40 max-w-[1000px] mx-auto py-10 px-3 lg:p-10'>
+    <div className='lg:my-40 max-w-[1300px] mx-auto py-10 px-3 lg:p-10'>
       <ul className='steps mb-10 w-full'>
         <li
           className={`step text-xs md:text-lg ${
@@ -202,7 +204,7 @@ const BookAppointment = () => {
       )}
 
       {step === 2 && (
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
+        <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
           <div>
             <h2 className='text-xl mb-3'>Select a Date</h2>
 
@@ -212,9 +214,30 @@ const BookAppointment = () => {
                   (h) =>
                     new Date(h.date.iso).toDateString() === date.toDateString()
                 )
-                return holiday ? (
-                  <div className='text-red-500 font-bold'>{holiday.name}</div>
-                ) : null
+
+                if (holiday) {
+                  return (
+                    <div className='relative'>
+                      <div className='md:hidden text-red-500 text-xs'>•</div>
+
+                      <div className='hidden md:block text-red-500 font-medium text-xs'>
+                        {holiday.name}
+                      </div>
+
+                      <div
+                        className='absolute inset-0 flex justify-center items-center'
+                        onClick={() =>
+                          toast(`${holiday.name}`, {
+                            duration: 3000,
+                          })
+                        }
+                      >
+                        <div className='md:hidden text-red-500 text-xs cursor-pointer'></div>
+                      </div>
+                    </div>
+                  )
+                }
+                return null
               }}
               onChange={setSelectedDate}
               value={selectedDate}
