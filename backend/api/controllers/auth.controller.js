@@ -173,3 +173,137 @@ export const login = async (req, res) => {
     return res.status(500).json({ message: error.message })
   }
 }
+
+export const resendVerificationEmail = async (req, res) => {
+  const { email } = req.body
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' })
+    }
+
+    if (user.isVerified) {
+      return res.status(400).json({ message: 'User is already verified' })
+    }
+
+    const maxRequestsPerDay = 5
+    const cooldownPeriod = 5 * 60 * 1000 // 5 minutes
+    const dayInMilliseconds = 24 * 60 * 60 * 1000 // 24 hours
+
+    if (Date.now() - user.lastVerificationRequest >= dayInMilliseconds) {
+      user.verificationRequestCount = 0
+    }
+
+    if (Date.now() - user.lastVerificationRequest < cooldownPeriod) {
+      return res.status(429).json({
+        message:
+          'Please wait 5 minutes before requesting a new verification email',
+      })
+    }
+
+    if (user.verificationRequestCount >= maxRequestsPerDay) {
+      return res.status(429).json({
+        message:
+          'You have exceeded the number of verification requests for today',
+      })
+    }
+
+    const verificationToken = jwt.sign(
+      { email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '15m' } // 15 minutes expiration
+    )
+
+    user.verificationToken = verificationToken
+    user.verificationTokenExpires = Date.now() + 15 * 60 * 1000 // 15 minutes from now
+    user.lastVerificationRequest = Date.now()
+    user.verificationRequestCount += 1
+
+    await user.save()
+
+    // Send the verification email
+    const verificationUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}/verify?token=${verificationToken}`
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Verify your email',
+      html: `
+      <p>Dear ${user.firstName},</p>
+      <p>Please verify your email by clicking the link below:</p>
+      <p><a href="${verificationUrl}">Verify Email</a></p>
+      <p>This link will expire in 15 minutes. If you do not verify your email within this time, you will need to request a new confirmation link.</p>
+      <p>If you have any questions or need further assistance, please do not hesitate to contact us <a href="${process.env.FRONTEND_URL_PRODUCTION}contact-us">here</a>.</p>
+      <p>Best regards,<br>Skill Bridge Virtual Careers</p>
+      `,
+    })
+
+    res.status(200).json({
+      message: 'Verification email sent successfully.',
+      verificationToken,
+    })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body
+
+  try {
+    const user = await User.findOne({ email })
+
+    if (!user) {
+      return res.status(404).json({ message: 'No user found with this email' })
+    }
+
+    if (!user.isVerified) {
+      return res.status(403).json({
+        message:
+          'Your account is not verified. Please verify your account first',
+      })
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex')
+
+    const hashedResetToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex')
+
+    const resetTokenExpires = Date.now() + 15 * 60 * 1000 // 15 minutes from now
+
+    // Save the hashed token and its expiration in the user's document
+    user.resetPasswordToken = hashedResetToken
+    user.resetPasswordExpires = resetTokenExpires
+    await user.save()
+
+    const resetUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}/reset-password/${resetToken}`
+
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Password Reset Request',
+      html: `<p>You requested a password reset. Click the link below to reset your password:</p>
+             <a href="${resetUrl}">Reset Password</a><br />
+             <p>This link is valid for 15 minutes.</p>`,
+    }
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error)
+        return res.status(500).json({ message: 'Error sending email' })
+      }
+
+      // Send success response
+      res.status(200).json({
+        message: 'Password reset link sent to your email',
+        resetToken: hashedResetToken,
+      })
+    })
+  } catch (error) {
+    console.error('Server error:', error.message)
+    return res.status(500).json({ message: 'Server error: ' + error.message })
+  }
+}

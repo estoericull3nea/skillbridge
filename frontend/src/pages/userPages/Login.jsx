@@ -4,9 +4,14 @@ import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import 'daisyui'
 
 const Login = () => {
   const navigate = useNavigate()
+  const [showVerificationModal, setShowVerificationModal] = useState(false)
+  const [loadingResend, setLoadingResend] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   const loginMutation = useMutation({
     mutationFn: async (loginData) => {
@@ -22,14 +27,40 @@ const Login = () => {
       navigate('/')
     },
     onError: (error) => {
-      toast.error(
+      const errorMessage =
         error.response?.data?.message || 'An error occurred during login'
-      )
+      if (errorMessage === 'Please verify your account before logging in.') {
+        setShowVerificationModal(true)
+      } else {
+        toast.error(errorMessage)
+      }
     },
   })
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const resendVerificationMutation = useMutation({
+    mutationFn: async () => {
+      setLoadingResend(true)
+      const response = await axios.post(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/resend-verification`,
+        { email }
+      )
+      setLoadingResend(false)
+      return response.data
+    },
+    onSuccess: (data) => {
+      toast.success('Verification email resent successfully')
+      setEmail('')
+      setPassword('')
+      setShowVerificationModal(false)
+    },
+    onError: (error) => {
+      setLoadingResend(false)
+      toast.error(
+        error.response?.data?.message ||
+          'An error occurred while resending the email'
+      )
+    },
+  })
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -38,6 +69,10 @@ const Login = () => {
     } else {
       toast.error('Please fill in all fields')
     }
+  }
+
+  const handleResendVerification = () => {
+    resendVerificationMutation.mutate()
   }
 
   return (
@@ -129,6 +164,31 @@ const Login = () => {
           </div>
         </div>
       </section>
+
+      {/* Daisy UI Modal */}
+      {showVerificationModal && (
+        <div className='modal modal-open'>
+          <div className='modal-box'>
+            <h3 className='font-bold text-lg'>Account not verified</h3>
+            <p className='py-4'>Please verify your email address to log in.</p>
+            <div className='modal-action'>
+              <button
+                className={`btn ${loadingResend ? 'loading' : ''}`}
+                onClick={handleResendVerification}
+                disabled={loadingResend}
+              >
+                {loadingResend ? 'Resending...' : 'Resend Verification Email'}
+              </button>
+              <button
+                className='btn'
+                onClick={() => setShowVerificationModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
