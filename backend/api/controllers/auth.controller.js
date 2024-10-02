@@ -4,6 +4,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
+import crypto from 'crypto'
 dotenv.config()
 
 const MAX_FAILED_ATTEMPTS = 5
@@ -279,7 +280,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = resetTokenExpires
     await user.save()
 
-    const resetUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}/reset-password/${resetToken}`
+    const resetUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}reset/${resetToken}`
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -304,6 +305,66 @@ export const forgotPassword = async (req, res) => {
     })
   } catch (error) {
     console.error('Server error:', error.message)
+    return res.status(500).json({ message: 'Server error: ' + error.message })
+  }
+}
+
+export const resetPassword = async (req, res) => {
+  const { resetToken } = req.params
+  const { password } = req.body
+
+  try {
+    if (password.length < 8) {
+      return res
+        .status(400)
+        .json({ message: 'Password must be at least 8 characters long' })
+    }
+
+    const hashedToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex')
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() },
+    })
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired token' })
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    user.password = hashedPassword
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpires = undefined
+
+    await user.save()
+
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: 'Password Reset Confirmation',
+      html: `
+        <p>Dear ${user.firstName},</p>
+        <p>We are pleased to inform you that your password has been successfully reset.</p>
+        <p>For security reasons, we recommend following these tips when creating a password in the future:</p>
+        <ul>
+          <li>Use at least 8 characters, including uppercase, lowercase letters, numbers, and special symbols.</li>
+          <li>Avoid common words or easily guessable information like your name or birthdate.</li>
+          <li>Consider using a passphrase or a combination of random words.</li>
+          <li>Update your password regularly to ensure the safety of your account.</li>
+        </ul>
+        <p>If you have any questions or need further assistance, feel free to reach out to us <a href="${process.env.FRONTEND_URL_DEVELOPMENT}contact">here</a>.</p>
+        <p>Best regards,<br>Skill Bridge Virtual Careers</p>
+      `,
+    })
+
+    return res
+      .status(200)
+      .json({ message: 'Password has been reset successfully' })
+  } catch (error) {
     return res.status(500).json({ message: 'Server error: ' + error.message })
   }
 }

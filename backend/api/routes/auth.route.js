@@ -4,6 +4,7 @@ import {
   login,
   register,
   resendVerificationEmail,
+  resetPassword,
   verifyEmail,
 } from '../controllers/auth.controller.js'
 
@@ -14,5 +15,6 @@ router.get('/verify', verifyEmail)
 router.post('/login', login)
 router.post('/resend-verification', resendVerificationEmail)
 router.post('/forgot-password', forgotPassword)
+router.post('/reset-password/:resetToken', resetPassword)
 
 export default router

@@ -124,7 +124,7 @@ const Register = () => {
                       className='input input-bordered w-full '
                     />
                   </div>
-                  <div>
+                  <div className='mt-3 md:mt-0'>
                     <label
                       htmlFor='lastName'
                       className='block mb-2 text-sm font-medium text-gray-900 '

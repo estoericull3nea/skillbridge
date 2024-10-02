@@ -50,7 +50,7 @@ const App = () => {
           />
 
           <Route exact path='/forgot' element={<ForgotPassword />} />
-          <Route exact path='/reset' element={<ResetPassword />} />
+          <Route exact path='/reset/:resetToken' element={<ResetPassword />} />
           <Route exact path='/privacy-policy' element={<Policy />} />
           <Route exact path='/terms' element={<Terms />} />
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
