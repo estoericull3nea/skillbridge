@@ -368,3 +368,40 @@ export const resetPassword = async (req, res) => {
     return res.status(500).json({ message: 'Server error: ' + error.message })
   }
 }
+
+export const googleSignup = async (req, res) => {
+  const { token } = req.body
+
+  try {
+    // Verify Google token with Google
+    const googleResponse = await axios.get(
+      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
+    )
+
+    console.log(googleResponse)
+
+    const { email, name, sub } = googleResponse.data
+
+    // Check if the user exists in your database
+    let user = await User.findOne({ email })
+    if (!user) {
+      // If user doesn't exist, create a new one
+      user = new User({
+        email,
+        googleId: sub,
+        name,
+        isVerified: true,
+      })
+      await user.save()
+    }
+
+    // Generate JWT token
+    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: '1h',
+    })
+
+    res.status(200).json({ token: jwtToken })
+  } catch (error) {
+    return res.status(500).json({ message: 'Google authentication failed' })
+  }
+}
