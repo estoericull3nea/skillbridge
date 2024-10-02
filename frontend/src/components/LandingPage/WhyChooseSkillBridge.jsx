@@ -1,6 +1,7 @@
 import React from 'react'
 
 import WhyChoose from '../../assets/images/why_choose.jpg'
+import { Link } from 'react-router-dom'
 
 const WhyChooseSkillBridge = () => {
   return (
@@ -25,9 +26,12 @@ const WhyChooseSkillBridge = () => {
           </p>
         </div>
 
-        <button className='btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'>
+        <Link
+          to='/about'
+          className='btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
+        >
           Know more about us
-        </button>
+        </Link>
       </div>
       <div className='right  order-1 lg:order-2'>
         <img src={WhyChoose} alt='' />

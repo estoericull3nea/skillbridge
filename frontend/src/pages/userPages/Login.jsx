@@ -110,7 +110,7 @@ const Login = () => {
                   type='submit'
                   className='btn bg-black text-white rounded-full hover:bg-transparent hover:text-black hover:border-black w-full'
                 >
-                  {loginMutation.isLoading
+                  {loginMutation.isPending
                     ? 'Logging in...'
                     : 'Login to your account'}
                 </button>

@@ -1,17 +1,67 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { IoIosArrowDown } from 'react-icons/io'
 import SBLogo from '../assets/icons/sb_logo.png'
+import { toast } from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode'
+import axios from 'axios'
+
+import { CiUser } from 'react-icons/ci'
+import { CiLogout } from 'react-icons/ci'
+import { IoIosNotificationsOutline } from 'react-icons/io'
 
 const Navbar = () => {
+  const token = localStorage.getItem('token')
+  const navigate = useNavigate()
+  const decoded = token ? jwtDecode(token) : ''
+
+  const userId = decoded?.id
+
+  const [user, setUser] = useState({})
+  const [isLoadingUser, setIsLoadingUser] = useState(false)
+
+  const handleLogout = () => {
+    localStorage.clear()
+    toast.success('Logged out')
+    setUser({})
+    navigate('/login')
+  }
+
+  const fetchLoginUser = async () => {
+    setIsLoadingUser(true)
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+      )
+      setUser(response.data)
+    } catch (error) {
+      console.log(error.response.data.message)
+    } finally {
+      setIsLoadingUser(false)
+    }
+  }
+
+  const getUserInitials = () => {
+    if (!isLoadingUser && user?.firstName && user?.lastName) {
+      return user.firstName[0].toUpperCase() + user.lastName[0].toUpperCase()
+    }
+    return ''
+  }
+
+  useEffect(() => {
+    if (userId) {
+      fetchLoginUser()
+    }
+  }, [token])
+
   return (
     <div className='shadow'>
       <div className='container'>
         <div className='navbar bg-base-100 '>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>
-              <div className='drawer z-10 md:hidden'>
+              <div className='drawer z-10 lg:hidden'>
                 <input
                   id='my-drawer'
                   type='checkbox'
@@ -47,7 +97,7 @@ const Navbar = () => {
 
                     <Link
                       to='/'
-                      className='btn btn-ghost text-xl justify-start'
+                      className='btn btn-ghost text-xl justify-start hover:bg-transparent'
                     >
                       <img src={SBLogo} alt='' className='w-9' />
                       SkillBridge
@@ -67,19 +117,30 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <a>Administrative Support</a>
+                                  <Link to='/service/administrative-support'>
+                                    Administrative Support
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Customer Service</a>
+                                  <Link to='/service/customer-service'>
+                                    Customer Service
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Writing and Editing</a>
+                                  <Link to='/service/writing-and-editing'>
+                                    Writing and Editing
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Social Media Management</a>
+                                  <Link to='/service/social-media-management'>
+                                    {' '}
+                                    Social Media Management
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Technical Skills</a>
+                                  <Link to='/service/technical-skill'>
+                                    Technical Skills
+                                  </Link>
                                 </li>
                               </ul>
                             </details>
@@ -91,19 +152,29 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <a>Talent Sourcing</a>
+                                  <Link to='/service/talent-sourcing'>
+                                    Talent Sourcing{' '}
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Talent Screening</a>
+                                  <Link to='/service/talent-screening'>
+                                    Talent Screening{' '}
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Interviewing and Assessment</a>
+                                  <Link to='/service/interviewing-and-assessment'>
+                                    Interviewing and Assessment{' '}
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Endorsement</a>
+                                  <Link to='/service/endorsement'>
+                                    Endorsement
+                                  </Link>
                                 </li>
                                 <li>
-                                  <a>Onboarding (optional)</a>
+                                  <Link to='/service/onboarding'>
+                                    Onboarding (optional){' '}
+                                  </Link>
                                 </li>
                               </ul>
                             </details>
@@ -115,75 +186,94 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <details>
-                                    <summary>Website Design</summary>
-                                    <ul>
-                                      <li>
-                                        <a>Landing Page Design</a>
-                                      </li>
-                                      <li>
-                                        <a>Responsive Web Design</a>
-                                      </li>
-                                    </ul>
-                                  </details>
+                                  <a>Website Design</a>
+                                  <ul className='text-xs'>
+                                    <li>
+                                      <Link to='/service/custom-layout-design'>
+                                        Custom Layout Design
+                                      </Link>
+                                    </li>
+                                    <li>
+                                      <Link to='/service/landing-page-design'>
+                                        Landing Page Design
+                                      </Link>
+                                    </li>
+                                    <li>
+                                      <Link to='/service/responsive-web-design<'>
+                                        Responsive Web Design
+                                      </Link>
+                                    </li>
+                                  </ul>
                                 </li>
                                 <li>
-                                  <details>
-                                    <summary>Custom Development</summary>
-                                    <ul>
-                                      <li>
-                                        <a>Full-Stack Development</a>
-                                      </li>
-                                      <li>
-                                        <a>Back-End Development</a>
-                                      </li>
-                                      <li>
-                                        <a>Front-End Development</a>
-                                      </li>
-                                    </ul>
-                                  </details>
+                                  <a>Custom Development</a>
+                                  <ul className='text-xs'>
+                                    <li>
+                                      <Link to='/service/full-stack-development'>
+                                        Full-Stack Development
+                                      </Link>
+                                    </li>
+                                    <li>
+                                      <Link to='/service/back-end-development'>
+                                        Back-End Development
+                                      </Link>
+                                    </li>
+                                    <li>
+                                      <Link to='/service/front-end-development'>
+                                        Front-End Development
+                                      </Link>
+                                    </li>
+                                  </ul>
                                 </li>
                                 <li>
-                                  <details>
-                                    <summary>CMS</summary>
-                                    <ul>
-                                      <li>
-                                        <a>WordPress Development</a>
-                                      </li>
-                                    </ul>
-                                  </details>
+                                  <a>CMS</a>
+                                  <ul className='text-xs'>
+                                    <li>
+                                      <Link to='/service/wordPress-development'>
+                                        WordPress Development
+                                      </Link>
+                                    </li>
+                                  </ul>
                                 </li>
                                 <li>
-                                  <details>
-                                    <summary>SEO Optimization</summary>
-                                    <ul>
-                                      <li>
-                                        <a>Keyword Research</a>
-                                      </li>
-                                      <li>
-                                        <a>On-Page SEO</a>
-                                      </li>
-                                      <li>
-                                        <a>Off-Page SEO</a>
-                                      </li>
-                                      <li>
-                                        <a>WordPress SEO Optimization</a>
-                                      </li>
-                                    </ul>
-                                  </details>
+                                  <a>SEO Optimization</a>
+                                  <ul className='text-xs'>
+                                    <li>
+                                      <a className='/service/keyword-research'>
+                                        Keyword Research
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a className='/service/on-page-seo'>
+                                        On-Page SEO
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a className='/service/off-page-seo'>
+                                        Off-Page SEO
+                                      </a>
+                                    </li>
+                                    <li>
+                                      <a className='/service/wordpress-seo-optimization'>
+                                        WordPress SEO Optimization
+                                      </a>
+                                    </li>
+                                  </ul>
                                 </li>
                                 <li>
-                                  <details>
-                                    <summary>API Integration</summary>
-                                    <ul>
-                                      <li>
-                                        <a>Third-Party API Integration</a>
-                                      </li>
-                                      <li>
-                                        <a>Custom API Development</a>
-                                      </li>
-                                    </ul>
-                                  </details>
+                                  <a>API Integration</a>
+                                  <ul className='text-xs'>
+                                    <li>
+                                      <Link to='/service/third-party-api-integration'>
+                                        Third-Party API Integration
+                                      </Link>
+                                    </li>
+                                    <li>
+                                      <Link to='/service/custom-api-development'>
+                                        Custom API Development
+                                      </Link>
+                                    </li>
+                                  </ul>
                                 </li>
                               </ul>
                             </details>
@@ -192,26 +282,31 @@ const Navbar = () => {
                       </details>
                     </li>
                     <li>
-                      <a>Careers</a>
+                      <Link to='/careers'>Careers</Link>
                     </li>
 
                     <ul>
                       <li>
-                        <a>About</a>
+                        <Link to='/about'>About</Link>
                       </li>
                       <li>
-                        <a>Contact</a>
+                        <Link to='/contact'>Contact</Link>
                       </li>
-                      <li>
-                        <a>Register</a>
-                      </li>
-                      <li>
-                        <a>Login</a>
-                      </li>
+                      {!token && (
+                        <div>
+                          <li>
+                            <Link to='/register'>Register</Link>
+                          </li>
+                          <li>
+                            <Link to='/login'>Login</Link>
+                          </li>
+                        </div>
+                      )}
+
                       <li>
                         <Link
                           to='/book-appointment'
-                          className='py-0 btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
+                          className='py-0 btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal mt-2'
                         >
                           Get Started{' '}
                           <span className='font-normal  md:block '>
@@ -224,7 +319,10 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <Link to='/' className='btn btn-ghost text-xl'>
+              <Link
+                to='/'
+                className='btn btn-ghost text-xl hover:bg-transparent'
+              >
                 <img src={SBLogo} alt='' className='w-9' />
                 SkillBridge
               </Link>
@@ -255,19 +353,30 @@ const Navbar = () => {
                         <a>Virtual Assistance</a>
                         <ul>
                           <li>
-                            <a>Administrative Support</a>
+                            <Link to='/service/administrative-support'>
+                              Administrative Support
+                            </Link>
                           </li>
                           <li>
-                            <a>Customer Service</a>
+                            <Link to='/service/customer-service'>
+                              Customer Service
+                            </Link>
                           </li>
                           <li>
-                            <a>Writing and Editing</a>
+                            <Link to='/service/writing-and-editing'>
+                              Writing and Editing
+                            </Link>
                           </li>
                           <li>
-                            <a>Social Media Management</a>
+                            <Link to='/service/social-media-management'>
+                              {' '}
+                              Social Media Management
+                            </Link>
                           </li>
                           <li>
-                            <a>Technical Skills</a>
+                            <Link to='/service/technical-skill'>
+                              Technical Skills
+                            </Link>
                           </li>
                         </ul>
                       </li>
@@ -275,19 +384,27 @@ const Navbar = () => {
                         <a>Recruitment Services</a>
                         <ul>
                           <li>
-                            <a>Talent Sourcing </a>
+                            <Link to='/service/talent-sourcing'>
+                              Talent Sourcing{' '}
+                            </Link>
                           </li>
                           <li>
-                            <a>Talent Screening </a>
+                            <Link to='/service/talent-screening'>
+                              Talent Screening{' '}
+                            </Link>
                           </li>
                           <li>
-                            <a>Interviewing and Assessment </a>
+                            <Link to='/service/interviewing-and-assessment'>
+                              Interviewing and Assessment{' '}
+                            </Link>
                           </li>
                           <li>
-                            <a>Endorsement</a>
+                            <Link to='/service/endorsement'>Endorsement</Link>
                           </li>
                           <li>
-                            <a>Onboarding (optional) </a>
+                            <Link to='/service/onboarding'>
+                              Onboarding (optional){' '}
+                            </Link>
                           </li>
                         </ul>
                       </li>
@@ -298,13 +415,19 @@ const Navbar = () => {
                             <a>Website Design</a>
                             <ul className='text-xs'>
                               <li>
-                                <a>Custom Layout Design</a>
+                                <Link to='/service/custom-layout-design'>
+                                  Custom Layout Design
+                                </Link>
                               </li>
                               <li>
-                                <a>Landing Page Design</a>
+                                <Link to='/service/landing-page-design'>
+                                  Landing Page Design
+                                </Link>
                               </li>
                               <li>
-                                <a>Responsive Web Design</a>
+                                <Link to='/service/responsive-web-design<'>
+                                  Responsive Web Design
+                                </Link>
                               </li>
                             </ul>
                           </li>
@@ -312,13 +435,19 @@ const Navbar = () => {
                             <a>Custom Development</a>
                             <ul className='text-xs'>
                               <li>
-                                <a>Full-Stack Development</a>
+                                <Link to='/service/full-stack-development'>
+                                  Full-Stack Development
+                                </Link>
                               </li>
                               <li>
-                                <a>Back-End Development</a>
+                                <Link to='/service/back-end-development'>
+                                  Back-End Development
+                                </Link>
                               </li>
                               <li>
-                                <a>Front-End Development</a>
+                                <Link to='/service/front-end-development'>
+                                  Front-End Development
+                                </Link>
                               </li>
                             </ul>
                           </li>
@@ -326,7 +455,9 @@ const Navbar = () => {
                             <a>CMS</a>
                             <ul className='text-xs'>
                               <li>
-                                <a>WordPress Development</a>
+                                <Link to='/service/wordPress-development'>
+                                  WordPress Development
+                                </Link>
                               </li>
                             </ul>
                           </li>
@@ -334,16 +465,24 @@ const Navbar = () => {
                             <a>SEO Optimization</a>
                             <ul className='text-xs'>
                               <li>
-                                <a>Keyword Research</a>
+                                <a className='/service/keyword-research'>
+                                  Keyword Research
+                                </a>
                               </li>
                               <li>
-                                <a>On-Page SEO</a>
+                                <a className='/service/on-page-seo'>
+                                  On-Page SEO
+                                </a>
                               </li>
                               <li>
-                                <a>Off-Page SEO</a>
+                                <a className='/service/off-page-seo'>
+                                  Off-Page SEO
+                                </a>
                               </li>
                               <li>
-                                <a>WordPress SEO Optimization</a>
+                                <a className='/service/wordpress-seo-optimization'>
+                                  WordPress SEO Optimization
+                                </a>
                               </li>
                             </ul>
                           </li>
@@ -351,10 +490,14 @@ const Navbar = () => {
                             <a>API Integration</a>
                             <ul className='text-xs'>
                               <li>
-                                <a>Third-Party API Integration</a>
+                                <Link to='/service/third-party-api-integration'>
+                                  Third-Party API Integration
+                                </Link>
                               </li>
                               <li>
-                                <a>Custom API Development</a>
+                                <Link to='/service/custom-api-development'>
+                                  Custom API Development
+                                </Link>
                               </li>
                             </ul>
                           </li>
@@ -364,19 +507,19 @@ const Navbar = () => {
                       <li>
                         <ul>
                           <li>
-                            <a>About</a>
+                            <Link to='/about'>About</Link>
                           </li>
                           <li>
-                            <a>Contact</a>
+                            <Link to='/contact'>Contact</Link>
                           </li>
                           <li>
-                            <a>Privacy policy</a>
+                            <Link to='/privacy-policy'>Privacy policy</Link>
                           </li>
                           <li>
-                            <a>Cookie policy</a>
+                            <Link to='/cookie-policy'>Cookie policy</Link>
                           </li>
                           <li>
-                            <a>Terms</a>
+                            <Link to='/terms'>Terms</Link>
                           </li>
                         </ul>
                       </li>
@@ -385,20 +528,27 @@ const Navbar = () => {
                 </div>
               </li>
               <li>
-                <a>Careers</a>
+                <Link to='/careers'>Careers</Link>
               </li>
             </ul>
           </div>
 
           <div className='navbar-end'>
-            <ul className='menu menu-horizontal px-1 min-w-max'>
-              <li>
-                <Link to='/login'>Login</Link>
-              </li>
-              <li className='hidden md:block  '>
-                <Link to='/register'>Register</Link>
-              </li>
-            </ul>
+            {!token && (
+              <ul className='menu menu-horizontal px-1 min-w-max'>
+                <li>
+                  <Link to='/login' className='hover:bg-transparent'>
+                    Login
+                  </Link>
+                </li>
+                <li className='hidden md:block  '>
+                  <Link to='/register' className='hover:bg-transparent'>
+                    Register
+                  </Link>
+                </li>
+              </ul>
+            )}
+
             <Link
               to='/book-appointment'
               className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
@@ -406,6 +556,47 @@ const Navbar = () => {
               Get Started{' '}
               <span className='font-normal hidden md:block '>-- it's free</span>{' '}
             </Link>
+
+            {token ? (
+              <div className='flex items-center ms-3'>
+                <div className='avatar placeholder dropdown dropdown-hover'>
+                  <div
+                    className='w-12 rounded-full bg-base-300 p-3 '
+                    tabIndex={0}
+                    role='button'
+                  >
+                    <span className='text-xl block font-bold'>
+                      {!isLoadingUser && getUserInitials()}
+                    </span>
+                    <ul
+                      tabIndex={0}
+                      className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[175px]'
+                    >
+                      <li>
+                        <a>
+                          {' '}
+                          <CiUser />
+                          Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a>
+                          <IoIosNotificationsOutline /> Notifications
+                        </a>
+                      </li>
+                      <li>
+                        <a onClick={handleLogout}>
+                          <CiLogout />
+                          Logout
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </div>

@@ -15,6 +15,8 @@ import VerifyEmail from './pages/userPages/VerifyEmail'
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import RedirectIfAuthenticated from './components/RedirectIfAuthenticated'
+import NotFound from './pages/NotFound'
 
 const App = () => {
   return (
@@ -29,16 +31,33 @@ const App = () => {
 
         <Routes>
           <Route exact path='/' element={<Home />} />
-          <Route exact path='/register' element={<Register />} />
-          <Route exact path='/login' element={<Login />} />
+
+          <Route
+            path='/register'
+            element={
+              <RedirectIfAuthenticated>
+                <Register />
+              </RedirectIfAuthenticated>
+            }
+          />
+          <Route
+            path='/login'
+            element={
+              <RedirectIfAuthenticated>
+                <Login />
+              </RedirectIfAuthenticated>
+            }
+          />
+
           <Route exact path='/forgot' element={<ForgotPassword />} />
           <Route exact path='/reset' element={<ResetPassword />} />
           <Route exact path='/privacy-policy' element={<Policy />} />
           <Route exact path='/terms' element={<Terms />} />
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           <Route exact path='/book-appointment' element={<BookAppointment />} />
-          <Route path='/verify' element={<VerifyEmail />} />
-          {/* <Route path='*' element={<NotFound />} /> */}
+          <Route exact path='/verify' element={<VerifyEmail />} />
+
+          <Route path='*' element={<NotFound />} />
         </Routes>
         <Footer />
       </Router>

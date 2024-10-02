@@ -1,6 +1,7 @@
 import React from 'react'
 
 import HeroImage from '../assets/images/hero_section_img.png'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   return (
@@ -17,9 +18,12 @@ const Hero = () => {
             bring you dedicated professionals in a variety of roles.
           </p>
         </div>
-        <button className='btn bg-black text-white rounded-full hover:bg-transparent hover:border-black hover:text-black font-normal'>
+        <Link
+          to='/book-appointment'
+          className='btn bg-black text-white rounded-full hover:bg-transparent hover:border-black hover:text-black font-normal'
+        >
           Request a Consultation
-        </button>
+        </Link>
       </div>
       <div className='right '>
         <img src={HeroImage} alt='' />
