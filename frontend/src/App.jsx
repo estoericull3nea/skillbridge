@@ -11,6 +11,7 @@ import Policy from './pages/userPages/Policy'
 import Terms from './pages/userPages/Terms'
 import CookiePolicy from './pages/userPages/CookiePolicy'
 import BookAppointment from './pages/userPages/BookAppointment'
+import VerifyEmail from './pages/userPages/VerifyEmail'
 
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
@@ -36,6 +37,7 @@ const App = () => {
           <Route exact path='/terms' element={<Terms />} />
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           <Route exact path='/book-appointment' element={<BookAppointment />} />
+          <Route path='/verify' element={<VerifyEmail />} />
           {/* <Route path='*' element={<NotFound />} /> */}
         </Routes>
         <Footer />

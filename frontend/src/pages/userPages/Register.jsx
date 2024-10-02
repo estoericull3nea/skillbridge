@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
-
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 
@@ -31,7 +29,10 @@ const Register = () => {
 
   const mutation = useMutation({
     mutationFn: (newUser) =>
-      axios.post('http://localhost:5000/api/auth/register', newUser),
+      axios.post(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/register`,
+        newUser
+      ),
     onSuccess: (response) => {
       toast.success(response.data.message)
 

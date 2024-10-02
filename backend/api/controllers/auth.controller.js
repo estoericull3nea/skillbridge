@@ -6,6 +6,9 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 dotenv.config()
 
+const MAX_FAILED_ATTEMPTS = 5
+const LOCK_TIME = 15 * 60 * 1000 // 15 minutes
+
 const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
   port: 587, // or 465 for SSL
@@ -46,7 +49,7 @@ export const register = async (req, res) => {
 
     await newUser.save()
 
-    const verificationUrl = `http://localhost:5000/api/auth/verify?token=${verificationToken}`
+    const verificationUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}verify?token=${verificationToken}`
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: newUser.email,
@@ -133,7 +136,7 @@ export const login = async (req, res) => {
       thisUser.failedLoginAttempts += 1
 
       if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
-        thisUser.lockUntil = Date.now() + LOCK_TIME // Lock the account for 15 minutes
+        thisUser.lockUntil = Date.now() + LOCK_TIME
       }
 
       await thisUser.save()
@@ -167,6 +170,6 @@ export const login = async (req, res) => {
       token,
     })
   } catch (error) {
-    return res.status(500).json({ message: error })
+    return res.status(500).json({ message: error.message })
   }
 }
