@@ -63,6 +63,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    googleId: { type: String, required: true },
   },
 
   {

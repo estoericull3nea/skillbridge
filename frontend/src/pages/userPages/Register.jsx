@@ -8,7 +8,66 @@ import { useMutation } from '@tanstack/react-query'
 const Register = () => {
   useEffect(() => {
     document.title = 'Register'
+
+    // const handleGoogleCallback = async (response) => {
+    //   try {
+    //     const googleToken = response.credential // Get the Google ID token
+    //     const res = await axios.post(
+    //       `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
+    //       {
+    //         token: googleToken,
+    //       }
+    //     )
+    //     toast.success('Google sign-in successful')
+    //     // Save JWT or other logic here
+    //     localStorage.setItem('token', res.data.token)
+    //     navigate('/')
+    //   } catch (error) {
+    //     toast.error('Google sign-in failed. Please try again.')
+    //   }
+    // }
+
+    const handleGoogleCallback = async (response) => {
+      try {
+        const googleToken = response.credential // Google ID token
+        const res = await axios.post(
+          `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
+          {
+            token: googleToken,
+          }
+        )
+        toast.success('Google sign-in successful')
+        localStorage.setItem('token', res.data.token) // Save JWT token
+        navigate('/') // Redirect to homepage or dashboard
+      } catch (error) {
+        toast.error('Google sign-in failed. Please try again.')
+      }
+    }
+
+    if (window.google) {
+      window.google.accounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID, // Your Google Client ID from .env
+        callback: handleGoogleCallback, // Callback function when Google signs in
+      })
+    }
   }, [])
+
+  // const handleGoogleCallback = async (response) => {
+  //   try {
+  //     const googleToken = response.credential // Google ID token
+  //     const res = await axios.post(
+  //       `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
+  //       {
+  //         token: googleToken,
+  //       }
+  //     )
+  //     toast.success('Google sign-in successful')
+  //     localStorage.setItem('token', res.data.token) // Save JWT token
+  //     navigate('/') // Redirect to homepage or dashboard
+  //   } catch (error) {
+  //     toast.error('Google sign-in failed. Please try again.')
+  //   }
+  // }
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -87,6 +146,10 @@ const Register = () => {
     mutation.mutate(userData)
   }
 
+  const handleGoogleSignup = () => {
+    window.google.accounts.id.prompt() // This opens Google's sign-in prompt
+  }
+
   return (
     <div className='my-16'>
       <section className='lg:py-10'>
@@ -97,7 +160,10 @@ const Register = () => {
                 Create an account
               </h1>
 
-              <button className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'>
+              <button
+                className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
+                onClick={handleGoogleSignup}
+              >
                 <FcGoogle className='text-xl' /> Register with Google
               </button>
 
