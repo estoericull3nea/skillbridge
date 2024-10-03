@@ -3,6 +3,7 @@ import {
   forgotPassword,
   googleSignup,
   login,
+  oAuthSignUp,
   register,
   resendVerificationEmail,
   resetPassword,
@@ -19,5 +20,8 @@ router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:resetToken', resetPassword)
 
 router.post('/google-signup', googleSignup)
+
+// testing
+router.post('/google', oAuthSignUp)
 
 export default router

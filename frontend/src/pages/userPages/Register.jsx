@@ -1,73 +1,58 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 
 const Register = () => {
+  const navigate = useNavigate()
+  const [popup, setPopup] = useState(null)
+  const handleGoogleSignup = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+    const redirectUri = `${window.location.origin}/google-callback` // Match this to your Google OAuth settings
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile%20email&access_type=offline`
+
+    // Open a new window (popup) for Google sign-in
+    const googleWindow = window.open(oauthUrl, '_blank', 'width=500,height=600')
+
+    // Set the popup state
+    setPopup(googleWindow)
+  }
+
+  // Function to handle receiving the Google authorization code
+  const handleGoogleCallback = async (code) => {
+    try {
+      // Exchange the code for JWT on the backend
+      const res = await axios.post(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}/auth/google-signup`,
+        { code }
+      )
+      const { token } = res.data
+
+      toast.success('Google sign-in successful')
+      localStorage.setItem('token', token) // Store the JWT token in localStorage
+      navigate('/') // Redirect to the homepage or dashboard
+    } catch (error) {
+      toast.error('Google sign-in failed. Please try again.')
+    }
+  }
+
+  // Capture the authorization code from the Google OAuth redirect
+  useEffect(() => {
+    // Check if there's a code in the URL after Google redirect
+    const urlParams = new URLSearchParams(window.location.search)
+    const authCode = urlParams.get('code')
+
+    if (authCode && popup) {
+      popup.close() // Close the popup after getting the code
+      handleGoogleCallback(authCode) // Send the code to the backend for exchange
+    }
+  }, [popup])
+
   useEffect(() => {
     document.title = 'Register'
-
-    // const handleGoogleCallback = async (response) => {
-    //   try {
-    //     const googleToken = response.credential // Get the Google ID token
-    //     const res = await axios.post(
-    //       `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
-    //       {
-    //         token: googleToken,
-    //       }
-    //     )
-    //     toast.success('Google sign-in successful')
-    //     // Save JWT or other logic here
-    //     localStorage.setItem('token', res.data.token)
-    //     navigate('/')
-    //   } catch (error) {
-    //     toast.error('Google sign-in failed. Please try again.')
-    //   }
-    // }
-
-    const handleGoogleCallback = async (response) => {
-      try {
-        const googleToken = response.credential // Google ID token
-        const res = await axios.post(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
-          {
-            token: googleToken,
-          }
-        )
-        toast.success('Google sign-in successful')
-        localStorage.setItem('token', res.data.token) // Save JWT token
-        navigate('/') // Redirect to homepage or dashboard
-      } catch (error) {
-        toast.error('Google sign-in failed. Please try again.')
-      }
-    }
-
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID, // Your Google Client ID from .env
-        callback: handleGoogleCallback, // Callback function when Google signs in
-      })
-    }
   }, [])
-
-  // const handleGoogleCallback = async (response) => {
-  //   try {
-  //     const googleToken = response.credential // Google ID token
-  //     const res = await axios.post(
-  //       `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
-  //       {
-  //         token: googleToken,
-  //       }
-  //     )
-  //     toast.success('Google sign-in successful')
-  //     localStorage.setItem('token', res.data.token) // Save JWT token
-  //     navigate('/') // Redirect to homepage or dashboard
-  //   } catch (error) {
-  //     toast.error('Google sign-in failed. Please try again.')
-  //   }
-  // }
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -144,10 +129,6 @@ const Register = () => {
     }
 
     mutation.mutate(userData)
-  }
-
-  const handleGoogleSignup = () => {
-    window.google.accounts.id.prompt() // This opens Google's sign-in prompt
   }
 
   return (

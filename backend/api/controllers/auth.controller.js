@@ -4,8 +4,11 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
+import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
 dotenv.config()
+
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
 
 const MAX_FAILED_ATTEMPTS = 5
 const LOCK_TIME = 15 * 60 * 1000 // 15 minutes
@@ -370,38 +373,66 @@ export const resetPassword = async (req, res) => {
 }
 
 export const googleSignup = async (req, res) => {
-  const { token } = req.body
+  const { code } = req.body // Authorization code from Google
 
   try {
-    // Verify Google token with Google
-    const googleResponse = await axios.get(
-      `https://oauth2.googleapis.com/tokeninfo?id_token=${token}`
+    // Exchange authorization code for tokens
+    const tokenResponse = await axios.post(
+      'https://oauth2.googleapis.com/token',
+      {
+        code,
+        client_id: process.env.GOOGLE_CLIENT_ID,
+        client_secret: process.env.GOOGLE_CLIENT_SECRET,
+        redirect_uri: `${process.env.FRONTEND_URL}/google-callback`, // Ensure this matches the Google OAuth setup
+        grant_type: 'authorization_code',
+      }
     )
 
-    console.log(googleResponse)
+    const { id_token, access_token } = tokenResponse.data
 
-    const { email, name, sub } = googleResponse.data
+    // Optionally verify the ID token or decode it if needed
+    const userData = jwt.decode(id_token)
 
-    // Check if the user exists in your database
-    let user = await User.findOne({ email })
-    if (!user) {
-      // If user doesn't exist, create a new one
-      user = new User({
-        email,
-        googleId: sub,
-        name,
-        isVerified: true,
-      })
-      await user.save()
-    }
-
-    // Generate JWT token
-    const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    // You can then create a JWT for your app or directly return the Google token
+    const appJwt = jwt.sign(userData, process.env.JWT_SECRET, {
       expiresIn: '1h',
     })
 
-    res.status(200).json({ token: jwtToken })
+    res.json({
+      token: appJwt, // Send the token to the frontend
+      user: userData,
+    })
   } catch (error) {
-    return res.status(500).json({ message: 'Google authentication failed' })
+    console.error('Error exchanging code:', error)
+    res.status(400).json({ message: 'Google sign-in failed' })
+  }
+}
+
+const generateToken = (user) => {
+  return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' })
+}
+
+export const oAuthSignUp = async (req, res) => {
+  const { tokenId } = req.body
+
+  try {
+    // Verify the tokenId with Google
+    const ticket = await client.verifyIdToken({
+      idToken: tokenId,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    })
+
+    const payload = ticket.getPayload()
+    const { sub, email, name, picture } = payload
+
+    // Here you can handle user logic (find or create the user in the database)
+    const user = { id: sub, email, name, picture }
+
+    // Generate JWT token
+    const token = generateToken(user)
+
+    res.status(200).json({ token, user })
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid Google token' })
   }
 }
