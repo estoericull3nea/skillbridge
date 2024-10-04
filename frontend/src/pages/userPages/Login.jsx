@@ -24,7 +24,13 @@ const Login = () => {
     onSuccess: (data) => {
       toast.success(data.message)
       localStorage.setItem('token', data.token)
-      navigate('/')
+      // navigate('/')
+
+      const queryParams = new URLSearchParams(window.location.search)
+      const redirectUrl = queryParams.get('redirect') || '/'
+
+      navigate(decodeURIComponent(redirectUrl))
+      // toast.success('Login successful')
     },
     onError: (error) => {
       const errorMessage =
@@ -84,6 +90,7 @@ const Login = () => {
     window.addEventListener('message', (event) => {
       if (event.data === 'googleSignInSuccess') {
         googleWindow.close() // Close the Google sign-in window
+        // toast.success('login')
         navigate('/') // Redirect after successful login
       }
     })

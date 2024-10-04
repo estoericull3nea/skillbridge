@@ -6,7 +6,7 @@ import { toast } from 'react-hot-toast'
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
-  const [errorShown, setErrorShown] = useState(false) // State to prevent duplicate error toasts
+  const [errorShown, setErrorShown] = useState(false)
 
   useEffect(() => {
     const code = searchParams.get('code')
@@ -23,19 +23,16 @@ const GoogleCallback = () => {
 
           const { token } = response.data
 
-          // If response is successful and token exists
           if (token) {
-            // Show the success toast only once per session
             if (!localStorage.getItem('toast_shown')) {
-              // toast.success('Google sign-up successful')
-              localStorage.setItem('toast_shown', 'true') // Prevents duplicate success toast
+              localStorage.setItem('toast_shown', 'true')
             }
 
-            localStorage.setItem('token', token) // Save the JWT in localStorage
+            localStorage.setItem('token', token)
+            navigate('/')
 
-            navigate('/') // Redirect user to homepage
+            toast.success('Successfully Login')
           } else {
-            // If there's no token in the response, treat it as a failure
             throw new Error('No token received from server')
           }
         } catch (error) {
@@ -43,14 +40,12 @@ const GoogleCallback = () => {
             error.response?.data?.message ||
             'Google sign-in failed. Please try again.'
 
-          // Prevent duplicate error toasts
           if (!errorShown) {
-            // Handle specific error and navigate accordingly
             if (errorMessage === 'User Already Exists') {
               toast.error(errorMessage)
               navigate('/register')
             }
-            setErrorShown(true) // Mark the error as shown
+            setErrorShown(true)
           }
         }
       }
@@ -59,10 +54,10 @@ const GoogleCallback = () => {
     } else {
       if (!errorShown) {
         toast.error('No authorization code found.')
-        setErrorShown(true) // Mark the error as shown
+        setErrorShown(true)
       }
     }
-  }, [searchParams, navigate]) // Added errorShown as a dependency
+  }, [searchParams, navigate])
 
   return (
     <div>

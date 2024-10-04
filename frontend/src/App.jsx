@@ -18,6 +18,8 @@ import Footer from './components/Footer'
 import RedirectIfAuthenticated from './components/RedirectIfAuthenticated'
 import NotFound from './pages/NotFound'
 import GoogleCallback from './pages/userPages/GoogleCallback'
+import About from './pages/userPages/About'
+import ProtectRoute from './components/ProtectRoute'
 
 const App = () => {
   return (
@@ -58,6 +60,15 @@ const App = () => {
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           <Route exact path='/book-appointment' element={<BookAppointment />} />
           <Route exact path='/verify' element={<VerifyEmail />} />
+
+          <Route
+            path='/about'
+            element={
+              <ProtectRoute>
+                <About />
+              </ProtectRoute>
+            }
+          />
 
           <Route path='*' element={<NotFound />} />
         </Routes>
