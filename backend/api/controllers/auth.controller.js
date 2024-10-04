@@ -7,6 +7,7 @@ import dotenv from 'dotenv'
 import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
 import axios from 'axios'
+import { jwtDecode } from 'jwt-decode'
 dotenv.config()
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
@@ -389,15 +390,52 @@ export const googleSignup = async (req, res) => {
       }
     )
 
-    const { id_token, access_token } = tokenResponse.data
+    const { id_token } = tokenResponse.data
 
-    // You can now use the tokens to verify the user and create a session
-    res.json({
-      token: id_token, // Send the ID token (JWT) back to the frontend
-    })
+    const {
+      given_name: firstName,
+      family_name: lastName,
+      email,
+      picture,
+      sub: googleId,
+      email_verified: isVerified,
+    } = jwtDecode(id_token)
+
+    // Check if the user already exists
+    let user = await User.findOne({ googleId })
+
+    if (!user) {
+      // If user does not exist, create a new user
+      user = new User({
+        firstName,
+        lastName,
+        email,
+        isVerified,
+        picture,
+        googleId,
+      })
+      await user.save()
+
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      )
+
+      return res.status(200).json({
+        token,
+      })
+    } else {
+      return res.status(400).json({ message: 'Email already registered' })
+    }
   } catch (error) {
-    console.error('Error exchanging authorization code:', error)
-    res.status(400).json({ message: 'Token exchange failed' })
+    return res.status(500).json({ message: 'Server error: ' + error.message })
   }
 }
 
