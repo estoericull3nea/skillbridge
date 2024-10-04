@@ -439,6 +439,21 @@ export const googleSignup = async (req, res) => {
   }
 }
 
+export const googleSign = async (req, res) => {
+  // Backend example to handle Google OAuth login
+  const { code } = req.body;
+  
+  try {
+    const googleData = await exchangeCodeForToken(code); // Exchange code for token
+    const user = await findOrCreateUser(googleData);     // Find or create user in your database
+    
+    const jwtToken = createJWT(user); // Create JWT token for the session
+    res.json({ token: jwtToken });
+  } catch (error) {
+    res.status(400).json({ message: 'Google login failed' });
+  }
+}
+
 const generateToken = (user) => {
   return jwt.sign(user, process.env.JWT_SECRET, { expiresIn: '1h' })
 }
