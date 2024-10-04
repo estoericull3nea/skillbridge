@@ -374,6 +374,14 @@ export const resetPassword = async (req, res) => {
   }
 }
 
+const verifyGoogleToken = async (token) => {
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  })
+  return ticket.getPayload()
+}
+
 export const googleSignup = async (req, res) => {
   const { code } = req.body
 
@@ -391,22 +399,22 @@ export const googleSignup = async (req, res) => {
     )
 
     const { id_token } = tokenResponse.data
+    const { sub } = jwtDecode(id_token)
+    const userGoogleRegistered = await User.find({ googleId: sub }).limit(1)
 
-    const {
-      given_name: firstName,
-      family_name: lastName,
-      email,
-      picture,
-      sub: googleId,
-      email_verified: isVerified,
-    } = jwtDecode(id_token)
+    if (!userGoogleRegistered.length) {
+      const {
+        given_name: firstName,
+        family_name: lastName,
+        email,
+        picture,
+        sub: googleId,
+        email_verified: isVerified,
+      } = jwtDecode(id_token)
 
-    // Check if the user already exists
-    let user = await User.findOne({ googleId })
+      console.log(jwtDecode(id_token))
 
-    if (!user) {
-      // If user does not exist, create a new user
-      user = new User({
+      const user = new User({
         firstName,
         lastName,
         email,
@@ -414,6 +422,7 @@ export const googleSignup = async (req, res) => {
         picture,
         googleId,
       })
+
       await user.save()
 
       const token = jwt.sign(
@@ -432,7 +441,21 @@ export const googleSignup = async (req, res) => {
         token,
       })
     } else {
-      return res.status(400).json({ message: 'Email already registered' })
+      const token = jwt.sign(
+        {
+          id: userGoogleRegistered[0]._id,
+          email: userGoogleRegistered[0].email,
+          firstName: userGoogleRegistered[0].firstName,
+          lastName: userGoogleRegistered[0].lastName,
+          role: userGoogleRegistered[0].role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      )
+
+      return res.status(200).json({
+        token,
+      })
     }
   } catch (error) {
     return res.status(500).json({ message: 'Server error: ' + error.message })
@@ -441,16 +464,17 @@ export const googleSignup = async (req, res) => {
 
 export const googleSign = async (req, res) => {
   // Backend example to handle Google OAuth login
-  const { code } = req.body;
-  
+  const { code } = req.body
+  console.log(`google sign in`)
+
   try {
-    const googleData = await exchangeCodeForToken(code); // Exchange code for token
-    const user = await findOrCreateUser(googleData);     // Find or create user in your database
-    
-    const jwtToken = createJWT(user); // Create JWT token for the session
-    res.json({ token: jwtToken });
+    const googleData = await exchangeCodeForToken(code) // Exchange code for token
+    const user = await findOrCreateUser(googleData) // Find or create user in your database
+
+    const jwtToken = createJWT(user) // Create JWT token for the session
+    res.json({ token: jwtToken })
   } catch (error) {
-    res.status(400).json({ message: 'Google login failed' });
+    res.status(400).json({ message: 'Google login failed' })
   }
 }
 

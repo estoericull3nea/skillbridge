@@ -27,7 +27,7 @@ const GoogleCallback = () => {
           if (token) {
             // Show the success toast only once per session
             if (!localStorage.getItem('toast_shown')) {
-              toast.success('Google sign-in successful')
+              // toast.success('Google sign-up successful')
               localStorage.setItem('toast_shown', 'true') // Prevents duplicate success toast
             }
 

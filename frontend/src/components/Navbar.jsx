@@ -561,12 +561,16 @@ const Navbar = () => {
               <div className='flex items-center ms-3'>
                 <div className='avatar placeholder dropdown dropdown-hover'>
                   <div
-                    className='w-12 rounded-full bg-base-300 p-3 '
+                    className='w-12 rounded-full bg-base-300  '
                     tabIndex={0}
                     role='button'
                   >
                     <span className='text-xl block font-bold'>
-                      {!isLoadingUser && getUserInitials()}
+                      {user.picture ? (
+                        <img src={user.picture} alt='' className='w-full' />
+                      ) : (
+                        getUserInitials()
+                      )}
                     </span>
                     <ul
                       tabIndex={0}

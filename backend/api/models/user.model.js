@@ -9,8 +9,8 @@ const userSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      required: [true, 'Last name is required'],
-      trim: true,
+      // required: [true, 'Last name is required'],
+      // trim: true,
     },
     email: {
       type: String,
@@ -64,7 +64,7 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    googleId: { type: String, required: true },
+    googleId: { type: String, required: false },
   },
 
   {

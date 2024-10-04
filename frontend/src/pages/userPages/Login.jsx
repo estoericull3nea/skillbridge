@@ -71,6 +71,24 @@ const Login = () => {
     }
   }
 
+  // Google login handler
+  const handleGoogleLogin = () => {
+    const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
+    const redirectUri = `${window.location.origin}/google-callback` // Redirect URI after login
+    const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile%20email&access_type=offline`
+
+    // Open Google OAuth in a new window
+    const googleWindow = window.open(oauthUrl, '_self', 'width=500,height=600')
+
+    // Listen for the message from the popup window
+    window.addEventListener('message', (event) => {
+      if (event.data === 'googleSignInSuccess') {
+        googleWindow.close() // Close the Google sign-in window
+        navigate('/') // Redirect after successful login
+      }
+    })
+  }
+
   const handleResendVerification = () => {
     resendVerificationMutation.mutate()
   }
@@ -85,8 +103,12 @@ const Login = () => {
                 Login to your account
               </h1>
 
-              <button className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'>
-                <FcGoogle className='text-xl' /> Login with Google
+              {/* Google login button */}
+              <button
+                className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
+                onClick={handleGoogleLogin}
+              >
+                <FcGoogle className='text-xl' /> Continue with Google
               </button>
 
               <div className='divider'>or</div>

@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   forgotPassword,
+  googleSign,
   googleSignup,
   login,
   oAuthSignUp,
@@ -20,6 +21,7 @@ router.post('/forgot-password', forgotPassword)
 router.post('/reset-password/:resetToken', resetPassword)
 
 router.post('/google-signup', googleSignup)
+router.post('/google-lgoin', googleSign)
 
 // testing
 router.post('/google', oAuthSignUp)
