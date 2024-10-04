@@ -17,6 +17,7 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import RedirectIfAuthenticated from './components/RedirectIfAuthenticated'
 import NotFound from './pages/NotFound'
+import GoogleCallback from './pages/userPages/GoogleCallback'
 
 const App = () => {
   return (
@@ -50,6 +51,7 @@ const App = () => {
           />
 
           <Route exact path='/forgot' element={<ForgotPassword />} />
+          <Route exact path='/google-callback' element={<GoogleCallback />} />
           <Route exact path='/reset/:resetToken' element={<ResetPassword />} />
           <Route exact path='/privacy-policy' element={<Policy />} />
           <Route exact path='/terms' element={<Terms />} />

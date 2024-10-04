@@ -6,6 +6,7 @@ import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
+import axios from 'axios'
 dotenv.config()
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
@@ -373,38 +374,30 @@ export const resetPassword = async (req, res) => {
 }
 
 export const googleSignup = async (req, res) => {
-  const { code } = req.body // Authorization code from Google
+  const { code } = req.body
 
   try {
-    // Exchange authorization code for tokens
+    // Exchange the authorization code for tokens
     const tokenResponse = await axios.post(
       'https://oauth2.googleapis.com/token',
       {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: `${process.env.FRONTEND_URL}/google-callback`, // Ensure this matches the Google OAuth setup
+        redirect_uri: `${process.env.FRONTEND_URL_DEVELOPMENT}google-callback`,
         grant_type: 'authorization_code',
       }
     )
 
     const { id_token, access_token } = tokenResponse.data
 
-    // Optionally verify the ID token or decode it if needed
-    const userData = jwt.decode(id_token)
-
-    // You can then create a JWT for your app or directly return the Google token
-    const appJwt = jwt.sign(userData, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    })
-
+    // You can now use the tokens to verify the user and create a session
     res.json({
-      token: appJwt, // Send the token to the frontend
-      user: userData,
+      token: id_token, // Send the ID token (JWT) back to the frontend
     })
   } catch (error) {
-    console.error('Error exchanging code:', error)
-    res.status(400).json({ message: 'Google sign-in failed' })
+    console.error('Error exchanging authorization code:', error)
+    res.status(400).json({ message: 'Token exchange failed' })
   }
 }
 

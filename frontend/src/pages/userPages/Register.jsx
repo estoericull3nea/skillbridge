@@ -6,7 +6,6 @@ import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 
 const Register = () => {
-  const navigate = useNavigate()
   const [popup, setPopup] = useState(null)
   const handleGoogleSignup = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
@@ -14,41 +13,10 @@ const Register = () => {
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile%20email&access_type=offline`
 
     // Open a new window (popup) for Google sign-in
-    const googleWindow = window.open(oauthUrl, '_blank', 'width=500,height=600')
+    const googleWindow = window.open(oauthUrl, '_self', 'width=900,height=600')
 
-    // Set the popup state
     setPopup(googleWindow)
   }
-
-  // Function to handle receiving the Google authorization code
-  const handleGoogleCallback = async (code) => {
-    try {
-      // Exchange the code for JWT on the backend
-      const res = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}/auth/google-signup`,
-        { code }
-      )
-      const { token } = res.data
-
-      toast.success('Google sign-in successful')
-      localStorage.setItem('token', token) // Store the JWT token in localStorage
-      navigate('/') // Redirect to the homepage or dashboard
-    } catch (error) {
-      toast.error('Google sign-in failed. Please try again.')
-    }
-  }
-
-  // Capture the authorization code from the Google OAuth redirect
-  useEffect(() => {
-    // Check if there's a code in the URL after Google redirect
-    const urlParams = new URLSearchParams(window.location.search)
-    const authCode = urlParams.get('code')
-
-    if (authCode && popup) {
-      popup.close() // Close the popup after getting the code
-      handleGoogleCallback(authCode) // Send the code to the backend for exchange
-    }
-  }, [popup])
 
   useEffect(() => {
     document.title = 'Register'
@@ -145,7 +113,7 @@ const Register = () => {
                 className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
                 onClick={handleGoogleSignup}
               >
-                <FcGoogle className='text-xl' /> Register with Google
+                <FcGoogle className='text-xl' /> Continue with Google
               </button>
 
               <div className='divider'>or</div>
