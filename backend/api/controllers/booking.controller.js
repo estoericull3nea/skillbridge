@@ -1,6 +1,9 @@
 import Booking from '../models/booking.model.js'
 import mongoose from 'mongoose'
 import axios from 'axios'
+import nodemailer from 'nodemailer'
+import dotenv from 'dotenv'
+dotenv.config()
 
 export const book = async (req, res) => {
   const {
