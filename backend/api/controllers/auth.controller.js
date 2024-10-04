@@ -115,66 +115,90 @@ export const login = async (req, res) => {
   try {
     const thisUser = await User.findOne({ email })
 
-    if (!thisUser) {
-      return res.status(404).json({ message: 'User not found with this email' })
-    }
-
-    if (!thisUser.isVerified) {
-      return res
-        .status(403)
-        .json({ message: 'Please verify your account before logging in.' })
-    }
-
-    const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
-
-    if (isLocked) {
-      const lockDuration = Math.ceil(
-        (thisUser.lockUntil - Date.now()) / 1000 / 60
+    if (thisUser.googleId) {
+      const token = jwt.sign(
+        {
+          id: thisUser._id,
+          email: thisUser.email,
+          firstName: thisUser.firstName,
+          lastName: thisUser.lastName,
+          role: thisUser.role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
       )
-      return res.status(403).json({
-        message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
+
+      return res.status(200).json({
+        message: 'Login Successful',
+        token,
       })
-    }
-
-    const isPasswordCorrect = await bcrypt.compare(password, thisUser.password)
-
-    if (!isPasswordCorrect) {
-      thisUser.failedLoginAttempts += 1
-
-      if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
-        thisUser.lockUntil = Date.now() + LOCK_TIME
+    } else {
+      if (!thisUser) {
+        return res
+          .status(404)
+          .json({ message: 'User not found with this email' })
       }
 
+      if (!thisUser.isVerified) {
+        return res
+          .status(403)
+          .json({ message: 'Please verify your account before logging in.' })
+      }
+
+      const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
+
+      if (isLocked) {
+        const lockDuration = Math.ceil(
+          (thisUser.lockUntil - Date.now()) / 1000 / 60
+        )
+        return res.status(403).json({
+          message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
+        })
+      }
+
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        thisUser.password
+      )
+
+      if (!isPasswordCorrect) {
+        thisUser.failedLoginAttempts += 1
+
+        if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
+          thisUser.lockUntil = Date.now() + LOCK_TIME
+        }
+
+        await thisUser.save()
+
+        return res.status(401).json({
+          message:
+            thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
+              ? `Too many login attempts. Try again after 15 minutes.`
+              : 'Incorrect email or password.',
+        })
+      }
+
+      thisUser.failedLoginAttempts = 0
+      thisUser.lockUntil = undefined
       await thisUser.save()
 
-      return res.status(401).json({
-        message:
-          thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
-            ? `Too many login attempts. Try again after 15 minutes.`
-            : 'Incorrect email or password.',
+      const token = jwt.sign(
+        {
+          id: thisUser._id,
+          email: thisUser.email,
+          firstName: thisUser.firstName,
+          lastName: thisUser.lastName,
+          role: thisUser.role,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+      )
+
+      return res.status(200).json({
+        message: 'Login Successful',
+        token,
       })
     }
-
-    thisUser.failedLoginAttempts = 0
-    thisUser.lockUntil = undefined
-    await thisUser.save()
-
-    const token = jwt.sign(
-      {
-        id: thisUser._id,
-        email: thisUser.email,
-        firstName: thisUser.firstName,
-        lastName: thisUser.lastName,
-        role: thisUser.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    )
-
-    return res.status(200).json({
-      message: 'Login Successful',
-      token,
-    })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
