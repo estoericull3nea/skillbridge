@@ -46,7 +46,7 @@ const GoogleCallback = () => {
           // Prevent duplicate error toasts
           if (!errorShown) {
             // Handle specific error and navigate accordingly
-            if (errorMessage === 'Email already registered') {
+            if (errorMessage === 'User Already Exists') {
               toast.error(errorMessage)
               navigate('/register')
             }

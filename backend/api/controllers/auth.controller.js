@@ -412,7 +412,25 @@ export const googleSignup = async (req, res) => {
         email_verified: isVerified,
       } = jwtDecode(id_token)
 
-      console.log(jwtDecode(id_token))
+      const existingUser = await User.findOne({ email })
+
+      if (existingUser) {
+        const token = jwt.sign(
+          {
+            id: existingUser._id,
+            email: existingUser.email,
+            firstName: existingUser.firstName,
+            lastName: existingUser.lastName,
+            role: existingUser.role,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+        )
+
+        return res.status(200).json({
+          token,
+        })
+      }
 
       const user = new User({
         firstName,
