@@ -115,7 +115,7 @@ export const login = async (req, res) => {
   try {
     const thisUser = await User.findOne({ email })
 
-    if (thisUser.googleId) {
+    if (thisUser) {
       const token = jwt.sign(
         {
           id: thisUser._id,
