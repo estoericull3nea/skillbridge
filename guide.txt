@@ -4,3 +4,27 @@ cd frontend && pnpm run dev
 https://flowbite.com/blocks/marketing/register/
 
 make the calendar UI beaty
+
+
+ <h3 className='font-medium text-lg max-w-[490px]'>
+          Experience Global Excellence with Premier Filipino Talent
+        </h3>
+
+        <div className='space-y-4 max-w-[500px]'>
+          <p className='text-sm'>
+            Our commitment extends beyond mere staffing solutions. At Skill
+            Bridge, we empower your business with comprehensive virtual
+            assistance services. From executive support that enhances managerial
+            efficiency to advanced web development that strengthens your online
+            presence, our team is dedicated to elevating your operations. With
+            Skill Bridge, you gain more than just employees; you acquire
+            partners who are committed to driving your success.
+          </p>
+          <p className='text-sm'>
+            Explore how our tailored virtual assistant solutions can transform
+            your business operations and provide you with the competitive edge
+            you need in today's fast-paced market. Join the myriad of satisfied
+            clients who have experienced the transformative impact of partnering
+            with Skill Bridge Virtual Careers.
+          </p>
+        </div>

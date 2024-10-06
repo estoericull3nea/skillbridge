@@ -1,7 +1,6 @@
 import Booking from '../models/booking.model.js'
 import mongoose from 'mongoose'
 import axios from 'axios'
-import nodemailer from 'nodemailer'
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -81,7 +80,10 @@ export const book = async (req, res) => {
     await session.commitTransaction()
     session.endSession()
 
-    return res.status(201).json({ message: 'Successfully Booked', newBooking })
+    return res.status(201).json({
+      message: 'Successfully Booked',
+      newBooking,
+    })
   } catch (error) {
     return res.status(500).json({ message: error.message })
   }
