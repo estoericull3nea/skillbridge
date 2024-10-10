@@ -36,6 +36,20 @@ const submitBooking = async (bookingData) => {
   return response.data
 }
 
+// zoom
+const createMeeting = async ({ topic, startTime, duration }) => {
+  const response = await axios.post(
+    `${import.meta.env.VITE_DEV_BACKEND_URL}meetings/create-meeting`,
+    {
+      topic,
+      start_time: startTime,
+      duration,
+    }
+  )
+  return response.data
+}
+// zoom
+
 const BookAppointment = () => {
   const [step, setStep] = useState(1)
   const [selectedService, setSelectedService] = useState('')
@@ -106,15 +120,38 @@ const BookAppointment = () => {
     setStep((prevStep) => prevStep - 1)
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
+
+    const formattedDate = selectedDate.toLocaleDateString('en-US') // e.g., 10/2/2024
+    const startTime = `${formattedDate} ${selectedTime}` // Concatenate the selected date and time
+
     const bookingData = {
       service: selectedService,
       date: selectedDate,
       time: selectedTime,
       ...formData,
     }
-    mutation.mutate(bookingData)
+
+    try {
+      // First, submit the booking
+      const bookingResponse = await mutation.mutateAsync(bookingData)
+
+      // If booking is successful, create the meeting
+      const meetingData = {
+        topic:
+          selectedService === 'recruitment_services'
+            ? 'Recruitment Meeting'
+            : 'Virtual Assistance Meeting',
+        startTime, // Uses the concatenated date and time
+        duration: 60, // Adjust duration as needed
+      }
+
+      const meetingResponse = await createMeeting(meetingData)
+
+      toast.success('Zoom Meeting Created, Check your email!')
+      console.log('Meeting Details:', meetingResponse)
+    } catch (error) {}
   }
 
   const [errors, setErrors] = useState({})

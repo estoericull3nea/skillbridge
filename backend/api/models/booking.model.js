@@ -36,8 +36,11 @@ const bookingSchema = new mongoose.Schema(
       enum: ['pending', 'ongoing', 'canceled', 'rejected', 'done'],
       default: 'pending',
     },
-    zoomMeetingId: { type: String },
-    zoomMeetingLink: { type: String },
+    meeting: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Meeting',
+      required: true,
+    },
   },
   { timestamps: true }
 )
