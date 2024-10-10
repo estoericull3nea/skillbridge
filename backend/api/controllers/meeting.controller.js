@@ -1,6 +1,7 @@
 import dotenv from 'dotenv'
 import axios from 'axios'
-
+import User from '../models/user.model.js'
+import { parse, formatISO } from 'date-fns'
 dotenv.config()
 
 let accessToken = ''
@@ -44,7 +45,12 @@ export const oAuthCallback = async (req, res) => {
 
 export const createMeeting = async (req, res) => {
   try {
-    const { topic, start_time, duration } = req.body
+    const { topic, start_time, duration, email } = req.body
+
+    // 10/2/2024 9:00
+
+    const parsedDate = parse(start_time, 'MM/dd/yyyy H:mm', new Date())
+    const isoStartTime = formatISO(parsedDate)
 
     if (!accessToken) {
       return res.status(401).json({
@@ -56,9 +62,10 @@ export const createMeeting = async (req, res) => {
       `https://api.zoom.us/v2/users/me/meetings `,
       {
         topic,
-        type: 1,
-        start_time,
+        type: 2,
+        start_time: isoStartTime,
         duration,
+        timezone: 'Asia/Shanghai',
       },
       {
         headers: {

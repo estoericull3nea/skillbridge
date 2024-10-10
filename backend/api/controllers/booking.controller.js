@@ -2,7 +2,46 @@ import Booking from '../models/booking.model.js'
 import mongoose from 'mongoose'
 import axios from 'axios'
 import dotenv from 'dotenv'
+import User from '../models/user.model.js'
+import { parseISO, setHours, setMinutes, formatISO } from 'date-fns'
 dotenv.config()
+
+export const authorize = async (req, res) => {
+  const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${process.env.ZOOM_CLIENT_ID}&redirect_uri=${process.env.ZOOM_REDIRECT_URI}`
+  res.redirect(zoomAuthUrl)
+}
+
+export const oAuthCallback = async (req, res) => {
+  const { code } = req.query
+
+  try {
+    const response = await axios.post(
+      'https://zoom.us/oauth/token',
+      new URLSearchParams({
+        grant_type: 'authorization_code',
+        code,
+        redirect_uri: process.env.ZOOM_REDIRECT_URI,
+      }),
+      {
+        headers: {
+          Authorization: `Basic ${Buffer.from(
+            `${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`
+          ).toString('base64')}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    )
+
+    accessToken = response.data.access_token
+    res.send('Zoom OAuth successful! Access token obtained.')
+  } catch (error) {
+    console.error(
+      'Error during OAuth callback:',
+      error.response?.data || error.message
+    )
+    res.status(500).send('Failed to obtain access token.')
+  }
+}
 
 export const book = async (req, res) => {
   const {
@@ -15,6 +54,7 @@ export const book = async (req, res) => {
     phoneNumber,
     notes,
   } = req.body
+  // ===========
 
   const session = await mongoose.startSession()
   session.startTransaction()
@@ -30,9 +70,7 @@ export const book = async (req, res) => {
         } and ${validTimeSlots[validTimeSlots.length - 1]}.`,
       })
     }
-    // ===========
 
-    // ===========
     const existingBooking = await Booking.findOne({ date, time }).session(
       session
     )
@@ -60,6 +98,37 @@ export const book = async (req, res) => {
       })
     }
     // ===========
+
+    // zoom meeting
+    const parsedDate = parseISO(date)
+    const [hours, minutes] = time.split(':').map(Number)
+    const adjustedDate = setHours(setMinutes(parsedDate, minutes), hours)
+    const isoStartTime = formatISO(adjustedDate)
+
+    if (!accessToken) {
+      return res.status(401).json({
+        message: 'No access token available. Please authorize first.',
+      })
+    }
+
+    const response = await axios.post(
+      `https://api.zoom.us/v2/users/me/meetings `,
+      {
+        topic: service,
+        type: 2,
+        start_time: isoStartTime,
+        duration: 60,
+        timezone: 'Asia/Shanghai',
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    )
+    console.log(response)
+    // zoom meeting
 
     const month = new Date(date).toLocaleString('en-US', { month: 'long' })
 
