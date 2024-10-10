@@ -18,10 +18,6 @@ const meetingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    status: {
-      type: String,
-      required: true,
-    },
     start_time: {
       type: String,
       required: true,

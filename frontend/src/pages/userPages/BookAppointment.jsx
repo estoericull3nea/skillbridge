@@ -37,13 +37,14 @@ const submitBooking = async (bookingData) => {
 }
 
 // zoom
-const createMeeting = async ({ topic, startTime, duration }) => {
+const createMeeting = async ({ topic, startTime, duration, email }) => {
   const response = await axios.post(
     `${import.meta.env.VITE_DEV_BACKEND_URL}meetings/create-meeting`,
     {
       topic,
       start_time: startTime,
       duration,
+      email,
     }
   )
   return response.data
@@ -145,6 +146,7 @@ const BookAppointment = () => {
             : 'Virtual Assistance Meeting',
         startTime, // Uses the concatenated date and time
         duration: 60, // Adjust duration as needed
+        email: bookingData.email,
       }
 
       const meetingResponse = await createMeeting(meetingData)

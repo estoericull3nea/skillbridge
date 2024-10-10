@@ -1,4 +1,3 @@
-// models/Booking.js
 import mongoose from 'mongoose'
 
 const bookingSchema = new mongoose.Schema(
@@ -35,11 +34,6 @@ const bookingSchema = new mongoose.Schema(
       type: String,
       enum: ['pending', 'ongoing', 'canceled', 'rejected', 'done'],
       default: 'pending',
-    },
-    meeting: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Meeting',
-      required: true,
     },
   },
   { timestamps: true }

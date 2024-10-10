@@ -2,6 +2,7 @@ import dotenv from 'dotenv'
 import axios from 'axios'
 import User from '../models/user.model.js'
 import { parse, formatISO } from 'date-fns'
+import Meeting from '../models/meeting.model.js'
 dotenv.config()
 
 let accessToken = ''
@@ -75,10 +76,46 @@ export const createMeeting = async (req, res) => {
       }
     )
 
-    res.status(200).json({
-      message: 'Meeting created successfully',
-      meetingDetails: response.data,
-    })
+    // testing
+    const userExists = await User.findOne({ email }).select('_id')
+    if (userExists) {
+      const {
+        host_id,
+        host_email,
+        topic,
+        status,
+        start_time,
+        duration,
+        timezone,
+        start_url,
+        join_url,
+      } = response.data
+
+      const newMeeting = new Meeting({
+        user: userExists._id,
+        host_id,
+        host_email,
+        topic,
+        status,
+        start_time,
+        duration,
+        timezone,
+        start_url,
+        join_url,
+      })
+      newMeeting.save()
+
+      res.status(200).json({
+        message: 'Meeting created successfully',
+        meetingDetails: newMeeting,
+      })
+    } else {
+      res.status(200).json({
+        message: 'Meeting created successfully',
+        meetingDetails: response.data,
+      })
+    }
+    // testing
   } catch (error) {
     console.error(
       'Error creating Zoom meeting:',
@@ -112,8 +149,6 @@ export const getAllMeetings = async (req, res) => {
         },
       }
     )
-
-    console.log(response.data)
 
     res.status(200).json({
       message: 'Meetings retrieved successfully',
@@ -151,5 +186,17 @@ export const getUserInfo = async (req, res) => {
       message: 'Failed to retrieve user info',
       error: error.response?.data || error.message,
     })
+  }
+}
+
+export const getAllMeetingsNotZoom = async (req, res) => {
+  try {
+    const meeting = await Meeting.find()
+    if (!meeting.length) {
+      return res.status(404).json({ message: 'No meetings Found' })
+    }
+    return res.status(200).json(meeting)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
   }
 }
