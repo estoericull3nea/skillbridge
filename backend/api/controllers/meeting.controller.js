@@ -3,13 +3,81 @@ import axios from 'axios'
 import User from '../models/user.model.js'
 import { parse, formatISO } from 'date-fns'
 import Meeting from '../models/meeting.model.js'
+import ZoomToken from '../models/zoomToken.model.js'
 dotenv.config()
-
-let accessToken = ''
 
 export const authorize = async (req, res) => {
   const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${process.env.ZOOM_CLIENT_ID}&redirect_uri=${process.env.ZOOM_REDIRECT_URI}`
   res.redirect(zoomAuthUrl)
+}
+
+export const getToken = async (req, res) => {
+  try {
+    const token = await ZoomToken.find()
+    if (!token.length) {
+      return res.status(404).json({ message: 'No token Found' })
+    }
+    return res.status(200).json(token)
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const clearToken = async (req, res) => {
+  try {
+    const token = await ZoomToken.deleteMany()
+    return res.status(200).json({ message: 'Token Cleared' })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const getAccessToken = async () => {
+  const tokenRecord = await ZoomToken.findOne()
+  if (!tokenRecord) {
+    return json
+      .status(404)
+      .json({ message: 'No Zoom token found. Please authorize first.' })
+  }
+
+  if (new Date() >= tokenRecord.expiresAt) {
+    try {
+      const response = await axios.post(
+        'https://zoom.us/oauth/token',
+        new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token: tokenRecord.refreshToken,
+        }),
+        {
+          headers: {
+            Authorization: `Basic ${Buffer.from(
+              `${process.env.ZOOM_CLIENT_ID}:${process.env.ZOOM_CLIENT_SECRET}`
+            ).toString('base64')}`,
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+        }
+      )
+
+      const { access_token, refresh_token, expires_in } = response.data
+      const newExpiresAt = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
+
+      // Update the database with the new tokens
+      tokenRecord.accessToken = access_token
+      tokenRecord.refreshToken = refresh_token
+      tokenRecord.expiresAt = newExpiresAt
+      await tokenRecord.save()
+
+      return access_token
+    } catch (error) {
+      console.error(
+        'Error refreshing access token:',
+        error.response?.data || error.message
+      )
+      throw new Error('Failed to refresh access token.')
+    }
+  }
+
+  return tokenRecord.accessToken
 }
 
 export const oAuthCallback = async (req, res) => {
@@ -33,8 +101,22 @@ export const oAuthCallback = async (req, res) => {
       }
     )
 
-    accessToken = response.data.access_token
-    res.send('Zoom OAuth successful! Access token obtained.')
+    const { access_token, refresh_token, expires_in } = response.data
+    const expiresAt = new Date(Date.now() + expires_in * 1000) // Calculate expiration date
+
+    // Store or update the tokens in the database
+    await ZoomToken.findOneAndUpdate(
+      {},
+      {
+        accessToken: access_token,
+        refreshToken: refresh_token,
+        expiresAt,
+      },
+      { upsert: true, new: true } // Create a new document if it doesn't exist
+    )
+
+    // res.send('Zoom OAuth successful! Access token stored.')
+    res.redirect('http://localhost:5173/book-appointment')
   } catch (error) {
     console.error(
       'Error during OAuth callback:',
@@ -53,11 +135,7 @@ export const createMeeting = async (req, res) => {
     const parsedDate = parse(start_time, 'MM/dd/yyyy H:mm', new Date())
     const isoStartTime = formatISO(parsedDate)
 
-    if (!accessToken) {
-      return res.status(401).json({
-        message: 'No access token available. Please authorize first.',
-      })
-    }
+    const accessToken = await getAccessToken()
 
     const response = await axios.post(
       `https://api.zoom.us/v2/users/me/meetings `,
@@ -115,6 +193,7 @@ export const createMeeting = async (req, res) => {
         meetingDetails: response.data,
       })
     }
+
     // testing
   } catch (error) {
     console.error(
@@ -130,11 +209,7 @@ export const createMeeting = async (req, res) => {
 
 export const getAllMeetings = async (req, res) => {
   try {
-    if (!accessToken) {
-      return res.status(401).json({
-        message: 'No access token available. Please authorize first.',
-      })
-    }
+    const accessToken = await getAccessToken()
 
     const response = await axios.get(
       'https://api.zoom.us/v2/users/me/meetings',
