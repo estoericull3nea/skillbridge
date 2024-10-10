@@ -4,7 +4,19 @@ import User from '../models/user.model.js'
 import { parse, formatISO } from 'date-fns'
 import Meeting from '../models/meeting.model.js'
 import ZoomToken from '../models/zoomToken.model.js'
+import nodemailer from 'nodemailer'
+
 dotenv.config()
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 587, // or 465 for SSL
+  secure: false, // true for SSL
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+})
 
 export const authorize = async (req, res) => {
   const zoomAuthUrl = `https://zoom.us/oauth/authorize?response_type=code&client_id=${process.env.ZOOM_CLIENT_ID}&redirect_uri=${process.env.ZOOM_REDIRECT_URI}`
@@ -155,7 +167,7 @@ export const createMeeting = async (req, res) => {
     )
 
     // testing
-    const userExists = await User.findOne({ email }).select('_id')
+    const userExists = await User.findOne({ email })
     if (userExists) {
       const {
         host_id,
@@ -181,7 +193,58 @@ export const createMeeting = async (req, res) => {
         start_url,
         join_url,
       })
-      newMeeting.save()
+
+      await newMeeting.save()
+
+      const formattedDate = new Date(start_time).toLocaleString('en-US', {
+        timeZone: timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false, // Use 24-hour format
+      })
+
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: userExists.email,
+        subject: `Your Zoom Meeting Booking: ${topic}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+            <div style="text-align: center; margin-bottom: 20px;">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Zoom_Communications_Logo.svg" alt="Zoom Logo" style="width: 150px; height: auto;">
+            </div>
+            <h2 style="color: #2D8CFF; text-align: center;">Your Zoom Meeting is Scheduled!</h2>
+            <p>Dear ${userExists.firstName},</p>
+            <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${topic}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date & Time:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Duration:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${duration} minutes</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; border: 1px solid #ddd;"><strong>Time Zone:</strong></td>
+                <td style="padding: 10px; border: 1px solid #ddd;">${timezone}</td>
+              </tr>
+            </table>
+            <div style="text-align: center; margin: 20px 0;">
+              <a href="${join_url}" style="background-color: #2D8CFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Join Zoom Meeting</a>
+            </div>
+            <p>If you have any questions or need further assistance, please do not hesitate to <a href="${process.env.FRONTEND_URL_DEVELOPMENT}contact-us" style="color: #2D8CFF;">contact us</a>.</p>
+            <p style="text-align: center; font-size: 12px; color: #888;">We look forward to your participation.<br>Best regards,<br>Skill Bridge Virtual Careers</p>
+          </div>
+        `,
+      })
 
       res.status(200).json({
         message: 'Meeting created successfully',
