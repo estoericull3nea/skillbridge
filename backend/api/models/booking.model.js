@@ -33,7 +33,7 @@ const bookingSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['pending', 'ongoing', 'canceled', 'rejected'],
+      enum: ['pending', 'ongoing', 'canceled', 'rejected', 'done'],
       default: 'pending',
     },
     zoomMeetingId: { type: String },

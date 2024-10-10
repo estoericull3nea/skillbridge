@@ -32,9 +32,12 @@ export const book = async (req, res) => {
       })
     }
 
-    const existingBooking = await Booking.findOne({ date, time }).session(
-      session
-    )
+    const activeBookingStatuses = ['pending', 'ongoing']
+    const existingBooking = await Booking.findOne({
+      date,
+      time,
+      status: { $in: activeBookingStatuses },
+    }).session(session)
 
     if (existingBooking) {
       await session.abortTransaction()
@@ -46,7 +49,6 @@ export const book = async (req, res) => {
     // ===========
 
     // ===========
-    const activeBookingStatuses = ['pending', 'ongoing']
     const userBookingsCount = await Booking.countDocuments({
       email,
       status: { $in: activeBookingStatuses },
@@ -156,10 +158,12 @@ export const getAllBookingsByDate = async (req, res) => {
 
 export const getAllAvailableTimesByDate = async (req, res) => {
   const { date } = req.query
+
   try {
     if (!date) {
       return res.status(400).json({ message: 'Date is required.' })
     }
+
     const [month, day, year] = date.split('/')
     const parsedDate = new Date(`${year}-${month}-${day}`)
     if (isNaN(parsedDate.getTime())) {
@@ -167,14 +171,27 @@ export const getAllAvailableTimesByDate = async (req, res) => {
         .status(400)
         .json({ message: 'Invalid date format. Use MM/DD/YYYY.' })
     }
-    const availableTimeSlots = Booking.schema.path('time').enumValues
+
+    // Set start and end of the day to cover the entire date
+    const startOfDay = new Date(parsedDate.setHours(0, 0, 0, 0))
+    const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999))
+
+    // Define active booking statuses that should block time slots
+    const activeBookingStatuses = ['pending', 'ongoing']
+
+    // Fetch all booked times for the given date range that have active statuses
     const bookedTimes = await Booking.find({
-      date: parsedDate,
+      date: { $gte: startOfDay, $lte: endOfDay },
+      status: { $in: activeBookingStatuses },
     }).select('time')
+
     const bookedTimeSlots = bookedTimes.map((booking) => booking.time)
+
+    const availableTimeSlots = Booking.schema.path('time').enumValues
     const availableTimes = availableTimeSlots.filter(
       (time) => !bookedTimeSlots.includes(time)
     )
+
     return res.status(200).json({ availableTimes })
   } catch (error) {
     return res.status(500).json({ message: error.message })
