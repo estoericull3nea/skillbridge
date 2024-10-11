@@ -1,22 +1,50 @@
 // src/pages/userPages/profile/Profile.jsx
-import React from 'react'
-import { useParams, Routes, Route, Navigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useParams, Routes, Route } from 'react-router-dom'
 import Sidebar from './sidebar'
-import Content from './Content'
 import BookingHistory from './BookingHistory'
 import Dashboard from './Dashboard'
+import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
+import { CiCalendar } from 'react-icons/ci'
+import { IoMdNotificationsOutline } from 'react-icons/io'
 
 const Profile = () => {
   const { userId, firstName } = useParams()
+  const [currentTime, setCurrentTime] = useState(new Date())
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   return (
     <div className='bg-gray-50'>
       <div className='container flex py-6 gap-3'>
         <Sidebar userId={userId} firstName={firstName} />
-        <div className='main-content '>
+        <div className='main-content overflow-hidden w-full'>
+          <div className='flex gap-3 justify-end'>
+            <div className=' text-end flex justify-end'>
+              <div className='mb-3 px-4 py-2 text-end bg-white shadow max-w-max rounded-full '>
+                <p className='text-gray-700 text-xs flex items-center gap-2'>
+                  <CiCalendar />{' '}
+                  {convertDateToWords(currentTime.toLocaleDateString())}{' '}
+                  {currentTime.toLocaleTimeString()}
+                </p>
+              </div>
+            </div>
+
+            <div className=' text-end flex justify-end'>
+              <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full '>
+                <IoMdNotificationsOutline />
+              </div>
+            </div>
+          </div>
+
           <Routes>
             <Route path='/dashboard' element={<Dashboard />} />
-
             <Route path='/booking-history' element={<BookingHistory />} />
           </Routes>
         </div>

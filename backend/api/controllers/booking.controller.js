@@ -283,7 +283,8 @@ export const updateBookingStatus = async (req, res) => {
 }
 
 export const getBookingsByUser = async (req, res) => {
-  const { email } = req.params
+  const { email } = req.query
+  console.log(email)
 
   try {
     const bookings = await Booking.find({ email })

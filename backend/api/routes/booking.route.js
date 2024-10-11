@@ -21,7 +21,7 @@ router.get('/get-by-date', getAllBookingsByDate)
 router.get('/get-available-time-by-date/time', getAllAvailableTimesByDate)
 router.patch('/update-status/:bookingId', updateBookingStatus)
 router.get('/status/:status', getAllBookingsByStatus)
-router.get('/users-book/:email', getBookingsByUser)
+router.get('/users-book/bookings', getBookingsByUser)
 router.get('/get/holidays', getHolidaysBasedOnUserIp)
 
 export default router
