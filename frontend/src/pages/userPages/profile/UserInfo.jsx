@@ -1,110 +1,246 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
+import { useParams } from 'react-router-dom'
+import { FiEdit2 } from 'react-icons/fi'
+import { toast } from 'react-hot-toast'
+import { RiErrorWarningLine } from 'react-icons/ri'
 
 const UserInfo = () => {
+  const { userId } = useParams()
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    picture: '',
+    isVerified: false,
+    role: 'customer',
+    active: true,
+  })
+
+  const [loading, setLoading] = useState(false)
+  const [updating, setUpdating] = useState(false)
+  const [editableFields, setEditableFields] = useState({
+    firstName: false,
+    lastName: false,
+    email: false,
+    password: false,
+    picture: false,
+    role: false,
+  })
+
+  useEffect(() => {
+    // Fetch user data when the component mounts or when userId changes
+    const fetchUserData = async () => {
+      setLoading(true)
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/v1/users/${userId}`
+        )
+        const data = response.data
+
+        // Update the formData with the fetched user data
+        setFormData({
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
+          email: data.email || '',
+          password: '', // Leave password empty for security reasons
+          picture: data.picture || '',
+          isVerified: data.isVerified || false,
+          role: data.role || 'customer',
+          active: data.active || true,
+        })
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    if (userId) {
+      fetchUserData()
+    }
+  }, [userId])
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    })
+  }
+
+  const handleEditClick = (field) => {
+    setEditableFields((prev) => ({ ...prev, [field]: !prev[field] }))
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setUpdating(true)
+    try {
+      await axios.patch(
+        `http://localhost:5000/api/v1/users/${userId}`,
+        formData
+      )
+      toast.success('User information updated successfully')
+    } catch (error) {
+      console.error('Error updating user information:', error)
+      toast.error('Failed to update user information')
+    } finally {
+      setUpdating(false)
+    }
+  }
+
   return (
     <div>
-      <div></div>
-      <form className='space-y-4 max-w-[500px] p-3'>
-        <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
-          Basic Credentials
-        </p>
-        {/* First Name */}
-        <div className='flex gap-3'>
-          <label className='form-control w-full '>
-            <div className='label'>
-              <span className='label-text'>First Name</span>
-            </div>
-            <input
-              type='text'
-              name='firstName'
-              placeholder='Enter your first name'
-              className='input input-bordered w-full '
-              required
-            />
-          </label>
+      {loading ? (
+        <div className='space-y-4 max-w-[500px] p-3'>
+          {/* Skeleton for each field */}
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
+        </div>
+      ) : (
+        <form className='space-y-4 max-w-[500px] p-3' onSubmit={handleSubmit}>
+          <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
+            Basic Credentials
+          </p>
+
+          {/* First Name */}
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>First Name</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <input
+                  type='text'
+                  name='firstName'
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  placeholder='Enter your first name'
+                  className='input input-bordered w-full'
+                  disabled={!editableFields.firstName}
+                  required
+                />
+                <FiEdit2
+                  className='text-gray-500 cursor-pointer'
+                  onClick={() => handleEditClick('firstName')}
+                />
+              </div>
+            </label>
+          </div>
 
           {/* Last Name */}
-          <label className='form-control w-full '>
-            <div className='label'>
-              <span className='label-text'>Last Name</span>
-            </div>
-            <input
-              type='text'
-              name='lastName'
-              placeholder='Enter your last name'
-              className='input input-bordered w-full '
-            />
-          </label>
-        </div>
-
-        {/* Email */}
-        <label className='form-control w-full '>
-          <div className='label'>
-            <span className='label-text'>Email</span>
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>Last Name</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <input
+                  type='text'
+                  name='lastName'
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder='Enter your last name'
+                  className='input input-bordered w-full'
+                  disabled={!editableFields.lastName}
+                />
+                <FiEdit2
+                  className='text-gray-500 cursor-pointer'
+                  onClick={() => handleEditClick('lastName')}
+                />
+              </div>
+            </label>
           </div>
-          <input
-            type='email'
-            name='email'
-            placeholder='Enter your email'
-            className='input input-bordered w-full '
-            required
-          />
-        </label>
 
-        {/* Password */}
-        <label className='form-control w-full '>
-          <div className='label'>
-            <span className='label-text'>Password</span>
+          {/* Password */}
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>Password</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <input
+                  type='password'
+                  name='password'
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder='Enter your password'
+                  className='input input-bordered w-full'
+                  disabled={!editableFields.password}
+                />
+                <FiEdit2
+                  className='text-gray-500 cursor-pointer'
+                  onClick={() => handleEditClick('password')}
+                />
+              </div>
+              {!editableFields.password && (
+                <div className='flex items-center gap-2 mt-1 text-sm text-gray-500'>
+                  <RiErrorWarningLine className='text-yellow-500' />
+                  <span>
+                    Leave blank if you don't want to change your password.
+                  </span>
+                </div>
+              )}
+            </label>
           </div>
-          <input
-            type='password'
-            name='password'
-            placeholder='Enter your password'
-            className='input input-bordered w-full '
-          />
-        </label>
 
-        {/* Profile Picture */}
-        <label className='form-control w-full '>
-          <div className='label'>
-            <span className='label-text'>Profile Picture URL</span>
+          {/* Email */}
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>Email</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                <input
+                  type='email'
+                  name='email'
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder='Enter your email'
+                  className='input input-bordered w-full'
+                  disabled={!editableFields.email}
+                  required
+                />
+              </div>
+            </label>
           </div>
-          <input
-            type='text'
-            name='picture'
-            placeholder='Enter picture URL'
-            className='input input-bordered w-full '
-          />
-        </label>
 
-        {/* Role */}
-        <label className='form-control w-full '>
-          <div className='label'>
-            <span className='label-text'>Role</span>
+          {/* Role */}
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>Role</span>
+              </div>
+              <select
+                name='role'
+                value={formData.role}
+                onChange={handleChange}
+                className='select select-bordered w-full'
+                disabled={!editableFields.role}
+              >
+                <option value='customer'>Customer</option>
+                <option value='admin'>Admin</option>
+              </select>
+            </label>
           </div>
-          <select name='role' className='select select-bordered w-full '>
-            <option value='customer'>Customer</option>
-            <option value='admin'>Admin</option>
-          </select>
-        </label>
 
-        {/* Is Verified */}
-        <label className='form-control w-full  flex items-center gap-2'>
-          <input type='checkbox' name='isVerified' className='checkbox' />
-          <span className='label-text'>Is Verified</span>
-        </label>
-
-        {/* Active */}
-        <label className='form-control w-full  flex items-center gap-2'>
-          <input type='checkbox' name='active' className='checkbox' />
-          <span className='label-text'>Active</span>
-        </label>
-
-        {/* Submit Button */}
-        <button type='submit' className='btn btn-primary mt-4'>
-          Submit
-        </button>
-      </form>
+          {/* Submit Button */}
+          <button
+            type='submit'
+            className='btn bg-black text-white hover:bg-transparent hover:border-black hover:text-black mt-4'
+            disabled={!Object.values(editableFields).some(Boolean) || updating}
+          >
+            {updating ? 'Updating...' : 'Submit'}
+          </button>
+        </form>
+      )}
     </div>
   )
 }
