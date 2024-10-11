@@ -63,7 +63,7 @@ const App = () => {
           <Route exact path='/verify' element={<VerifyEmail />} />
           <Route
             exact
-            path='/profile/:userId/:firstName'
+            path='/profile/:userId/:firstName/*'
             element={<Profile />}
           />
 

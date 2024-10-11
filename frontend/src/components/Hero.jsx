@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 const Hero = () => {
   return (
     <div className=' grid grid-cols-1 lg:grid-cols-2 items-center lg:py-16 lg:my-0'>
-      <div className='left  space-y-5 mb-8 lg:mb-0'>
+      <div className='left py-8 lg:py-0  space-y-5 mb-8 lg:mb-0'>
         <h1 className='font-bold text-4xl mt-3 lg:mt-0 lg:text-5xl max-w-[500px] lg:leading-[3.2rem] '>
           Welcome to <span className='text-main'>Skill Bridge </span>Virtual
           Careers

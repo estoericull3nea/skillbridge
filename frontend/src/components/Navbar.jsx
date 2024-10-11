@@ -35,6 +35,9 @@ const Navbar = () => {
         `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
       )
       setUser(response.data)
+      localStorage.setItem('firstName', response.data.firstName)
+      localStorage.setItem('lastName', response.data.lastName)
+      localStorage.setItem('email', response.data.email)
     } catch (error) {
       console.log(error.response.data.message)
     } finally {
@@ -54,8 +57,6 @@ const Navbar = () => {
       fetchLoginUser()
     }
   }, [token])
-
-  console.log(user)
 
   return (
     <div className='shadow'>
@@ -579,7 +580,9 @@ const Navbar = () => {
                       className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[175px] translate-x-[-20px] lg:translate-x-0'
                     >
                       <li>
-                        <Link to={`/profile/${user?._id}/${user.firstName}`}>
+                        <Link
+                          to={`/profile/${user?._id}/${user.firstName}/dashboard`}
+                        >
                           {' '}
                           <CiUser />
                           Profile
