@@ -8,6 +8,7 @@ import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import Breadcrumbs from '../../../components/Breadcrumbs.jsx'
+import UserInfo from './UserInfo.jsx'
 
 const Profile = () => {
   const { userId, firstName } = useParams()
@@ -22,8 +23,8 @@ const Profile = () => {
   }, [])
 
   return (
-    <div className='bg-gray-50'>
-      <div className='container flex py-6 gap-3'>
+    <div className='bg-gray-50 '>
+      <div className='container flex py-6 gap-3 '>
         <Sidebar userId={userId} firstName={firstName} />
         <div className='main-content overflow-hidden w-full'>
           <div className='flex justify-between'>
@@ -49,6 +50,7 @@ const Profile = () => {
 
           <Routes>
             <Route path='/dashboard' element={<Dashboard />} />
+            <Route path='/user-info' element={<UserInfo />} />
             <Route path='/booking-history' element={<BookingHistory />} />
           </Routes>
         </div>

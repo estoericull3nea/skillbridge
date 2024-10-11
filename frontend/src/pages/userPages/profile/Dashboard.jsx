@@ -30,12 +30,12 @@ const Dashboard = () => {
     setLoadingOngoingBookingsCount(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/book/users-book/bookings?email=${localStorage.getItem(
-          'email'
-        )}`
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
-        return item.status === 'rejected'
+        return item.status === 'ongoing'
       })
       setTotalOngoingCount(filteredData.length || 0)
     } catch (error) {
@@ -49,9 +49,9 @@ const Dashboard = () => {
     setLoadingRejectedBookingsCount(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/book/users-book/bookings?email=${localStorage.getItem(
-          'email'
-        )}`
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
         return item.status === 'rejected'
@@ -68,9 +68,9 @@ const Dashboard = () => {
     setLoadingDoneBookingsCount(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/book/users-book/bookings?email=${localStorage.getItem(
-          'email'
-        )}`
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
         return item.status === 'done'
@@ -87,9 +87,9 @@ const Dashboard = () => {
     setLoadingPendingBookingsCount(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/book/users-book/bookings?email=${localStorage.getItem(
-          'email'
-        )}`
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
         return item.status === 'pending'
@@ -106,9 +106,9 @@ const Dashboard = () => {
     setLoadingTotalBookingsCount(true)
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/v1/book/users-book/bookings?email=${localStorage.getItem(
-          'email'
-        )}`
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       setTotalBookingsCount(response.data.length || 0)
     } catch (error) {

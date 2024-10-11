@@ -58,6 +58,8 @@ const Navbar = () => {
     }
   }, [token])
 
+  console.log(user)
+
   return (
     <div className='shadow'>
       <div className='container'>
