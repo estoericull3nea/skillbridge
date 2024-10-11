@@ -7,6 +7,7 @@ import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
 import { IoMdNotificationsOutline } from 'react-icons/io'
+import Breadcrumbs from '../../../components/Breadcrumbs.jsx'
 
 const Profile = () => {
   const { userId, firstName } = useParams()
@@ -25,20 +26,23 @@ const Profile = () => {
       <div className='container flex py-6 gap-3'>
         <Sidebar userId={userId} firstName={firstName} />
         <div className='main-content overflow-hidden w-full'>
-          <div className='flex gap-3 justify-end'>
-            <div className=' text-end flex justify-end'>
-              <div className='mb-3 px-4 py-2 text-end bg-white shadow max-w-max rounded-full '>
-                <p className='text-gray-700 text-xs flex items-center gap-2'>
-                  <CiCalendar />{' '}
-                  {convertDateToWords(currentTime.toLocaleDateString())}{' '}
-                  {currentTime.toLocaleTimeString()}
-                </p>
+          <div className='flex justify-between'>
+            <Breadcrumbs />
+            <div className='flex gap-3 justify-end'>
+              <div className=' text-end flex justify-end'>
+                <div className='mb-3 px-4 py-2 text-end bg-white shadow max-w-max rounded-full '>
+                  <p className='text-gray-700 text-xs flex items-center gap-2'>
+                    <CiCalendar />{' '}
+                    {convertDateToWords(currentTime.toLocaleDateString())}{' '}
+                    {currentTime.toLocaleTimeString()}
+                  </p>
+                </div>
               </div>
-            </div>
 
-            <div className=' text-end flex justify-end'>
-              <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full '>
-                <IoMdNotificationsOutline />
+              <div className=' text-end flex justify-end'>
+                <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full '>
+                  <IoMdNotificationsOutline />
+                </div>
               </div>
             </div>
           </div>
