@@ -34,7 +34,7 @@ const Profile = () => {
                   <p className='text-gray-700 text-xs flex items-center gap-2'>
                     <CiCalendar />{' '}
                     {convertDateToWords(currentTime.toLocaleDateString())}{' '}
-                    {currentTime.toLocaleTimeString()}
+                    {currentTime.toLocaleTimeString('en-US', { hour12: false })}
                   </p>
                 </div>
               </div>
