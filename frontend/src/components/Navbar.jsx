@@ -55,6 +55,8 @@ const Navbar = () => {
     }
   }, [token])
 
+  console.log(user)
+
   return (
     <div className='shadow'>
       <div className='container'>
@@ -577,11 +579,11 @@ const Navbar = () => {
                       className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[175px] translate-x-[-20px] lg:translate-x-0'
                     >
                       <li>
-                        <a>
+                        <Link to={`/profile/${user?._id}/${user.firstName}`}>
                           {' '}
                           <CiUser />
                           Profile
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <a>

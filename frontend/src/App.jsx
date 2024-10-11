@@ -19,6 +19,7 @@ import RedirectIfAuthenticated from './components/RedirectIfAuthenticated'
 import NotFound from './pages/NotFound'
 import GoogleCallback from './pages/userPages/GoogleCallback'
 import About from './pages/userPages/About'
+import Profile from './pages/userPages/profile/Profile'
 import ProtectRoute from './components/ProtectRoute'
 
 const App = () => {
@@ -60,6 +61,11 @@ const App = () => {
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           <Route exact path='/book-appointment' element={<BookAppointment />} />
           <Route exact path='/verify' element={<VerifyEmail />} />
+          <Route
+            exact
+            path='/profile/:userId/:firstName'
+            element={<Profile />}
+          />
 
           <Route
             path='/about'
