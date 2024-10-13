@@ -1,0 +1,8 @@
+.p-column-title,
+.p-datatable-tbody {
+  font-size: 0.8rem;
+}
+
+.p-datatable-thead {
+  background: black !important;
+}

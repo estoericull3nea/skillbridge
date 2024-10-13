@@ -9,6 +9,8 @@ import { GrScheduleNew } from 'react-icons/gr'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 
+import './datatables.css'
+
 const Dashboard = () => {
   const [loadingTotalBookingsCount, setLoadingTotalBookingsCount] =
     useState(false)
@@ -181,7 +183,7 @@ const Dashboard = () => {
         <h1 className='mb-3'>
           Welcome back, {localStorage.getItem('firstName')}!
         </h1>
-        <p className='text-4xl font-semibold leading-tight'>
+        <p className='text-2xl font-semibold leading-normal'>
           Remember, every small step takes you closer to your goals. Let’s make
           today count!
         </p>
@@ -387,6 +389,7 @@ const Dashboard = () => {
         ) : (
           <DataTable
             value={upcommingBookings}
+            showGridlines
             paginator
             rows={5}
             className='bg-white shadow-xl rounded-xl p-6'
@@ -482,7 +485,7 @@ const Dashboard = () => {
                     href={rowData.meeting.join_url}
                     target='_blank'
                     rel='noopener noreferrer'
-                    className='btn bg-main text-white hover:border-main hover:bg-transparent hover:text-black rounded-full'
+                    className='btn bg-main text-white hover:border-main hover:bg-transparent hover:text-black rounded-full text-[.7rem] px-3 py-0'
                   >
                     Join Zoom Meeting
                   </a>
