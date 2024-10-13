@@ -5,6 +5,8 @@ import './index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { PrimeReactProvider } from 'primereact/api'
 
+import 'primereact/resources/themes/lara-light-cyan/theme.css'
+
 // Initialize the QueryClient instance
 const queryClient = new QueryClient()
 

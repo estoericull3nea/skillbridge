@@ -34,19 +34,35 @@ const Dashboard = () => {
     useState(false)
   const [upcommingBookings, setUpcommingBookings] = useState([])
 
+  const daysUntilBooking = (dateString) => {
+    const bookingDate = new Date(dateString)
+    const today = new Date()
+
+    // Calculate the time difference in milliseconds
+    const timeDiff = bookingDate.getTime() - today.getTime()
+
+    // Convert time difference from milliseconds to days
+    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
+
+    // Return the number of days remaining
+    return dayDiff
+  }
+
   const fetchUpcomingBookings = async () => {
     setLoadingUpcommingBookings(true)
     try {
       const response = await axios.get(
         `${
           import.meta.env.VITE_DEV_BACKEND_URL
-        }book/users-book/bookings?email=${localStorage.getItem('email')}`
+        }book/get/upcomming-three-bookings?email=${localStorage.getItem(
+          'email'
+        )}`
       )
       const filteredData = response.data.filter((item, index) => {
         return item.status === 'pending'
       })
-      setUpcommingBookings(filteredData.length || 0)
-      console.log(filteredData)
+      setUpcommingBookings(filteredData || 0)
+      console.log(upcommingBookings)
     } catch (error) {
       console.error('Error fetching pending bookings:', error)
     } finally {
@@ -146,6 +162,11 @@ const Dashboard = () => {
     }
   }
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString(undefined, options)
+  }
+
   useEffect(() => {
     fetchAllBookings()
     fetchAllPendingBookings()
@@ -154,7 +175,6 @@ const Dashboard = () => {
     fetchAllOngoingBookings()
     fetchUpcomingBookings()
   }, [])
-  console.log(upcommingBookings)
   return (
     <div className=''>
       <div className='bg-white shadow-xl rounded-xl p-6 '>
@@ -342,6 +362,137 @@ const Dashboard = () => {
         <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
           Upcomming Bookings
         </p>
+
+        {loadingUpcommingBookings ? (
+          <div className='space-y-3'>
+            {/* Skeleton Table Header */}
+            <div className='flex space-x-4'>
+              <div className='skeleton h-9 rounded-lg w-full'></div>
+              <div className='skeleton h-9 rounded-lg w-full'></div>
+              <div className='skeleton h-9 rounded-lg w-full'></div>
+              <div className='skeleton h-9 rounded-lg w-full'></div>
+              <div className='skeleton h-9 rounded-lg w-full'></div>
+            </div>
+            {/* Skeleton Rows */}
+            {Array.from({ length: 5 }).map((_, index) => (
+              <div key={index} className='flex space-x-4'>
+                <div className='skeleton h-9 rounded-lg w-full'></div>
+                <div className='skeleton h-9 rounded-lg w-full'></div>
+                <div className='skeleton h-9 rounded-lg w-full'></div>
+                <div className='skeleton h-9 rounded-lg w-full'></div>
+                <div className='skeleton h-9 rounded-lg w-full'></div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <DataTable
+            value={upcommingBookings}
+            paginator
+            rows={5}
+            className='bg-white shadow-xl rounded-xl p-6'
+            size='large'
+          >
+            <Column
+              header='Service'
+              body={(rowData) =>
+                rowData.service === 'virtual_assistance'
+                  ? 'Virtual Assistance'
+                  : rowData.service === 'recruitment_services'
+                  ? 'Recruitment Services'
+                  : 'Other Service'
+              }
+            ></Column>
+
+            <Column
+              field='date'
+              header='Date & Time'
+              body={(rowData) => ` ${formatDate(rowData.date)} ${rowData.time}`}
+            ></Column>
+
+            <Column
+              header='Days Remaining'
+              body={(rowData) => {
+                const daysLeft = daysUntilBooking(rowData.date)
+                return daysLeft > 0 ? `${daysLeft} day(s) remaining` : 'Today'
+              }}
+            ></Column>
+
+            <Column
+              header='Full Name'
+              body={(rowData) => `${rowData.firstName} ${rowData.lastName}`}
+            ></Column>
+
+            <Column
+              field='notes'
+              header='Notes'
+              body={(rowData) =>
+                rowData.notes ? (
+                  rowData.notes
+                ) : (
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-6 w-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='#df0001'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M6 18L18 6M6 6l12 12'
+                    />
+                  </svg>
+                )
+              }
+            ></Column>
+
+            {/* Handle null or undefined 'status' */}
+            <Column
+              field='phone'
+              header='Phone'
+              body={(rowData) =>
+                rowData.phone ? (
+                  rowData.phone
+                ) : (
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    className='h-6 w-6'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    stroke='#df0001'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      strokeWidth='2'
+                      d='M6 18L18 6M6 6l12 12'
+                    />
+                  </svg>
+                )
+              }
+            ></Column>
+            <Column field='status' header='Status'></Column>
+
+            <Column
+              header='Zoom URL'
+              body={(rowData) =>
+                rowData.meeting?.join_url ? (
+                  <a
+                    href={rowData.meeting.join_url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='btn bg-main text-white hover:border-main hover:bg-transparent hover:text-black rounded-full'
+                  >
+                    Join Zoom Meeting
+                  </a>
+                ) : (
+                  'No URL'
+                )
+              }
+            ></Column>
+          </DataTable>
+        )}
       </div>
     </div>
   )

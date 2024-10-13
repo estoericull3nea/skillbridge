@@ -498,6 +498,7 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
       email: email,
       status: 'pending',
     })
+      .populate('meeting')
       .sort({ date: 1 })
       .limit(3)
 
