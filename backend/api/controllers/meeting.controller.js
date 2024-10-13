@@ -338,3 +338,40 @@ export const getAllMeetingsNotZoom = async (req, res) => {
     return res.status(500).json({ message: error.message })
   }
 }
+
+export const getThreeUpcomingMeetingsByUser = async (req, res) => {
+  const { userId } = req.query
+
+  if (!userId) {
+    return res
+      .status(400)
+      .json({ message: 'userId query parameter is required' })
+  }
+
+  try {
+    const currentTime = new Date().toISOString() // Get the current time in ISO format
+
+    // Find the next 3 upcoming meetings for the user
+    const upcomingMeetings = await Meeting.find({
+      user: userId, // Filter by userId
+      start_time: { $gte: currentTime }, // Only future meetings
+    })
+      .sort({ start_time: 1 }) // Sort by start_time in ascending order
+      .limit(3) // Limit to 3 results
+
+    res.status(200).json(upcomingMeetings)
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: 'Error fetching upcoming meetings for user', error })
+  }
+}
+
+export const clearMeeting = async (req, res) => {
+  try {
+    await Meeting.deleteMany()
+    return res.status(200).json({ message: 'All meetings have been cleared.' })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}

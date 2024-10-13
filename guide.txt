@@ -28,3 +28,5 @@ make the calendar UI beaty
             with Skill Bridge Virtual Careers.
           </p>
         </div>
+
+implement showing of bookings using primereact

@@ -22,6 +22,10 @@ const meetingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      required: true,
+    },
     duration: {
       type: String,
       required: true,

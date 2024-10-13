@@ -5,6 +5,10 @@ import { RiCalendarScheduleLine } from 'react-icons/ri'
 import { GrSchedules } from 'react-icons/gr'
 import { MdOutlineScheduleSend } from 'react-icons/md'
 import { GrScheduleNew } from 'react-icons/gr'
+
+import { DataTable } from 'primereact/datatable'
+import { Column } from 'primereact/column'
+
 const Dashboard = () => {
   const [loadingTotalBookingsCount, setLoadingTotalBookingsCount] =
     useState(false)
@@ -25,6 +29,30 @@ const Dashboard = () => {
   const [loadingOngoingBookingsCount, setLoadingOngoingBookingsCount] =
     useState(false)
   const [totalOngoingCount, setTotalOngoingCount] = useState(0)
+
+  const [loadingUpcommingBookings, setLoadingUpcommingBookings] =
+    useState(false)
+  const [upcommingBookings, setUpcommingBookings] = useState([])
+
+  const fetchUpcomingBookings = async () => {
+    setLoadingUpcommingBookings(true)
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
+      )
+      const filteredData = response.data.filter((item, index) => {
+        return item.status === 'pending'
+      })
+      setUpcommingBookings(filteredData.length || 0)
+      console.log(filteredData)
+    } catch (error) {
+      console.error('Error fetching pending bookings:', error)
+    } finally {
+      setLoadingUpcommingBookings(false)
+    }
+  }
 
   const fetchAllOngoingBookings = async () => {
     setLoadingOngoingBookingsCount(true)
@@ -124,7 +152,9 @@ const Dashboard = () => {
     fetchAllDoneBookings()
     fetchAllRejectedBookings()
     fetchAllOngoingBookings()
+    fetchUpcomingBookings()
   }, [])
+  console.log(upcommingBookings)
   return (
     <div className=''>
       <div className='bg-white shadow-xl rounded-xl p-6 '>
@@ -306,6 +336,12 @@ const Dashboard = () => {
             )}
           </div>
         </div>
+      </div>
+
+      <div>
+        <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
+          Upcomming Bookings
+        </p>
       </div>
     </div>
   )

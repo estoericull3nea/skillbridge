@@ -35,6 +35,11 @@ const bookingSchema = new mongoose.Schema(
       enum: ['pending', 'ongoing', 'canceled', 'rejected', 'done'],
       default: 'pending',
     },
+    // meeting: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   ref: 'Meeting',
+    //   required: true,
+    // },
   },
   { timestamps: true }
 )

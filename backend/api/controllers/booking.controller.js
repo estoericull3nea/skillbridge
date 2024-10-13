@@ -1,6 +1,8 @@
 import Booking from '../models/booking.model.js'
 import mongoose from 'mongoose'
 import axios from 'axios'
+import { parse, formatISO } from 'date-fns'
+
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -14,7 +16,9 @@ export const book = async (req, res) => {
     lastName,
     phoneNumber,
     notes,
+    startTimeZoom,
   } = req.body
+
   // ===========
 
   const session = await mongoose.startSession()
@@ -76,7 +80,14 @@ export const book = async (req, res) => {
       month,
     })
 
+    // const start_time = date + '' + time
+    // const parsedDate = parse(start_time, 'MM/dd/yyyy H:mm', new Date())
+    // const isoStartTime = formatISO(parsedDate)
+    // console.log(isoStartTime)
+
     await newBooking.save({ session })
+
+    // after the creation of booking, next is meeting
 
     await session.commitTransaction()
     session.endSession()
@@ -114,8 +125,6 @@ export const getAllBookings = async (req, res) => {
 
 export const getAllBookingsByDate = async (req, res) => {
   const { date } = req.query
-
-  console.log(date)
 
   try {
     if (!date) {
@@ -284,7 +293,6 @@ export const updateBookingStatus = async (req, res) => {
 
 export const getBookingsByUser = async (req, res) => {
   const { email } = req.query
-  console.log(email)
 
   try {
     const bookings = await Booking.find({ email })
@@ -329,5 +337,30 @@ export const getHolidaysBasedOnUserIp = async (req, res) => {
     res.json(holidayResponse.data.response.holidays)
   } catch (error) {
     return res.status(500).json({ message: error.message })
+  }
+}
+
+export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
+  const { email } = req.query
+
+  if (!email) {
+    return res.status(400).json({ message: 'Email is required' })
+  }
+
+  try {
+    const upcomingBookings = await Booking.find({
+      email: email,
+      status: 'pending',
+    })
+      .sort({ date: 1 })
+      .limit(3)
+
+    if (!upcomingBookings.length) {
+      return res.status(404).json({ message: 'No Bookings Found' })
+    }
+
+    res.status(200).json(upcomingBookings)
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching bookings', error })
   }
 }

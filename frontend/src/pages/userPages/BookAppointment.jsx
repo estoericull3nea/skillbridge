@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useQuery, useMutation } from '@tanstack/react-query'
 import axios from 'axios'
 import Calendar from 'react-calendar'
@@ -131,6 +131,7 @@ const BookAppointment = () => {
       service: selectedService,
       date: selectedDate,
       time: selectedTime,
+      startTimeZoom: startTime,
       ...formData,
     }
 
@@ -152,7 +153,6 @@ const BookAppointment = () => {
       const meetingResponse = await createMeeting(meetingData)
 
       toast.success('Zoom Meeting Created, Check your email!')
-      console.log('Meeting Details:', meetingResponse)
     } catch (error) {}
   }
 
@@ -506,7 +506,8 @@ const BookAppointment = () => {
                   name='email'
                   id='email'
                   placeholder='john@example.com'
-                  value={formData.email}
+                  // value={formData.email}
+                  value={localStorage.getItem('email') || formData.email}
                   onChange={handleInputChange}
                   className='input input-bordered w-full '
                 />
