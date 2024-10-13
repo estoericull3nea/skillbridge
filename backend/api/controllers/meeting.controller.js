@@ -168,6 +168,7 @@ export const createMeeting = async (req, res) => {
 
     // testing
     const userExists = await User.findOne({ email })
+
     if (userExists) {
       const {
         host_id,

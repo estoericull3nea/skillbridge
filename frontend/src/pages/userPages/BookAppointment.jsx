@@ -59,7 +59,7 @@ const BookAppointment = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
     phoneNumber: '',
     notes: '',
   })
@@ -135,25 +135,27 @@ const BookAppointment = () => {
       ...formData,
     }
 
-    try {
-      // First, submit the booking
-      const bookingResponse = await mutation.mutateAsync(bookingData)
+    const bookingResponse = await mutation.mutateAsync(bookingData)
 
-      // If booking is successful, create the meeting
-      const meetingData = {
-        topic:
-          selectedService === 'recruitment_services'
-            ? 'Recruitment Meeting'
-            : 'Virtual Assistance Meeting',
-        startTime, // Uses the concatenated date and time
-        duration: 60, // Adjust duration as needed
-        email: bookingData.email,
-      }
+    // try {
+    //   // First, submit the booking
+    //   const bookingResponse = await mutation.mutateAsync(bookingData)
 
-      const meetingResponse = await createMeeting(meetingData)
+    //   // If booking is successful, create the meeting
+    //   const meetingData = {
+    //     topic:
+    //       selectedService === 'recruitment_services'
+    //         ? 'Recruitment Meeting'
+    //         : 'Virtual Assistance Meeting',
+    //     startTime, // Uses the concatenated date and time
+    //     duration: 60, // Adjust duration as needed
+    //     email: bookingData.email,
+    //   }
 
-      toast.success('Zoom Meeting Created, Check your email!')
-    } catch (error) {}
+    //   const meetingResponse = await createMeeting(meetingData)
+
+    //   toast.success('Zoom Meeting Created, Check your email!')
+    // } catch (error) {}
   }
 
   const [errors, setErrors] = useState({})
@@ -507,7 +509,7 @@ const BookAppointment = () => {
                   id='email'
                   placeholder='john@example.com'
                   // value={formData.email}
-                  value={localStorage.getItem('email') || formData.email}
+                  value={localStorage.getItem('email')}
                   onChange={handleInputChange}
                   className='input input-bordered w-full '
                 />
