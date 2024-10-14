@@ -11,7 +11,10 @@ import {
   getBookingsByUser,
   getHolidaysBasedOnUserIp,
   getThreeUpcomingPendingBookingsByUser,
+  deleteBookingById,
+  cancelMeeting,
 } from '../controllers/booking.controller.js'
+
 const router = express.Router()
 
 router.post('/', book)
@@ -28,5 +31,7 @@ router.get(
   '/get/upcomming-three-bookings',
   getThreeUpcomingPendingBookingsByUser
 )
+router.patch('/:bookingId/soft-delete', deleteBookingById)
+router.patch('/:bookingId/cancel-meeting', cancelMeeting)
 
 export default router

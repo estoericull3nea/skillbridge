@@ -10,6 +10,7 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { IoSendOutline } from 'react-icons/io5'
 import { MdOutlineCancelScheduleSend } from 'react-icons/md'
+import { toast } from 'react-hot-toast'
 
 import './datatables.css'
 
@@ -30,6 +31,10 @@ const Dashboard = () => {
     useState(false)
   const [totalRejectedCount, setTotalRejectedCount] = useState(0)
 
+  const [loadingCanceledBookingsCount, setLoadingCanceledBookingsCount] =
+    useState(false)
+  const [totalCanceledCount, setTotalCanceledCount] = useState(0)
+
   const [loadingOngoingBookingsCount, setLoadingOngoingBookingsCount] =
     useState(false)
   const [totalOngoingCount, setTotalOngoingCount] = useState(0)
@@ -37,6 +42,8 @@ const Dashboard = () => {
   const [loadingUpcommingBookings, setLoadingUpcommingBookings] =
     useState(false)
   const [upcommingBookings, setUpcommingBookings] = useState([])
+
+  const [loadingCancel, setLoadingCancel] = useState({})
 
   const daysUntilBooking = (dateString) => {
     const bookingDate = new Date(dateString)
@@ -68,9 +75,38 @@ const Dashboard = () => {
       setUpcommingBookings(filteredData || 0)
       console.log(upcommingBookings)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      if (error.response.data.message === 'No Bookings Found') {
+        setUpcommingBookings([])
+      }
+
+      console.error(
+        'Error fetching pending bookings:',
+        error.response.data.message
+      )
     } finally {
       setLoadingUpcommingBookings(false)
+    }
+  }
+
+  const cancelMeeting = async (bookingId) => {
+    setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: true }))
+    try {
+      const { status } = await axios.patch(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/update-status/${bookingId}`, // Updated URL
+        { status: 'canceled' } // Pass the 'canceled' status in the request body
+      )
+      if (status === 200) {
+        await fetchUpcomingBookings()
+        await fetchAllCanceledBookings()
+        await fetchAllPendingBookings()
+        toast.success('Canceled')
+      }
+    } catch (error) {
+      console.error('Error canceling meeting:', error.message)
+    } finally {
+      setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: false }))
     }
   }
 
@@ -87,14 +123,14 @@ const Dashboard = () => {
       })
       setTotalOngoingCount(filteredData.length || 0)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      console.error('Error fetching pending bookings:', error.message)
     } finally {
       setLoadingOngoingBookingsCount(false)
     }
   }
 
-  const fetchAllRejectedBookings = async () => {
-    setLoadingRejectedBookingsCount(true)
+  const fetchAllCanceledBookings = async () => {
+    setLoadingCanceledBookingsCount(true)
     try {
       const response = await axios.get(
         `${
@@ -102,13 +138,13 @@ const Dashboard = () => {
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
-        return item.status === 'rejected'
+        return item.status === 'canceled'
       })
-      setTotalRejectedCount(filteredData.length || 0)
+      setTotalCanceledCount(filteredData.length || 0)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      console.error('Error fetching pending bookings:', error.message)
     } finally {
-      setLoadingRejectedBookingsCount(false)
+      setLoadingCanceledBookingsCount(false)
     }
   }
 
@@ -125,7 +161,7 @@ const Dashboard = () => {
       })
       setTotalDoneCount(filteredData.length || 0)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      console.error('Error fetching pending bookings:', error.message)
     } finally {
       setLoadingDoneBookingsCount(false)
     }
@@ -144,7 +180,7 @@ const Dashboard = () => {
       })
       setTotalPendingCount(filteredData.length || 0)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      console.error('Error fetching pending bookings:', error.message)
     } finally {
       setLoadingPendingBookingsCount(false)
     }
@@ -160,7 +196,7 @@ const Dashboard = () => {
       )
       setTotalBookingsCount(response.data.length || 0)
     } catch (error) {
-      console.error('Error fetching pending bookings:', error)
+      console.error('Error fetching pending bookings:', error.message)
     } finally {
       setLoadingTotalBookingsCount(false)
     }
@@ -175,10 +211,16 @@ const Dashboard = () => {
     fetchAllBookings()
     fetchAllPendingBookings()
     fetchAllDoneBookings()
-    fetchAllRejectedBookings()
+    fetchAllCanceledBookings()
     fetchAllOngoingBookings()
     fetchUpcomingBookings()
-  }, [])
+  }, [
+    totalBookingsCount,
+    totalDoneCount,
+    totalOngoingCount,
+    totalPendingCount,
+    totalRejectedCount,
+  ])
   return (
     <div className=''>
       <div className='bg-white shadow-xl rounded-xl p-6 '>
@@ -310,7 +352,7 @@ const Dashboard = () => {
                 ></path>
               </svg>
             </div>
-            {loadingRejectedBookingsCount ? (
+            {loadingCanceledBookingsCount ? (
               <div className='space-y-3'>
                 <div className='skeleton h-7 w-full'></div>
                 <div className='skeleton h-7 w-full'></div>
@@ -321,7 +363,7 @@ const Dashboard = () => {
                 <div className='stat-title flex items-center gap-3'>
                   <GrScheduleNew /> Canceled/Rejected Bookings{' '}
                 </div>
-                <div className='stat-value'>{totalRejectedCount}</div>
+                <div className='stat-value'>{totalCanceledCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
               </div>
             )}
@@ -515,14 +557,21 @@ const Dashboard = () => {
                         className='tooltip tooltip-left'
                         data-tip='Cancel meeting'
                       >
-                        <a
-                          href={rowData.meeting.join_url}
-                          target='_blank'
-                          rel='noopener noreferrer'
+                        <button
+                          onClick={() => cancelMeeting(rowData._id)}
                           className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
+                          disabled={loadingCancel[rowData._id]} // Disable while loading
                         >
-                          <MdOutlineCancelScheduleSend />
-                        </a>
+                          {loadingCancel[rowData._id] ? (
+                            <span
+                              className='spinner-border spinner-border-sm'
+                              role='status'
+                              aria-hidden='true'
+                            ></span>
+                          ) : (
+                            <MdOutlineCancelScheduleSend />
+                          )}
+                        </button>
                       </div>
                     </>
                   ) : (

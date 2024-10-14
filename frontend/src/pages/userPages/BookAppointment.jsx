@@ -57,8 +57,12 @@ const BookAppointment = () => {
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState('')
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    firstName: localStorage.getItem('firstName')
+      ? localStorage.getItem('firstName')
+      : '',
+    lastName: localStorage.getItem('lastName')
+      ? localStorage.getItem('lastName')
+      : '',
     email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
     phoneNumber: '',
     notes: '',
@@ -75,9 +79,9 @@ const BookAppointment = () => {
     onSuccess: () => {
       toast.success('Booking submitted successfully!')
       setFormData({
-        firstName: '',
-        lastName: '',
-        email: '',
+        firstName: localStorage.getItem('firstName') ? localStorage.getItem('firstName') : '',
+        lastName: localStorage.getItem('lastName') ? localStorage.getItem('lastName') : '',
+        email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
         phoneNumber: '',
         notes: '',
       })
@@ -600,7 +604,7 @@ const BookAppointment = () => {
             onClick={handleSubmit}
             disabled={mutation.isLoading}
           >
-            {mutation.isLoading ? 'Submitting...' : 'Submit'}
+            {mutation.isPending ? 'Submitting...' : 'Submit'}
           </button>
         </div>
       )}

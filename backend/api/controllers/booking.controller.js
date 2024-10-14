@@ -249,11 +249,16 @@ export const book = async (req, res) => {
 
 export const getAllBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find().populate('user')
+    // Find bookings where isDeleted is false and populate the 'user' field
+    const bookings = await Booking.find({ isDeleted: { $ne: true } }).populate(
+      'user'
+    )
+
     if (!bookings.length) {
       return res.status(404).json({ message: 'No Bookings Found' })
     }
 
+    // Format the bookings as needed
     const formattedBookings = bookings.map((booking) => {
       return {
         ...booking._doc,
@@ -263,8 +268,10 @@ export const getAllBookings = async (req, res) => {
       }
     })
 
+    // Return the formatted bookings
     return res.status(200).json(formattedBookings)
   } catch (error) {
+    // Return an error response if something goes wrong
     return res.status(500).json({ message: error.message })
   }
 }
@@ -297,6 +304,7 @@ export const getAllBookingsByDate = async (req, res) => {
         $gte: startOfDay,
         $lte: endOfDay,
       },
+      isDeleted: false,
     })
 
     if (!bookings.length) {
@@ -327,17 +335,15 @@ export const getAllAvailableTimesByDate = async (req, res) => {
         .json({ message: 'Invalid date format. Use MM/DD/YYYY.' })
     }
 
-    // Set start and end of the day to cover the entire date
     const startOfDay = new Date(parsedDate.setHours(0, 0, 0, 0))
     const endOfDay = new Date(parsedDate.setHours(23, 59, 59, 999))
 
-    // Define active booking statuses that should block time slots
     const activeBookingStatuses = ['pending', 'ongoing']
 
-    // Fetch all booked times for the given date range that have active statuses
     const bookedTimes = await Booking.find({
       date: { $gte: startOfDay, $lte: endOfDay },
       status: { $in: activeBookingStatuses },
+      isDeleted: false,
     }).select('time')
 
     const bookedTimeSlots = bookedTimes.map((booking) => booking.time)
@@ -366,7 +372,7 @@ export const getAllBookingsByStatus = async (req, res) => {
       })
     }
 
-    const bookings = await Booking.find({ status })
+    const bookings = await Booking.find({ status, isDeleted: false })
 
     if (!bookings.length) {
       return res
@@ -384,7 +390,7 @@ export const getSingleBooking = async (req, res) => {
   const { bookingId } = req.params
 
   try {
-    const booking = await Booking.findById(bookingId)
+    const booking = await Booking.findById({ bookingId, isDeleted: false })
 
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found.' })
@@ -396,52 +402,11 @@ export const getSingleBooking = async (req, res) => {
   }
 }
 
-export const deleteAllBookings = async (req, res) => {
-  try {
-    await Booking.deleteMany()
-    return res.status(200).json({ message: 'All bookings have been cleared.' })
-  } catch (error) {
-    return res.status(500).json({ message: error.message })
-  }
-}
-
-export const updateBookingStatus = async (req, res) => {
-  const { bookingId } = req.params
-  const { status } = req.body
-
-  try {
-    const validStatuses = Booking.schema.path('status').enumValues
-    if (!validStatuses.includes(status)) {
-      return res.status(400).json({
-        message: `Invalid status. Valid statuses are: ${validStatuses.join(
-          ', '
-        )}.`,
-      })
-    }
-
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      bookingId,
-      { status },
-      { new: true }
-    )
-
-    if (!updatedBooking) {
-      return res.status(404).json({ message: 'Booking not found.' })
-    }
-
-    return res
-      .status(200)
-      .json({ message: 'Update Successfully', updatedBooking })
-  } catch (error) {
-    return res.status(500).json({ message: error.message })
-  }
-}
-
 export const getBookingsByUser = async (req, res) => {
   const { email } = req.query
 
   try {
-    const bookings = await Booking.find({ email })
+    const bookings = await Booking.find({ email, isDeleted: false })
 
     if (!bookings.length) {
       return res
@@ -486,8 +451,6 @@ export const getHolidaysBasedOnUserIp = async (req, res) => {
   }
 }
 
-
-
 export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   const { email } = req.query
 
@@ -497,14 +460,14 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
 
   try {
     const currentDate = new Date()
-    console.log('Current Date:', currentDate) 
 
     const upcomingBookings = await Booking.find({
       email: email,
       status: 'pending',
+      isDeleted: false,
     })
       .populate('meeting')
-      .sort({ date: 1 }) 
+      .sort({ date: 1 })
       .limit(3)
 
     if (!upcomingBookings.length) {
@@ -513,16 +476,12 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
 
     const bookingsWithStatus = upcomingBookings.map((booking) => {
       const bookingDate = new Date(booking.date)
-      console.log(`Date booked: ${booking.date}`)
-      console.log(`Time booked: ${booking.time}`)
 
       const [hours, minutes] = booking.time.split(':').map(Number)
       bookingDate.setHours(hours, minutes, 0, 0)
 
-      console.log('Combined Booking Date and Time:', bookingDate)
-
       if (bookingDate <= currentDate) {
-        booking.status = 'missed' 
+        booking.status = 'missed'
       }
 
       return booking
@@ -532,5 +491,94 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   } catch (error) {
     console.error('Error fetching bookings:', error)
     res.status(500).json({ message: 'Error fetching bookings', error })
+  }
+}
+
+export const updateBookingStatus = async (req, res) => {
+  const { bookingId } = req.params
+  const { status } = req.body
+
+  try {
+    const validStatuses = Booking.schema.path('status').enumValues
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        message: `Invalid status. Valid statuses are: ${validStatuses.join(
+          ', '
+        )}.`,
+      })
+    }
+
+    const updatedBooking = await Booking.findOneAndUpdate(
+      { _id: bookingId, isDeleted: false },
+      { status },
+      { new: true }
+    )
+
+    if (!updatedBooking) {
+      return res.status(404).json({ message: 'Booking not found.' })
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Update Successfully', updatedBooking })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const deleteAllBookings = async (req, res) => {
+  try {
+    await Booking.deleteMany()
+    return res.status(200).json({ message: 'All bookings have been cleared.' })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const deleteBookingById = async (req, res) => {
+  const { bookingId } = req.params
+
+  try {
+    const deletedBooking = await Booking.findOneAndUpdate(
+      { _id: bookingId, isDeleted: false },
+      { isDeleted: true },
+      { new: true }
+    )
+
+    if (!deletedBooking) {
+      return res
+        .status(404)
+        .json({ message: 'Booking not found or already deleted.' })
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Booking has been marked as deleted.', deletedBooking })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}
+
+export const cancelMeeting = async (req, res) => {
+  const { bookingId } = req.params
+
+  try {
+    const booking = await Booking.findOneAndUpdate(
+      { _id: bookingId, isDeleted: false, status: { $ne: 'canceled' } },
+      { status: 'canceled' },
+      { new: true }
+    ).populate('meeting')
+
+    if (!booking) {
+      return res
+        .status(404)
+        .json({ message: 'Booking not found or already canceled.' })
+    }
+
+    return res
+      .status(200)
+      .json({ message: 'Meeting canceled successfully.', booking })
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
   }
 }
