@@ -461,7 +461,7 @@ const BookAppointment = () => {
                     name='firstName'
                     id='firstName'
                     placeholder='John'
-                    value={formData.firstName}
+                    value={localStorage.getItem('firstName')}
                     onChange={handleInputChange}
                     className='input input-bordered w-full '
                   />
@@ -484,7 +484,7 @@ const BookAppointment = () => {
                     name='lastName'
                     id='lastName'
                     placeholder='Doe'
-                    value={formData.lastName}
+                    value={localStorage.getItem('lastName')}
                     onChange={handleInputChange}
                     className='input input-bordered w-full '
                   />

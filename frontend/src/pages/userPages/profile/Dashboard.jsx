@@ -8,6 +8,8 @@ import { GrScheduleNew } from 'react-icons/gr'
 
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
+import { IoSendOutline } from 'react-icons/io5'
+import { MdOutlineCancelScheduleSend } from 'react-icons/md'
 
 import './datatables.css'
 
@@ -60,9 +62,9 @@ const Dashboard = () => {
           'email'
         )}`
       )
-      const filteredData = response.data.filter((item, index) => {
-        return item.status === 'pending'
-      })
+      const filteredData = response.data.filter(
+        (item) => item.status === 'pending' || item.status === 'missed'
+      )
       setUpcommingBookings(filteredData || 0)
       console.log(upcommingBookings)
     } catch (error) {
@@ -475,24 +477,59 @@ const Dashboard = () => {
                 )
               }
             ></Column>
-            <Column field='status' header='Status'></Column>
-
             <Column
-              header='Zoom URL'
+              field='status'
+              header='Status'
               body={(rowData) =>
-                rowData.meeting?.join_url ? (
-                  <a
-                    href={rowData.meeting.join_url}
-                    target='_blank'
-                    rel='noopener noreferrer'
-                    className='btn bg-main text-white hover:border-main hover:bg-transparent hover:text-black rounded-full text-[.7rem] px-3 py-0'
-                  >
-                    Join Zoom Meeting
-                  </a>
+                rowData.status === 'missed' ? (
+                  <span className='text-red-600'>Missed</span>
                 ) : (
-                  'No URL'
+                  rowData.status
                 )
               }
+            ></Column>
+
+            <Column
+              header='Actions'
+              body={(rowData) => (
+                <div className='flex space-x-2'>
+                  {rowData.meeting?.join_url ? (
+                    <>
+                      {/* Join Zoom Button */}
+                      <div
+                        className='tooltip tooltip-left'
+                        data-tip='Join Zoom meeting'
+                      >
+                        <a
+                          href={rowData.meeting.join_url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
+                        >
+                          <IoSendOutline />
+                        </a>
+                      </div>
+
+                      {/* Cancel Meeting Button */}
+                      <div
+                        className='tooltip tooltip-left'
+                        data-tip='Cancel meeting'
+                      >
+                        <a
+                          href={rowData.meeting.join_url}
+                          target='_blank'
+                          rel='noopener noreferrer'
+                          className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
+                        >
+                          <MdOutlineCancelScheduleSend />
+                        </a>
+                      </div>
+                    </>
+                  ) : (
+                    <span>No URL</span>
+                  )}
+                </div>
+              )}
             ></Column>
           </DataTable>
         )}

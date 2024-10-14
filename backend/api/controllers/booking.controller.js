@@ -486,6 +486,8 @@ export const getHolidaysBasedOnUserIp = async (req, res) => {
   }
 }
 
+
+
 export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   const { email } = req.query
 
@@ -494,20 +496,41 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   }
 
   try {
+    const currentDate = new Date()
+    console.log('Current Date:', currentDate) 
+
     const upcomingBookings = await Booking.find({
       email: email,
       status: 'pending',
     })
       .populate('meeting')
-      .sort({ date: 1 })
+      .sort({ date: 1 }) 
       .limit(3)
 
     if (!upcomingBookings.length) {
       return res.status(404).json({ message: 'No Bookings Found' })
     }
 
-    res.status(200).json(upcomingBookings)
+    const bookingsWithStatus = upcomingBookings.map((booking) => {
+      const bookingDate = new Date(booking.date)
+      console.log(`Date booked: ${booking.date}`)
+      console.log(`Time booked: ${booking.time}`)
+
+      const [hours, minutes] = booking.time.split(':').map(Number)
+      bookingDate.setHours(hours, minutes, 0, 0)
+
+      console.log('Combined Booking Date and Time:', bookingDate)
+
+      if (bookingDate <= currentDate) {
+        booking.status = 'missed' 
+      }
+
+      return booking
+    })
+
+    res.status(200).json(bookingsWithStatus)
   } catch (error) {
+    console.error('Error fetching bookings:', error)
     res.status(500).json({ message: 'Error fetching bookings', error })
   }
 }
