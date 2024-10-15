@@ -11,7 +11,7 @@ export const isTokenValid = (token) => {
 
     console.log(`is token valid: ${decoded.exp && decoded.exp > currentTime}`)
 
-    return decoded.exp && decoded.exp < currentTime
+    return decoded.exp && decoded.exp > currentTime
   } catch (error) {
     return false
   }

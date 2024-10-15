@@ -73,7 +73,6 @@ const Dashboard = () => {
         (item) => item.status === 'pending' || item.status === 'missed'
       )
       setUpcommingBookings(filteredData || 0)
-      console.log(upcommingBookings)
     } catch (error) {
       if (error.response.data.message === 'No Bookings Found') {
         setUpcommingBookings([])
@@ -437,7 +436,7 @@ const Dashboard = () => {
             paginator
             rows={5}
             className='bg-white shadow-xl rounded-xl p-6'
-            size='large'
+            size='medium'
           >
             <Column
               header='Service'

@@ -406,7 +406,10 @@ export const getBookingsByUser = async (req, res) => {
   const { email } = req.query
 
   try {
-    const bookings = await Booking.find({ email, isDeleted: false })
+    const bookings = await Booking.find({
+      email,
+      isDeleted: { $ne: true },
+    }).populate('user')
 
     if (!bookings.length) {
       return res
