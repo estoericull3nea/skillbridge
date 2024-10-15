@@ -30,8 +30,6 @@ const GoogleCallback = () => {
 
             localStorage.setItem('token', token)
             navigate('/')
-
-            toast.success('Successfully Login')
           } else {
             throw new Error('No token received from server')
           }

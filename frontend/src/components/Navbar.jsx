@@ -39,6 +39,7 @@ const Navbar = () => {
       localStorage.setItem('firstName', response.data.firstName)
       localStorage.setItem('lastName', response.data.lastName)
       localStorage.setItem('email', response.data.email)
+      localStorage.setItem('picture', response.data.picture)
     } catch (error) {
       console.log(error.response.data.message)
     } finally {

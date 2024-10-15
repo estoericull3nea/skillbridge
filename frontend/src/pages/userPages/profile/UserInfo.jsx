@@ -13,8 +13,8 @@ const UserInfo = () => {
     email: '',
     password: '',
     picture: '',
-    isVerified: false,
     role: 'customer',
+    isVerified: false,
     active: true,
   })
 
@@ -30,7 +30,6 @@ const UserInfo = () => {
   })
 
   useEffect(() => {
-    // Fetch user data when the component mounts or when userId changes
     const fetchUserData = async () => {
       setLoading(true)
       try {
@@ -39,19 +38,19 @@ const UserInfo = () => {
         )
         const data = response.data
 
-        // Update the formData with the fetched user data
         setFormData({
           firstName: data.firstName || '',
           lastName: data.lastName || '',
           email: data.email || '',
-          password: '', // Leave password empty for security reasons
+          password: '', // Keep password empty
           picture: data.picture || '',
-          isVerified: data.isVerified || false,
           role: data.role || 'customer',
+          isVerified: data.isVerified || false,
           active: data.active || true,
         })
       } catch (error) {
         console.error('Error fetching user data:', error)
+        toast.error('Failed to load user data')
       } finally {
         setLoading(false)
       }
@@ -70,6 +69,13 @@ const UserInfo = () => {
     })
   }
 
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      picture: e.target.files[0], // Store the file object
+    })
+  }
+
   const handleEditClick = (field) => {
     setEditableFields((prev) => ({ ...prev, [field]: !prev[field] }))
   }
@@ -77,11 +83,25 @@ const UserInfo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setUpdating(true)
+
+    const formDataToSend = new FormData()
+    formDataToSend.append('firstName', formData.firstName)
+    formDataToSend.append('lastName', formData.lastName)
+    formDataToSend.append('email', formData.email)
+    if (formData.password) formDataToSend.append('password', formData.password)
+    formDataToSend.append('role', formData.role)
+    if (formData.picture) formDataToSend.append('picture', formData.picture) // Only append if picture is selected
+
     try {
-      await axios.patch(
+      const response = await axios.patch(
         `http://localhost:5000/api/v1/users/${userId}`,
-        formData
+        formDataToSend,
+        { headers: { 'Content-Type': 'multipart/form-data' } } // Required for file uploads
       )
+      setFormData({
+        ...formData,
+        picture: response.data.user.picture, // Update picture path after upload
+      })
       toast.success('User information updated successfully')
     } catch (error) {
       console.error('Error updating user information:', error)
@@ -95,10 +115,6 @@ const UserInfo = () => {
     <div>
       {loading ? (
         <div className='space-y-4 max-w-[500px] p-3'>
-          {/* Skeleton for each field */}
-          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
-          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
-          <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
           <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
           <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
           <div className='skeleton h-16 rounded-xl w-full max-w-[500px]'></div>
@@ -109,6 +125,45 @@ const UserInfo = () => {
           <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
             Basic Credentials
           </p>
+
+          {/* Profile Picture */}
+          <div className='flex items-center gap-3'>
+            <label className='form-control w-full'>
+              <div className='label'>
+                <span className='label-text'>Profile Picture</span>
+              </div>
+              <div className='flex items-center gap-2'>
+                {/* Display the profile picture */}
+                <div className='w-24 h-2w-24 rounded-full bg-gray-200 overflow-hidden'>
+                  {formData.picture ? (
+                    <img
+                      src={localStorage.getItem('picture')}
+                      alt='Profile'
+                      className='object-cover w-full h-full'
+                    />
+                  ) : (
+                    <img
+                      src='https://via.placeholder.com/150'
+                      alt='Default'
+                      className='object-cover w-full h-full'
+                    />
+                  )}
+                </div>
+
+                <input
+                  type='file'
+                  name='picture'
+                  onChange={handleFileChange}
+                  className='input input-bordered w-full'
+                  disabled={!editableFields.picture}
+                />
+                <FiEdit2
+                  className='text-gray-500 cursor-pointer'
+                  onClick={() => handleEditClick('picture')}
+                />
+              </div>
+            </label>
+          </div>
 
           {/* First Name */}
           <div className='flex items-center gap-3'>
