@@ -6,7 +6,7 @@ import toast from 'react-hot-toast'
 
 const ProtectRoute = ({ children }) => {
   const token = localStorage.getItem('token')
-  const location = useLocation() // Get current location (the protected route)
+  const location = useLocation()
   const toastShown = useRef(false)
 
   useEffect(() => {
@@ -30,7 +30,6 @@ const ProtectRoute = ({ children }) => {
     }
   }, [token])
 
-  // Handle redirection logic to login, storing the previous route
   if (!token || (token && jwtDecode(token).exp < Date.now() / 1000)) {
     return <Navigate to={`/login?redirect=${location.pathname}`} />
   }

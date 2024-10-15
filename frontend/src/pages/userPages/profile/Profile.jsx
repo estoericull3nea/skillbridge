@@ -1,6 +1,6 @@
 // src/pages/userPages/profile/Profile.jsx
 import React, { useState, useEffect } from 'react'
-import { useParams, Routes, Route } from 'react-router-dom'
+import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import Sidebar from './sidebar'
 import BookingHistory from './BookingHistory'
 import Dashboard from './Dashboard'
@@ -9,8 +9,21 @@ import { CiCalendar } from 'react-icons/ci'
 import { IoMdNotificationsOutline } from 'react-icons/io'
 import Breadcrumbs from '../../../components/Breadcrumbs.jsx'
 import UserInfo from './UserInfo.jsx'
+import { isTokenValid } from '../../../utils/isTokenValid.js'
+import { toast } from 'react-hot-toast'
 
 const Profile = () => {
+  const navigate = useNavigate()
+  const token = localStorage.getItem('token')
+
+  useEffect(() => {
+    if (!isTokenValid(token)) {
+      localStorage.clear()
+      toast.error('Please login again')
+      navigate('/login')
+    }
+  }, [token, navigate])
+
   const { userId, firstName } = useParams()
   const [currentTime, setCurrentTime] = useState(new Date())
 

@@ -13,8 +13,9 @@ import { IoIosNotificationsOutline } from 'react-icons/io'
 
 const Navbar = () => {
   const token = localStorage.getItem('token')
-  const navigate = useNavigate()
   const decoded = token ? jwtDecode(token) : ''
+
+  const navigate = useNavigate()
 
   const userId = decoded?.id
 

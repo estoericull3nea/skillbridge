@@ -61,6 +61,7 @@ const App = () => {
           <Route exact path='/cookie-policy' element={<CookiePolicy />} />
           <Route exact path='/book-appointment' element={<BookAppointment />} />
           <Route exact path='/verify' element={<VerifyEmail />} />
+
           <Route
             exact
             path='/profile/:userId/:firstName/*'
