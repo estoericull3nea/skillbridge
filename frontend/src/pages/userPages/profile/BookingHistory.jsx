@@ -1,12 +1,44 @@
-// src/components/profile/BookingHistory.jsx
 import React, { useEffect, useState } from 'react'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import axios from 'axios'
+import { InputText } from 'primereact/inputtext'
+import { Dropdown } from 'primereact/dropdown'
 
 const BookingHistory = () => {
   const [isLoadingAllBookings, setIsLoadingAllBookings] = useState(false)
   const [allBookings, setAllBookings] = useState([])
+
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: 'contains' },
+    service: { value: null, matchMode: 'equals' },
+    status: { value: null, matchMode: 'equals' },
+    date: { value: null, matchMode: 'contains' },
+    notes: { value: null, matchMode: 'contains' },
+    phone: { value: null, matchMode: 'contains' },
+    createdAt: { value: null, matchMode: 'contains' },
+  })
+
+  const serviceOptions = [
+    { label: 'Virtual Assistance', value: 'virtual_assistance' },
+    { label: 'Recruitment Services', value: 'recruitment_services' },
+    { label: 'Other Service', value: 'other' },
+  ]
+
+  const statusOptions = [
+    { label: 'Pending', value: 'pending' },
+    { label: 'Ongoing', value: 'ongoing' },
+    { label: 'Canceled', value: 'canceled' },
+    { label: 'Rejected', value: 'rejected' },
+    { label: 'Done', value: 'done' },
+    { label: 'Missed', value: 'missed' },
+  ]
+
+  const onServiceFilterChange = (e) => {
+    let _filters = { ...filters }
+    _filters['service'].value = e.value // Update the service filter value
+    setFilters(_filters) // Update the filters state
+  }
 
   const fetchAllBookings = async () => {
     setIsLoadingAllBookings(true)
@@ -61,17 +93,38 @@ const BookingHistory = () => {
       ) : (
         <DataTable
           value={allBookings}
-          showGridlines
-          stripedRows
           paginator
           rows={5}
+          showGridlines
+          stripedRows
           className='bg-white shadow-xl rounded-xl p-6'
           size='medium'
           removableSort
+          filters={filters} // Pass the filters state to the DataTable
+          globalFilterFields={['service', 'status', 'notes', 'phone']} // Fields to be globally filtered
+          header={
+            <div className='table-header'>
+              <span className='p-input-icon-left'>
+                <i className='pi pi-search' />
+                <InputText
+                  type='search'
+                  className='py-3 shadow-lg px-3'
+                  onInput={(e) =>
+                    setFilters({
+                      ...filters,
+                      global: { value: e.target.value, matchMode: 'contains' },
+                    })
+                  }
+                  placeholder='Search...'
+                />
+              </span>
+            </div>
+          }
         >
+          {/* Service Column with Dropdown Filter */}
           <Column
             header='Service'
-            field='service'
+            field='service' // This will filter by the 'service' field
             body={(rowData) =>
               rowData.service === 'virtual_assistance'
                 ? 'Virtual Assistance'
@@ -80,15 +133,31 @@ const BookingHistory = () => {
                 : 'Other Service'
             }
             sortable
-          ></Column>
+            filter // Enable filtering
+            filterElement={
+              <Dropdown
+                value={filters.service.value} // Bind dropdown value to the filter state
+                options={serviceOptions}
+                onChange={onServiceFilterChange} // Update the filter state when dropdown changes
+                placeholder='Filter by Service'
+                className='p-column-filter'
+                showClear
+              />
+            }
+          />
 
+          {/* Date & Time Column */}
           <Column
             field='date'
             header='Date & Time'
-            body={(rowData) => ` ${formatDate(rowData.date)} ${rowData.time}`}
+            body={(rowData) => `${formatDate(rowData.date)} ${rowData.time}`}
             sortable
-          ></Column>
+            filter
+            filterPlaceholder='Filter by Date'
+            filterMatchMode='contains'
+          />
 
+          {/* Notes Column */}
           <Column
             field='notes'
             header='Notes'
@@ -113,9 +182,12 @@ const BookingHistory = () => {
               )
             }
             sortable
-          ></Column>
+            filter
+            filterPlaceholder='Filter by Notes'
+            filterMatchMode='contains'
+          />
 
-          {/* Handle null or undefined 'status' */}
+          {/* Phone Column */}
           <Column
             field='phone'
             header='Phone'
@@ -140,7 +212,12 @@ const BookingHistory = () => {
               )
             }
             sortable
-          ></Column>
+            filter
+            filterPlaceholder='Filter by Phone'
+            filterMatchMode='contains'
+          />
+
+          {/* Status Column with Dropdown Filter */}
           <Column
             field='status'
             header='Status'
@@ -152,17 +229,37 @@ const BookingHistory = () => {
               )
             }
             sortable
-          ></Column>
+            filter
+            filterElement={
+              <Dropdown
+                value={filters.status?.value || null}
+                options={statusOptions}
+                onChange={(e) => {
+                  let _filters = { ...filters }
+                  _filters['status'].value = e.value
+                  setFilters(_filters)
+                }}
+                placeholder='Filter by Status'
+                className='p-column-filter'
+                showClear
+              />
+            }
+          />
 
+          {/* Booked At Column with Text Filter */}
           <Column
             field='createdAt'
             header='Booked At'
             body={(rowData) =>
-              ` ${formatDate(rowData.createdAt)} ${rowData.time}`
+              `${formatDate(rowData.createdAt)} ${rowData.time}`
             }
             sortable
+            filter
+            filterPlaceholder='Filter by Date'
+            filterMatchMode='contains'
           ></Column>
 
+          {/* Actions Column */}
           <Column
             header='Actions'
             body={(rowData) => (
@@ -180,7 +277,7 @@ const BookingHistory = () => {
                         rel='noopener noreferrer'
                         className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
                       >
-                        <IoSendOutline />
+                        <i className='pi pi-send' />
                       </a>
                     </div>
 
@@ -192,7 +289,7 @@ const BookingHistory = () => {
                       <button
                         onClick={() => cancelMeeting(rowData._id)}
                         className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                        disabled={loadingCancel[rowData._id]} // Disable while loading
+                        disabled={loadingCancel[rowData._id]}
                       >
                         {loadingCancel[rowData._id] ? (
                           <span
@@ -201,7 +298,7 @@ const BookingHistory = () => {
                             aria-hidden='true'
                           ></span>
                         ) : (
-                          <MdOutlineCancelScheduleSend />
+                          <i className='pi pi-times' />
                         )}
                       </button>
                     </div>
