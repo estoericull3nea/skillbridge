@@ -1,5 +1,6 @@
 import User from '../models/user.model.js'
 import bcrypt from 'bcryptjs'
+import fs from 'fs'
 
 export const clear = async (req, res) => {
   try {
@@ -72,10 +73,15 @@ export const updateUser = async (req, res) => {
     if (active !== undefined) user.active = active
     if (isVerified !== undefined) user.isVerified = isVerified
 
+    if (req.file) {
+      user.picture = req.file.path
+    }
+
     const updatedUser = await user.save()
 
     return res.status(200).json({
       message: 'User updated successfully',
+      updatedUser,
     })
   } catch (error) {
     return res.status(500).json({ message: error.message })

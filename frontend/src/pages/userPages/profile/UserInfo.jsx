@@ -34,7 +34,7 @@ const UserInfo = () => {
       setLoading(true)
       try {
         const response = await axios.get(
-          `http://localhost:5000/api/v1/users/${userId}`
+          `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
         )
         const data = response.data
 
@@ -59,7 +59,7 @@ const UserInfo = () => {
     if (userId) {
       fetchUserData()
     }
-  }, [userId])
+  }, [userId, localStorage.getItem('picture')])
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target
@@ -94,13 +94,18 @@ const UserInfo = () => {
 
     try {
       const response = await axios.patch(
-        `http://localhost:5000/api/v1/users/${userId}`,
+        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`,
         formDataToSend,
         { headers: { 'Content-Type': 'multipart/form-data' } } // Required for file uploads
       )
+
+      localStorage.setItem(
+        'picture',
+        `http://localhost:5000/${response.data.updatedUser.picture}`
+      )
       setFormData({
         ...formData,
-        picture: response.data.user.picture, // Update picture path after upload
+        picture: localStorage.getItem('picture'), // Update picture path after upload
       })
       toast.success('User information updated successfully')
     } catch (error) {
@@ -137,7 +142,8 @@ const UserInfo = () => {
                 <div className='w-24 h-2w-24 rounded-full bg-gray-200 overflow-hidden'>
                   {formData.picture ? (
                     <img
-                      src={localStorage.getItem('picture')}
+                      // src={localStorage.getItem('picture')}
+                      src={`${localStorage.getItem('picture')}`}
                       alt='Profile'
                       className='object-cover w-full h-full'
                     />
