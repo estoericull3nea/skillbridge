@@ -90,13 +90,13 @@ const UserInfo = () => {
     formDataToSend.append('email', formData.email)
     if (formData.password) formDataToSend.append('password', formData.password)
     formDataToSend.append('role', formData.role)
-    if (formData.picture) formDataToSend.append('picture', formData.picture) // Only append if picture is selected
+    if (formData.picture) formDataToSend.append('picture', formData.picture)
 
     try {
       const response = await axios.patch(
         `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`,
         formDataToSend,
-        { headers: { 'Content-Type': 'multipart/form-data' } } // Required for file uploads
+        { headers: { 'Content-Type': 'multipart/form-data' } }
       )
 
       localStorage.setItem(
@@ -105,7 +105,15 @@ const UserInfo = () => {
       )
       setFormData({
         ...formData,
-        picture: localStorage.getItem('picture'), // Update picture path after upload
+        picture: localStorage.getItem('picture'),
+      })
+      setEditableFields({
+        firstName: false,
+        lastName: false,
+        email: false,
+        password: false,
+        picture: false,
+        role: false,
       })
       toast.success('User information updated successfully')
     } catch (error) {
@@ -139,7 +147,7 @@ const UserInfo = () => {
               </div>
               <div className='flex items-center gap-2'>
                 {/* Display the profile picture */}
-                <div className='w-24 h-2w-24 rounded-full bg-gray-200 overflow-hidden'>
+                <div className='w-36 h-2w-36 rounded-full bg-gray-200 overflow-hidden'>
                   {formData.picture ? (
                     <img
                       // src={localStorage.getItem('picture')}

@@ -39,7 +39,10 @@ const Navbar = () => {
       localStorage.setItem('firstName', response.data.firstName)
       localStorage.setItem('lastName', response.data.lastName)
       localStorage.setItem('email', response.data.email)
-      localStorage.setItem('picture', response.data.picture)
+      localStorage.setItem(
+        'picture',
+        `http://localhost:5000/${response.data.picture}`
+      )
     } catch (error) {
       console.log(error.response.data.message)
     } finally {
@@ -58,7 +61,7 @@ const Navbar = () => {
     if (userId) {
       fetchLoginUser()
     }
-  }, [token])
+  }, [token, localStorage.getItem('picture')])
 
   console.log(user)
 
@@ -574,7 +577,11 @@ const Navbar = () => {
                   >
                     <span className='text-xl block font-bold'>
                       {user.picture ? (
-                        <img src={user.picture} alt='' className='w-full' />
+                        <img
+                          src={localStorage.getItem('picture')}
+                          alt=''
+                          className='w-full'
+                        />
                       ) : (
                         getUserInitials()
                       )}
