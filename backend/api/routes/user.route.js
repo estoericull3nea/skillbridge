@@ -7,6 +7,7 @@ import {
   updateUser,
 } from '../controllers/user.controller.js'
 import { upload } from '../middlewares/uploadMiddleware.js'
+import { requestAccountDeletion } from '../controllers/accountDeletion.controller.js'
 
 const router = express.Router()
 
@@ -15,5 +16,7 @@ router.get('/', getUsers)
 router.get('/:userId', getUser)
 router.delete('/:userId', deleteUser)
 router.patch('/:userId', upload.single('picture'), updateUser)
+
+router.post('/:userId/request-deletion', requestAccountDeletion)
 
 export default router
