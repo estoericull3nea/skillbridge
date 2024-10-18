@@ -106,3 +106,66 @@ export const getDeletionRequestsByUserId = async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 }
+
+export const getAllPendingDeletionRequests = async (req, res) => {
+  try {
+    const pendingRequests = await DeleteAccount.find({
+      status: 'pending',
+    }).populate('user')
+
+    if (!pendingRequests || pendingRequests.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No pending deletion requests found.' })
+    }
+
+    res.status(200).json({
+      count: pendingRequests.length,
+      pendingRequests,
+    })
+  } catch (error) {
+    console.error('Error fetching pending deletion requests:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const getAllApprovedDeletionRequests = async (req, res) => {
+  try {
+    const approvedRequests = await DeleteAccount.find({
+      status: 'approved',
+    }).populate('user')
+
+    if (!approvedRequests || approvedRequests.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No approved deletion requests found.' })
+    }
+
+    res.status(200).json({
+      count: approvedRequests.length,
+      approvedRequests,
+    })
+  } catch (error) {
+    console.error('Error fetching approved deletion requests:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
+
+export const getAllRejectedDeletionRequests = async (req, res) => {
+  try {
+    const rejectedRequests = await DeleteAccount.find({
+      status: 'rejected',
+    }).populate('user')
+
+    if (!rejectedRequests || rejectedRequests.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No rejected deletion requests found.' })
+    }
+
+    res.status(200).json(rejectedRequests)
+  } catch (error) {
+    console.error('Error fetching rejected deletion requests:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
