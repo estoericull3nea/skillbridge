@@ -26,11 +26,7 @@ const Sidebar = () => {
               Dashboard
             </Link>
           </li>
-          <li>
-            <Link to={`/profile/${userId}/${firstName}/user-info`}>
-              User Information
-            </Link>
-          </li>
+
           <li>
             <Link to={`/profile/${userId}/${firstName}/booking-history`}>
               Booking History
@@ -42,13 +38,8 @@ const Sidebar = () => {
             <span>Account Settings</span>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/change-password`}>
-              Change Password
-            </Link>
-          </li>
-          <li>
-            <Link to={`/profile/${userId}/${firstName}/linked-accounts`}>
-              Linked Accounts
+            <Link to={`/profile/${userId}/${firstName}/user-info`}>
+              User Information
             </Link>
           </li>
           <li>
@@ -57,27 +48,12 @@ const Sidebar = () => {
             </Link>
           </li>
           <li>
-            <button>Delete Account</button>
-          </li>
-        </ul>
-        <ul className='menu rounded-box '>
-          <li className='menu-title'>
-            <span>Support and Feedback</span>
-          </li>
-          <li>
-            <Link to={`/profile/${userId}/${firstName}/contact-support`}>
-              Contact Support
-            </Link>
-          </li>
-          <li>
-            <Link to={`/profile/${userId}/${firstName}/faq`}>FAQs</Link>
-          </li>
-          <li>
-            <Link to={`/profile/${userId}/${firstName}/feedback`}>
-              Submit Feedback
+            <Link to={`/profile/${userId}/${firstName}/deletion`}>
+              Delete Account
             </Link>
           </li>
         </ul>
+
         <ul className='menu rounded-box '>
           <li className='menu-title'>
             <span>Security and Privacy</span>
@@ -104,6 +80,24 @@ const Sidebar = () => {
               href='#data-export'
             >
               Data Export
+            </Link>
+          </li>
+        </ul>
+        <ul className='menu rounded-box '>
+          <li className='menu-title'>
+            <span>Support and Feedback</span>
+          </li>
+          <li>
+            <Link to={`/profile/${userId}/${firstName}/contact-support`}>
+              Contact Support
+            </Link>
+          </li>
+          <li>
+            <Link to={`/profile/${userId}/${firstName}/faq`}>FAQs</Link>
+          </li>
+          <li>
+            <Link to={`/profile/${userId}/${firstName}/feedback`}>
+              Submit Feedback
             </Link>
           </li>
         </ul>

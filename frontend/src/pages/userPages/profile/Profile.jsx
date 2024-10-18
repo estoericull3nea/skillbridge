@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import Sidebar from './sidebar'
 import BookingHistory from './BookingHistory'
+import DeleteAccount from './DeleteAccount'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
@@ -65,6 +66,7 @@ const Profile = () => {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/user-info' element={<UserInfo />} />
             <Route path='/booking-history' element={<BookingHistory />} />
+            <Route path='/deletion' element={<DeleteAccount />} />
           </Routes>
         </div>
       </div>
