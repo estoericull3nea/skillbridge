@@ -86,3 +86,23 @@ export const rejectDeleteAccount = async (req, res) => {
     res.status(500).json({ message: 'Server error' })
   }
 }
+
+export const getDeletionRequestsByUserId = async (req, res) => {
+  const { userId } = req.params // Get the userId from the request parameters
+
+  try {
+    // Fetch all deletion requests for the specific userId
+    const requests = await DeleteAccount.find({ user: userId }).populate('user')
+
+    if (!requests || requests.length === 0) {
+      return res
+        .status(404)
+        .json({ message: 'No deletion requests found for this user.' })
+    }
+
+    res.status(200).json(requests)
+  } catch (error) {
+    console.error('Error fetching deletion requests by userId:', error)
+    res.status(500).json({ message: 'Server error' })
+  }
+}
