@@ -36,8 +36,7 @@ export const getDeleteAccounts = async (req, res) => {
     )
     res.status(200).json(requests)
   } catch (error) {
-    console.error('Error fetching deletion requests:', error)
-    res.status(500).json({ message: 'Server error' })
+    return res.status(500).json({ message: error.message })
   }
 }
 

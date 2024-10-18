@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom'
 
 const RequestDeleteAccount = () => {
   const [isRequesting, setIsRequesting] = useState(false)
-  const [showModal, setShowModal] = useState(false) // Control modal visibility
+  const [showModal, setShowModal] = useState(false)
   const { userId } = useParams()
 
   const handleDeleteRequest = async () => {
     setIsRequesting(true)
     try {
-      const { status } = await axios.post(
+      const { status } = await axios.delete(
         `${
           import.meta.env.VITE_DEV_BACKEND_URL
         }users/${userId}/request-deletion`
@@ -21,7 +21,7 @@ const RequestDeleteAccount = () => {
         toast.success(
           'Account deletion request submitted. Pending admin approval.'
         )
-        setShowModal(false) // Close the modal on success
+        setShowModal(false)
       }
     } catch (error) {
       if (
@@ -37,14 +37,10 @@ const RequestDeleteAccount = () => {
 
   return (
     <div className='mt-6'>
-      {/* Button to trigger modal */}
       <button className='btn btn-error' onClick={() => setShowModal(true)}>
         Request Account Deletion
       </button>
 
-      <p>Deletion Status: Pending</p>
-
-      {/* DaisyUI modal for confirmation */}
       {showModal && (
         <div className={`modal ${showModal ? 'modal-open' : ''}`}>
           <div className='modal-box'>
