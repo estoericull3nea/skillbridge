@@ -15,16 +15,23 @@ const Navbar = () => {
   const token = localStorage.getItem('token')
   const decoded = token ? jwtDecode(token) : ''
 
-  if (token && decoded?.picture) {
-    if (decoded.picture.startsWith('https://lh3.googleusercontent.com')) {
-      localStorage.setItem('picture', decoded.picture)
-    } else {
-      localStorage.setItem(
-        'picture',
-        `http://localhost:5000/${decoded.picture}`
-      )
-    }
-  }
+  console.log(decoded)
+
+  // if (!decoded?.picture) {
+  //   localStorage.setItem('picture', decoded.picture)
+  // } else {
+  //   if (token && decoded?.picture) {
+  //     // localStorage.setItem('testPicture', decoded.picture)
+  //     if (decoded.picture.startsWith('https://lh3.googleusercontent.com')) {
+  //       localStorage.setItem('picture', decoded.picture)
+  //     } else {
+  //       localStorage.setItem(
+  //         'picture',
+  //         `http://localhost:5000/${decoded.picture}`
+  //       )
+  //     }
+  //   }
+  // }
 
   const navigate = useNavigate()
 

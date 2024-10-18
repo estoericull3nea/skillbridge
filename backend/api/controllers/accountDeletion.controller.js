@@ -1,6 +1,6 @@
 import DeleteAccount from '../models/deletionRequest.model.js'
 import User from '../models/user.model.js'
-
+import Booking from '../models/booking.model.js'
 // Handle user deletion request
 export const requestAccountDeletion = async (req, res) => {
   const { userId } = req.params
@@ -42,22 +42,35 @@ export const getDeleteAccounts = async (req, res) => {
 
 // Admin approves the deletion request and deletes the user
 export const approveDeleteAccount = async (req, res) => {
-  const { requestId } = req.params
+  const { requestId } = req.params // Get the deletion request ID from the parameters
 
   try {
+    // Find the deletion request by ID and populate the associated user details
     const request = await DeleteAccount.findById(requestId).populate('user')
+
     if (!request || request.status !== 'pending') {
       return res
         .status(400)
         .json({ message: 'Invalid or already processed request.' })
     }
 
+    // Get the user ID from the deletion request
+    const userId = request.user._id
+
+    // Delete all bookings associated with this user
+    await Booking.deleteMany({ user: userId })
+
     // Delete the user
-    await User.findByIdAndDelete(request.user._id)
+    await User.findByIdAndDelete(userId)
+
+    // Mark the deletion request as approved
     request.status = 'approved'
     await request.save()
 
-    res.status(200).json({ message: 'Account deleted successfully.' })
+    // Send a success response
+    res.status(200).json({
+      message: 'Account and all associated bookings deleted successfully.',
+    })
   } catch (error) {
     console.error('Error approving deletion request:', error)
     res.status(500).json({ message: 'Server error' })
