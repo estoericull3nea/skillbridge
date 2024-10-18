@@ -490,6 +490,7 @@ export const googleSignup = async (req, res) => {
           firstName: userGoogleRegistered[0].firstName,
           lastName: userGoogleRegistered[0].lastName,
           role: userGoogleRegistered[0].role,
+          picture: userGoogleRegistered[0].picture,
         },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }

@@ -15,6 +15,17 @@ const Navbar = () => {
   const token = localStorage.getItem('token')
   const decoded = token ? jwtDecode(token) : ''
 
+  if (token && decoded?.picture) {
+    if (decoded.picture.startsWith('https://lh3.googleusercontent.com')) {
+      localStorage.setItem('picture', decoded.picture)
+    } else {
+      localStorage.setItem(
+        'picture',
+        `http://localhost:5000/${decoded.picture}`
+      )
+    }
+  }
+
   const navigate = useNavigate()
 
   const userId = decoded?.id
@@ -577,7 +588,8 @@ const Navbar = () => {
                       {user?.picture ? (
                         <img
                           // src={localStorage.getItem('picture')}
-                          src={`http://localhost:5000/${user?.picture}`}
+                          // src={`http://localhost:5000/${user?.picture}`}
+                          src={localStorage.getItem('picture')}
                           alt=''
                           className='w-full'
                         />
@@ -587,7 +599,7 @@ const Navbar = () => {
                     </span>
                     <ul
                       tabIndex={0}
-                      className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[175px] translate-x-[-20px] lg:translate-x-0'
+                      className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[174px] translate-x-[-20px] lg:translate-x-0'
                     >
                       <li>
                         <Link

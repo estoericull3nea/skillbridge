@@ -77,11 +77,23 @@ const BookAppointment = () => {
   const mutation = useMutation({
     mutationFn: submitBooking,
     onSuccess: () => {
-      toast.success('Booking submitted successfully!')
+      toast.success(
+        'Your booking has been successfully submitted. Please check your email for further details.',
+        {
+          duration: 6000,
+        }
+      )
+
       setFormData({
-        firstName: localStorage.getItem('firstName') ? localStorage.getItem('firstName') : '',
-        lastName: localStorage.getItem('lastName') ? localStorage.getItem('lastName') : '',
-        email: localStorage.getItem('email') ? localStorage.getItem('email') : '',
+        firstName: localStorage.getItem('firstName')
+          ? localStorage.getItem('firstName')
+          : '',
+        lastName: localStorage.getItem('lastName')
+          ? localStorage.getItem('lastName')
+          : '',
+        email: localStorage.getItem('email')
+          ? localStorage.getItem('email')
+          : '',
         phoneNumber: '',
         notes: '',
       })
