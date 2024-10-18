@@ -63,8 +63,6 @@ const Navbar = () => {
     }
   }, [token, localStorage.getItem('picture')])
 
-  console.log(user)
-
   return (
     <div className='shadow'>
       <div className='container'>
@@ -576,9 +574,10 @@ const Navbar = () => {
                     role='button'
                   >
                     <span className='text-xl block font-bold'>
-                      {user.picture ? (
+                      {user?.picture ? (
                         <img
-                          src={localStorage.getItem('picture')}
+                          // src={localStorage.getItem('picture')}
+                          src={`http://localhost:5000/${user?.picture}`}
                           alt=''
                           className='w-full'
                         />
@@ -592,7 +591,7 @@ const Navbar = () => {
                     >
                       <li>
                         <Link
-                          to={`/profile/${user?._id}/${user.firstName}/dashboard`}
+                          to={`/profile/${user?._id}/${user?.firstName}/dashboard`}
                         >
                           {' '}
                           <CiUser />
