@@ -3,10 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
+import { useTranslation } from 'react-i18next'
+
 import axios from 'axios'
 import 'daisyui'
 
 const Login = () => {
+  const { t } = useTranslation()
+
   const navigate = useNavigate()
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [loadingResend, setLoadingResend] = useState(false)
@@ -80,18 +84,15 @@ const Login = () => {
   // Google login handler
   const handleGoogleLogin = () => {
     const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID
-    const redirectUri = `${window.location.origin}/google-callback` // Redirect URI after login
+    const redirectUri = `${window.location.origin}/google-callback`
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile%20email&access_type=offline`
 
-    // Open Google OAuth in a new window
     const googleWindow = window.open(oauthUrl, '_self', 'width=500,height=600')
 
-    // Listen for the message from the popup window
     window.addEventListener('message', (event) => {
       if (event.data === 'googleSignInSuccess') {
-        googleWindow.close() // Close the Google sign-in window
-        // toast.success('login')
-        navigate('/') // Redirect after successful login
+        googleWindow.close()
+        navigate('/')
       }
     })
   }
