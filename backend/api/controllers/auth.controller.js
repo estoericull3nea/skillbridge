@@ -8,6 +8,7 @@ import { OAuth2Client } from 'google-auth-library'
 import crypto from 'crypto'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
+import LogLogin from '../models/loginHistory.model.js'
 dotenv.config()
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
@@ -410,7 +411,6 @@ export const googleSignup = async (req, res) => {
   const { code } = req.body
 
   try {
-    // Exchange the authorization code for tokens
     const tokenResponse = await axios.post(
       'https://oauth2.googleapis.com/token',
       {
@@ -453,6 +453,17 @@ export const googleSignup = async (req, res) => {
           { expiresIn: '1h' }
         )
 
+        // Capture IP Address and User Agent from request
+        const ipAddress = req.ip || req.connection.remoteAddress
+        const userAgent = req.get('User-Agent')
+
+        // Save login activity to the LoginHistory model
+        await LogLogin.create({
+          userId: existingUser._id,
+          ipAddress,
+          userAgent,
+        })
+
         return res.status(200).json({
           token,
         })
@@ -482,6 +493,15 @@ export const googleSignup = async (req, res) => {
         { expiresIn: '1h' }
       )
 
+      const ipAddress = req.ip || req.connection.remoteAddress
+      const userAgent = req.get('User-Agent')
+
+      await LogLogin.create({
+        user: user._id,
+        ipAddress,
+        userAgent,
+      })
+
       return res.status(200).json({
         token,
       })
@@ -498,6 +518,17 @@ export const googleSignup = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       )
+
+      // Capture IP Address and User Agent from request
+      const ipAddress = req.ip || req.connection.remoteAddress
+      const userAgent = req.get('User-Agent')
+
+      // Save login activity to the LoginHistory model
+      await LogLogin.create({
+        user: userGoogleRegistered[0]._id,
+        ipAddress,
+        userAgent,
+      })
 
       return res.status(200).json({
         token,
