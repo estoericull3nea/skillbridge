@@ -66,20 +66,20 @@ const Sidebar = () => {
               Login Activity
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to={`/profile/${userId}/${firstName}/privacy`}
               href='#privacy-settings'
             >
               Privacy Settings
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to={`/profile/${userId}/${firstName}/data-export`}
               href='#data-export'
             >
-              Data Export
+              Download Your Data
             </Link>
           </li>
         </ul>

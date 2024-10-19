@@ -25,30 +25,36 @@ export const exportUsersData = async (req, res) => {
       loginHistory,
     }
 
-    // Handle different format options (json, csv, zip)
     if (format === 'csv') {
-      // Extract user fields and booking history fields dynamically
-      const userFields = Object.keys(user._doc) // _doc contains the raw fields from MongoDB
-      const bookingFields = Object.keys(
-        bookingHistory.length > 0 ? bookingHistory[0]._doc : {}
-      )
+      const userFields = Object.keys(user._doc)
 
-      // If booking has meetings, extract the meeting fields
+      const bookingFields =
+        bookingHistory.length > 0 ? Object.keys(bookingHistory[0]._doc) : []
 
       const meetingFields =
         bookingHistory.length > 0 && bookingHistory[0].meeting
           ? Object.keys(bookingHistory[0].meeting._doc)
           : []
 
-      // Flatten user data and each booking object (including meeting) into a single array of JSON objects for CSV
-      const records = bookingHistory.map((booking) => ({
-        ...user._doc,
-        ...booking._doc,
-        ...booking.meeting?._doc, // Spread meeting data if available
-      }))
+      const loginHistoryFields =
+        loginHistory.length > 0 ? Object.keys(loginHistory[0]._doc) : []
 
-      // Combine all fields for the CSV header
-      const csvFields = [...userFields, ...bookingFields, ...meetingFields]
+      const records = bookingHistory.map((booking) => {
+        const loginRecord = loginHistory.length > 0 ? loginHistory[0] : {}
+        return {
+          ...user._doc,
+          ...booking._doc,
+          ...(booking.meeting ? booking.meeting._doc : {}),
+          ...loginRecord._doc,
+        }
+      })
+
+      const csvFields = [
+        ...userFields,
+        ...bookingFields,
+        ...meetingFields,
+        ...loginHistoryFields,
+      ]
 
       const json2csvParser = new Parser({ fields: csvFields })
       const csvData = json2csvParser.parse(records)
@@ -72,7 +78,6 @@ export const exportUsersData = async (req, res) => {
       res.setHeader('Content-Type', 'application/zip')
       return res.send(content)
     } else {
-      // Default to JSON if no format or unknown format is provided
       res.setHeader(
         'Content-Disposition',
         `attachment; filename=user_data_${userId}.json`

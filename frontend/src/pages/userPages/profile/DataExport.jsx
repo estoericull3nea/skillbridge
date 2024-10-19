@@ -17,35 +17,41 @@ const DataExport = () => {
         { responseType: 'blob' }
       )
 
-      // Create a URL for the file and trigger a download
       const url = window.URL.createObjectURL(new Blob([response.data]))
       const fileExtension =
         format === 'json' ? 'json' : format === 'csv' ? 'csv' : 'zip'
       const link = document.createElement('a')
       link.href = url
-      link.setAttribute('download', `user_data_${userId}.${fileExtension}`) // Name of the downloaded file
+      link.setAttribute('download', `user_data_${userId}.${fileExtension}`)
       document.body.appendChild(link)
       link.click()
       link.remove() // Cleanup after download
     } catch (error) {
       console.error('Error exporting data:', error.message)
     } finally {
-      setLoading(false) // Set loading to false once the export is done
+      setLoading(false)
     }
   }
 
   return (
     <div>
       <label>Select Format: </label>
-      <select value={format} onChange={(e) => setFormat(e.target.value)}>
-        <option value='json'>JSON</option>
-        <option value='csv'>CSV</option>
-        <option value='zip'>ZIP</option>
-      </select>
+
+      <div className='form-control'>
+        <select
+          value={format}
+          onChange={(e) => setFormat(e.target.value)}
+          className='select select-bordered'
+        >
+          <option value='json'>JSON</option>
+          <option value='csv'>CSV</option>
+          <option value='zip'>ZIP</option>
+        </select>
+      </div>
 
       <button
         onClick={handleDataExport}
-        className='btn btn-primary'
+        className='btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3'
         disabled={loading}
       >
         {loading ? 'Exporting...' : 'Export Data'}
