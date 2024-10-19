@@ -5,6 +5,16 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      no_feedbacks: 'No Feedbacks',
+      feedbacks: 'Feedbacks',
+      feedback: 'Feedback',
+      booking_experience: 'Booking Experience',
+      service_quality: 'Service Quality',
+      overall_satisfaction: 'Overall Satisfaction',
+      feedback_type: 'Feedback Type',
+      suggestions: 'Suggestions',
+      created_at: 'Created At',
+
       submit_feedback: 'Submit Feedback',
       full_name: 'Full Name',
       email: 'Email',
@@ -437,6 +447,16 @@ const resources = {
   },
   es: {
     translation: {
+      no_feedbacks: 'No hay comentarios',
+      feedbacks: 'Comentarios',
+      feedback: 'Comentarios',
+      booking_experience: 'Experiencia de Reserva',
+      service_quality: 'Calidad del Servicio',
+      overall_satisfaction: 'Satisfacción General',
+      feedback_type: 'Tipo de Comentario',
+      suggestions: 'Sugerencias',
+      created_at: 'Creado En',
+
       submit_feedback: 'Enviar Comentarios',
       full_name: 'Nombre Completo',
       email: 'Correo Electrónico',
