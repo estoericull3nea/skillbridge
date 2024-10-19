@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import { toast } from 'react-hot-toast'
 
 const Feedback = () => {
   const [fullName, setFullName] = useState('')
@@ -10,7 +11,6 @@ const Feedback = () => {
   const [feedbackType, setFeedbackType] = useState('General Feedback')
   const [suggestions, setSuggestions] = useState('')
   const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
 
   useEffect(() => {
     const firstName = localStorage.getItem('firstName') || ''
@@ -24,7 +24,6 @@ const Feedback = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setLoading(true)
-    setError('')
 
     try {
       const feedbackData = {
@@ -37,16 +36,13 @@ const Feedback = () => {
         suggestions,
       }
 
-      console.log(feedbackData)
-      return
-
       // Sending feedback data to the backend
       await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}/api/v1/feedback`,
+        `${import.meta.env.VITE_DEV_BACKEND_URL}feedbacks`,
         feedbackData
       )
 
-      alert('Thank you for your feedback!')
+      toast.success('Thank you for your feedback!')
 
       // Reset the form after submission
       setBookingExperience('')
@@ -56,9 +52,6 @@ const Feedback = () => {
       setSuggestions('')
     } catch (error) {
       console.error('Error submitting feedback:', error)
-      setError(
-        'There was an error submitting your feedback. Please try again later.'
-      )
     } finally {
       setLoading(false)
     }
@@ -67,7 +60,6 @@ const Feedback = () => {
   return (
     <div className='p-5'>
       <h2 className='text-2xl font-semibold mb-4'>Submit Feedback</h2>
-      {error && <p className='text-red-500'>{error}</p>}
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div>
           <label className='label' htmlFor='name'>
@@ -131,6 +123,7 @@ const Feedback = () => {
             className='select select-bordered w-full'
             value={overallSatisfaction}
             onChange={(e) => setOverallSatisfaction(e.target.value)}
+            required
           >
             <option value=''>Select Satisfaction Level</option>
             <option value='Very Satisfied'>Very Satisfied</option>
