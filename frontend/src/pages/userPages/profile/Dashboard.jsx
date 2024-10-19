@@ -11,10 +11,13 @@ import { Column } from 'primereact/column'
 import { IoSendOutline } from 'react-icons/io5'
 import { MdOutlineCancelScheduleSend } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next'
 
 import './datatables.css'
 
 const Dashboard = () => {
+  const { t } = useTranslation()
+
   const [loadingTotalBookingsCount, setLoadingTotalBookingsCount] =
     useState(false)
   const [totalBookingsCount, setTotalBookingsCount] = useState(0)
@@ -222,22 +225,19 @@ const Dashboard = () => {
   ])
   return (
     <div className=''>
-      <div className='bg-white shadow-xl rounded-xl p-6 '>
+      <div className='bg-white shadow-xl rounded-xl p-6'>
         <h1 className='mb-3'>
-          Welcome back, {localStorage.getItem('firstName')}!
+          {t('welcomeBack', { firstName: localStorage.getItem('firstName') })}!
         </h1>
-        <p className='text-2xl font-semibold leading-normal'>
-          Remember, every small step takes you closer to your goals. Let’s make
-          today count!
-        </p>
+        <p className='text-2xl font-semibold leading-normal'>{t('reminder')}</p>
       </div>
       <div>
         <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
-          Bookings Analytics
+          {t('bookingsAnalytics')}
         </p>
         <div className='grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-3 mt-1'>
-          <div className='stat bg-white shadow-xl rounded-xl p-6 '>
-            <div className='stat-figure text-secondary '>
+          <div className='stat bg-white shadow-xl rounded-xl p-6'>
+            <div className='stat-figure text-secondary'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -261,7 +261,7 @@ const Dashboard = () => {
             ) : (
               <div>
                 <div className='stat-title flex items-center gap-3'>
-                  <GrSchedules /> Count Bookings
+                  <GrSchedules /> {t('countBookings')}
                 </div>
                 <div className='stat-value'>{totalBookingsCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
@@ -294,7 +294,7 @@ const Dashboard = () => {
             ) : (
               <div>
                 <div className='stat-title flex items-center gap-3'>
-                  <RiCalendarScheduleLine /> Pending Bookings{' '}
+                  <RiCalendarScheduleLine /> {t('pendingBookings')}
                 </div>
                 <div className='stat-value'>{totalPendingCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
@@ -327,7 +327,7 @@ const Dashboard = () => {
             ) : (
               <div>
                 <div className='stat-title flex items-center gap-3'>
-                  <AiOutlineSchedule /> Success Bookings{' '}
+                  <AiOutlineSchedule /> {t('successBookings')}
                 </div>
                 <div className='stat-value'>{totalDoneCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
@@ -360,7 +360,7 @@ const Dashboard = () => {
             ) : (
               <div>
                 <div className='stat-title flex items-center gap-3'>
-                  <GrScheduleNew /> Canceled/Rejected Bookings{' '}
+                  <GrScheduleNew /> {t('canceledRejectedBookings')}
                 </div>
                 <div className='stat-value'>{totalCanceledCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
@@ -393,7 +393,7 @@ const Dashboard = () => {
             ) : (
               <div>
                 <div className='stat-title flex items-center gap-3'>
-                  <MdOutlineScheduleSend /> Ongoing Bookings{' '}
+                  <MdOutlineScheduleSend /> {t('ongoingBookings')}
                 </div>
                 <div className='stat-value'>{totalOngoingCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
@@ -405,7 +405,7 @@ const Dashboard = () => {
 
       <div>
         <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
-          Upcomming Bookings
+          {t('upcomingBookings')}
         </p>
 
         {loadingUpcommingBookings ? (
@@ -439,38 +439,40 @@ const Dashboard = () => {
             size='medium'
           >
             <Column
-              header='Service'
+              header={t('service')}
               body={(rowData) =>
                 rowData.service === 'virtual_assistance'
-                  ? 'Virtual Assistance'
+                  ? t('virtualAssistance')
                   : rowData.service === 'recruitment_services'
-                  ? 'Recruitment Services'
-                  : 'Other Service'
+                  ? t('recruitmentServices')
+                  : t('otherService')
               }
             ></Column>
 
             <Column
               field='date'
-              header='Date & Time'
+              header={t('dateTime')}
               body={(rowData) => ` ${formatDate(rowData.date)} ${rowData.time}`}
             ></Column>
 
             <Column
-              header='Days Remaining'
+              header={t('daysRemaining')}
               body={(rowData) => {
                 const daysLeft = daysUntilBooking(rowData.date)
-                return daysLeft > 0 ? `${daysLeft} day(s) remaining` : 'Today'
+                return daysLeft > 0
+                  ? `${daysLeft} ${t('daysRemainingText')}`
+                  : t('today')
               }}
             ></Column>
 
             <Column
-              header='Full Name'
+              header={t('fullName')}
               body={(rowData) => `${rowData.firstName} ${rowData.lastName}`}
             ></Column>
 
             <Column
               field='notes'
-              header='Notes'
+              header={t('notes')}
               body={(rowData) =>
                 rowData.notes ? (
                   rowData.notes
@@ -496,7 +498,7 @@ const Dashboard = () => {
             {/* Handle null or undefined 'status' */}
             <Column
               field='phone'
-              header='Phone'
+              header={t('phone')}
               body={(rowData) =>
                 rowData.phone ? (
                   rowData.phone
@@ -519,11 +521,10 @@ const Dashboard = () => {
               }
             ></Column>
             <Column
-              field='status'
-              header='Status'
+              header={t('status')}
               body={(rowData) =>
                 rowData.status === 'missed' ? (
-                  <span className='text-red-600'>Missed</span>
+                  <span className='text-red-600'>{t('missed')}</span>
                 ) : (
                   rowData.status
                 )
@@ -531,7 +532,7 @@ const Dashboard = () => {
             ></Column>
 
             <Column
-              header='Actions'
+              header={t('actions')}
               body={(rowData) => (
                 <div className='flex space-x-2'>
                   {rowData.meeting?.join_url ? (
@@ -539,7 +540,7 @@ const Dashboard = () => {
                       {/* Join Zoom Button */}
                       <div
                         className='tooltip tooltip-left'
-                        data-tip='Join Zoom meeting'
+                        data-tip={t('joinZoomMeeting')}
                       >
                         <a
                           href={rowData.meeting.join_url}
@@ -554,7 +555,7 @@ const Dashboard = () => {
                       {/* Cancel Meeting Button */}
                       <div
                         className='tooltip tooltip-left'
-                        data-tip='Cancel meeting'
+                        data-tip={t('cancelMeeting')}
                       >
                         <button
                           onClick={() => cancelMeeting(rowData._id)}
@@ -574,7 +575,7 @@ const Dashboard = () => {
                       </div>
                     </>
                   ) : (
-                    <span>No URL</span>
+                    <span>{t('noURL')}</span>
                   )}
                 </div>
               )}
