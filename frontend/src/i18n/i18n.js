@@ -7,7 +7,6 @@ const resources = {
     translation: {
       home: 'Home',
       user: 'User',
-
       contact_support: 'Contact Support',
       full_name: 'Full Name',
       email: 'Email',
