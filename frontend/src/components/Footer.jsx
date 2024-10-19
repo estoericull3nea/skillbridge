@@ -23,7 +23,6 @@ const Footer = () => {
               <h6 className='footer-title'>Quick Links</h6>
               <a className='link link-hover'>Home</a>
               <a className='link link-hover'>Services</a>
-              <a className='link link-hover'>Careers</a>
               <Link to='/about' className='link link-hover'>
                 About
               </Link>

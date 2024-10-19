@@ -308,7 +308,7 @@ const Navbar = () => {
                       </details>
                     </li>
                     <li>
-                      <Link to='/careers'>Careers</Link>
+                      <Link to='/about'>About</Link>
                     </li>
 
                     <ul>
@@ -354,7 +354,6 @@ const Navbar = () => {
               </Link>
             </div>
           </div>
-
           <div className='navbar-center hidden lg:flex'>
             <ul className='menu menu-horizontal px-1'>
               <li>
@@ -554,11 +553,10 @@ const Navbar = () => {
                 </div>
               </li>
               <li>
-                <Link to='/careers'>Careers</Link>
+                <Link to='/about'>About</Link>
               </li>
             </ul>
           </div>
-
           <div className='navbar-end'>
             {!token && (
               <ul className='menu menu-horizontal px-1 min-w-max'>
