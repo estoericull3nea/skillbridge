@@ -32,12 +32,12 @@ const userSchema = new mongoose.Schema(
       default: '',
     },
 
-    lastLoginDate: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'LoginHistory',
-      },
-    ],
+    // lastLoginDate: [
+    //   {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'LoginHistory',
+    //   },
+    // ],
 
     // Email Verification
     isVerified: { type: Boolean, default: false },
