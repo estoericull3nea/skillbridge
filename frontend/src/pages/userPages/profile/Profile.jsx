@@ -6,6 +6,7 @@ import BookingHistory from './BookingHistory'
 import DeleteAccount from './DeleteAccount'
 import LoginActivity from './LoginActivity'
 import ContactUsForm from './ContactUsForm'
+import Feedback from './Feedback'
 import DataExport from './DataExport'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
@@ -74,6 +75,7 @@ const Profile = () => {
             <Route path='/login-activity' element={<LoginActivity />} />
             <Route path='/data-export' element={<DataExport />} />
             <Route path='/contact-support' element={<ContactUsForm />} />
+            <Route path='/feedback' element={<Feedback />} />
           </Routes>
         </div>
       </div>

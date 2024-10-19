@@ -92,9 +92,9 @@ const Sidebar = () => {
               Contact Support
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link to={`/profile/${userId}/${firstName}/faq`}>FAQs</Link>
-          </li>
+          </li> */}
           <li>
             <Link to={`/profile/${userId}/${firstName}/feedback`}>
               Submit Feedback

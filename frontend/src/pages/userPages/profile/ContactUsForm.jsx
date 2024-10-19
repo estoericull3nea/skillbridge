@@ -34,7 +34,7 @@ const ContactUsForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const formData = { name, email, subject, message }
+    const formData = { name, email, subject, message, userId }
 
     setSending(true)
 
@@ -64,7 +64,7 @@ const ContactUsForm = () => {
   }
 
   return (
-    <div className='p-5'>
+    <div className='p-5 shadow-xl bg-base-100 rounded-lg'>
       <h1 className='text-2xl font-semibold mb-4'>Contact Support</h1>
 
       {loading ? (
