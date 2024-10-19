@@ -426,6 +426,7 @@ export const googleSignup = async (req, res) => {
     const { sub } = jwtDecode(id_token)
     const userGoogleRegistered = await User.find({ googleId: sub }).limit(1)
 
+    // if the user it not registered
     if (!userGoogleRegistered.length) {
       const {
         given_name: firstName,

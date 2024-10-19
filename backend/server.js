@@ -26,7 +26,7 @@ const allowedOrigins = [
 ]
 
 // Cleaning of expired token every hour
-// import './api/utils/cronJobs.js'
+import './api/utils/cronJobs.js'
 
 dotenv.config()
 
