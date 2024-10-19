@@ -293,34 +293,32 @@ const resources = {
       ContactUsRegardingPrivacy:
         " If you have any questions, concerns, or feedback regarding our privacy policy or data practices, please don't hesitate to contact us.",
 
-      cookiePolicy: 'Cookie Policy',
-      introduction: 'Introduction',
-      welcomeToSkillBridge: 'Welcome to Skill Bridge Marketing Agency!',
-      cookiePolicyDescription:
-        "This policy describes how Skill Bridge uses cookies and other related technologies (collectively referred to as 'cookies') when you interact with uson ://skillbridgevirtualcareers.com (the 'Site') as set forth in the Skill Bridge Privacy Policy.",
-      cookiePolicyAgreement:
-        "By using our website, you agree to the use of cookies as described in our Cookie Policy. You can change your cookie preferences by adjusting your browser settings or by visiting the 'Cookie Settings' section at the bottom of the homepage. We may update this agreement without notice, so please check back regularly for any changes.",
-      whatAreCookies: 'What are Cookies?',
-      whatAreCookiesDescription:
-        'Cookies are small text files that contain information and are downloaded to your device (like a computer or smartphone) when you visit a website. These cookies can be recognized by the website that downloaded them or by other websites that use the same cookies.',
-      whatAreCookiesUsedFor: 'What are Cookies Used For?',
-      whatAreCookiesUsedForDescription:
-        'Cookies serve various functions, such as helping us understand how the website is used, enabling efficient navigation between pages, remembering your preferences, and enhancing your overall browsing experience. Additionally, cookies can help ensure that the marketing you encounter online is more relevant to your interests.',
-      typesOfCookiesUsed: 'What Types of Cookies Does Skill Bridge Use?',
-      strictlyNecessaryCookies: 'Strictly Necessary Cookies',
-      strictlyNecessaryCookiesDescription:
-        'These cookies are crucial as they allow you to navigate the website and utilize its features, including accessing secure areas. Without these cookies, certain services such as payment submissions cannot be provided. These cookies are integral to the functionality of the website and cannot be disabled in our systems.',
-      performanceCookies: 'Performance Cookies',
-      performanceCookiesDescription:
-        'These cookies gather information about your usage of the website, such as the pages you visit frequently and whether you encounter error messages on certain pages. The information collected by these cookies is aggregated or anonymous, meaning it does not personally identify you.',
-      functionalityCookies: 'Functionality Cookies',
-      functionalityCookiesDescription:
-        "These cookies enable the website to remember your preferences, such as your username or preferred region. They may also facilitate services you've requested, such as watching a video or commenting on a blog.",
-      cookieDuration: 'How Long Will Cookies Stay on My Browsing Device?',
-      cookieDurationDescription:
-        "The duration for which a cookie remains on your browsing device depends on whether it is a 'persistent' or 'session' cookie. Session cookies are temporary and will only remain on your device until you finish your browsing session. Persistent cookies, on the other hand, remain on your device until they expire or are manually deleted.",
-      cookieSettingsUpdate:
-        "You may update your cookie preferences by clicking the 'Cookie Settings' button at the bottom of the Site's homepage.",
+      termsAndConditions: 'Terms & Conditions',
+      termsOfService: 'Terms of Service',
+      usersAcknowledgmentAndAcceptanceOfTerms:
+        "User's Acknowledgment and Acceptance of Terms",
+      welcomeToSkillBridge: 'Welcome to Skill Bridge Agency!',
+      termsDescription:
+        '"Skill Bridge ("We" or "Us") offers the websitehttp://skillbridgevirtualcareers.com and various related services, including any content, features, and functions provided on or throughhttp://skillbridgevirtualcareers.com (referred to as the \'site\' and collectively, the \'services\'). Your use of the site and services is subject to your compliance with all the terms, conditions, and notices outlined in this agreement (referred to as the \'Terms of Service\'), as well as any other written agreements between you and Skill Bridge. Additionally, when accessing specific services or materials on the site, users are bound by any posted rules applicable to those services or materials, which may include additional terms and conditions beyond those stated in this agreement. All such guidelines or rules are hereby incorporated into these Terms of Service by reference."',
+      byUsingSite:
+        "By using this site, you agree to follow these Terms of Service. If you don't want to follow these terms, please leave the site now. If you're not happy with this site, its products, services, content, or any other information available here, your only option is to stop using the site and/or those specific products or services. Your agreement with us to follow these terms starts as soon as you begin using this site.",
+      serviceOverview: 'Service Overview',
+      serviceOverviewDescription:
+        'To maintain the quality of the Skill Bridge experience, we have established our terms of service for the benefit of both parties. Violation of these rules constitutes a breach of the terms of service and may result in the termination of your account.',
+      tasksDescription:
+        'Each task submission must be done individually via phone, email, or SMS. We require that each communication with your assistant focuses on a single, clearly defined task. While we encourage you to submit multiple tasks at once, we kindly ask that you create a separate email for each task. This practice ensures optimal efficiency in completing your requests promptly.',
+      guaranteeWarranty: 'Guarantee & Warranty',
+      guaranteeWarrantyDescription:
+        'While we strive to offer the most accurate and effective information possible, there is no warranty on any of the information, tasks, or projects completed by your Virtual Assistant. We are committed to providing high-quality assistance, as we believe Virtual Assistants excel in this regard. However, if any information or results provided are incorrect, we regretfully cannot be held legally or morally liable for them. We sincerely apologize for any inconvenience this may cause.',
+      thirdPartyContent: 'Third Party Sites and Content',
+      thirdPartyContentDescription:
+        "The services may include features or options that allow you to access or link to other websites, applications, or resources on the Internet, and vice versa. However, it's important to note that these external websites are beyond our control, and we cannot be held responsible for any third-party content, products, or services, including their accuracy, integrity, quality, legality, safety, or intellectual property rights.",
+      limitationOfLiability: 'Limitation of Liability',
+      limitationOfLiabilityDescription:
+        'We reserve the right to cooperate fully with law enforcement authorities or court orders requesting or directing us to disclose the identity or other information of anyone posting any content or other materials on or through the services. You waive and hold harmless us and our affiliates from any claims resulting from any action taken by any of the foregoing parties during or as a consequence of investigations by such parties or law enforcement authorities.',
+      miscellaneous: 'Miscellaneous',
+      miscellaneousDescription:
+        'By providing us with your email address, you consent to receive all necessary notices electronically at that email address. You are responsible for maintaining and updating your email address as needed.',
       latestUpdate: 'Latest update',
     },
   },
@@ -617,35 +615,32 @@ const resources = {
       ContactUsRegardingPrivacy:
         'Si tienes alguna pregunta, inquietud o comentario sobre nuestra política de privacidad o prácticas de datos, no dudes en contactarnos.',
 
-      cookiePolicy: 'Política de Cookies',
-      introduction: 'Introducción',
-      welcomeToSkillBridge: '¡Bienvenido a Skill Bridge Marketing Agency!',
-      cookiePolicyDescription:
-        "Esta política describe cómo Skill Bridge utiliza cookies y otras tecnologías relacionadas (colectivamente denominadas 'cookies') cuando interactúas con nosotros enhttp://skillbridgevirtualcareers.com (el 'Sitio') como se establece en la Política de Privacidad de Skill Bridge.",
-      cookiePolicyAgreement:
-        "Al utilizar nuestro sitio web, aceptas el uso de cookies como se describe en nuestra Política de Cookies. Puedes cambiar tus preferencias de cookies ajustando la configuración de tu navegador o visitando la sección 'Configuración de Cookies' en la parte inferior de la página de inicio. Podemos actualizar este acuerdo sin previo aviso, por lo que te recomendamos revisarlo periódicamente para cualquier cambio.",
-      whatAreCookies: '¿Qué son las Cookies?',
-      whatAreCookiesDescription:
-        'Las cookies son pequeños archivos de texto que contienen información y se descargan en tu dispositivo (como una computadora o un teléfono inteligente) cuando visitas un sitio web. Estas cookies pueden ser reconocidas por el sitio web que las descargó o por otros sitios web que utilizan las mismas cookies.',
-      whatAreCookiesUsedFor: '¿Para qué se utilizan las Cookies?',
-      whatAreCookiesUsedForDescription:
-        'Las cookies tienen varias funciones, como ayudarnos a comprender cómo se utiliza el sitio web, permitir la navegación eficiente entre páginas, recordar tus preferencias y mejorar tu experiencia de navegación en general. Además, las cookies pueden ayudar a garantizar que la publicidad que ves en línea sea más relevante para tus intereses.',
-      typesOfCookiesUsed: '¿Qué tipos de cookies utiliza Skill Bridge?',
-      strictlyNecessaryCookies: 'Cookies estrictamente necesarias',
-      strictlyNecessaryCookiesDescription:
-        'Estas cookies son cruciales ya que te permiten navegar por el sitio web y utilizar sus funciones, incluido el acceso a áreas seguras. Sin estas cookies, ciertos servicios como las transacciones de pago no se pueden proporcionar. Estas cookies son fundamentales para la funcionalidad del sitio web y no se pueden desactivar en nuestros sistemas.',
-      performanceCookies: 'Cookies de Rendimiento',
-      performanceCookiesDescription:
-        'Estas cookies recopilan información sobre tu uso del sitio web, como las páginas que visitas con frecuencia y si encuentras mensajes de error en ciertas páginas. La información recopilada por estas cookies es agregada o anónima, lo que significa que no te identifica personalmente.',
-      functionalityCookies: 'Cookies de Funcionalidad',
-      functionalityCookiesDescription:
-        'Estas cookies permiten que el sitio web recuerde tus preferencias, como tu nombre de usuario o región preferida. También pueden facilitar servicios que has solicitado, como ver un video o comentar en un blog.',
-      cookieDuration:
-        '¿Cuánto tiempo permanecerán las cookies en mi dispositivo de navegación?',
-      cookieDurationDescription:
-        "La duración de una cookie en tu dispositivo depende de si es una cookie 'persistente' o 'de sesión'. Las cookies de sesión son temporales y permanecerán en tu dispositivo solo hasta que termines tu sesión de navegación. Las cookies persistentes, por otro lado, permanecen en tu dispositivo hasta que expiren o se eliminen manualmente.",
-      cookieSettingsUpdate:
-        "Puedes actualizar tus preferencias de cookies haciendo clic en el botón 'Configuración de Cookies' en la parte inferior de la página de inicio del Sitio.",
+      termsAndConditions: 'Términos y Condiciones',
+      termsOfService: 'Términos de Servicio',
+      usersAcknowledgmentAndAcceptanceOfTerms:
+        'Reconocimiento y Aceptación de los Términos por parte del Usuario',
+      welcomeToSkillBridge: '¡Bienvenido a Skill Bridge Agency!',
+      termsDescription:
+        "\"Skill Bridge ('Nosotros' o 'Nos') ofrece el sitio webhttp://skillbridgevirtualcareers.com y varios servicios relacionados, incluyendo cualquier contenido, funciones y características proporcionadas en o a través dehttp://skillbridgevirtualcareers.com (referido como el 'sitio' y colectivamente, los 'servicios'). El uso del sitio y los servicios está sujeto a su cumplimiento con todos los términos, condiciones y avisos establecidos en este acuerdo (referidos como los 'Términos de Servicio'), así como a cualquier otro acuerdo escrito entre usted y Skill Bridge. Además, cuando acceda a servicios o materiales específicos en el sitio, los usuarios están sujetos a las reglas publicadas aplicables a esos servicios o materiales, que pueden incluir términos y condiciones adicionales más allá de los establecidos en este acuerdo. Todas estas pautas o reglas se incorporan a estos Términos de Servicio por referencia.\"",
+      byUsingSite:
+        'Al utilizar este sitio, usted acepta seguir estos Términos de Servicio. Si no desea seguir estos términos, por favor abandone el sitio ahora. Si no está satisfecho con este sitio, sus productos, servicios, contenido o cualquier otra información disponible aquí, su única opción es dejar de usar el sitio y/o esos productos o servicios específicos. Su acuerdo con nosotros para seguir estos términos comienza tan pronto como empiece a usar este sitio.',
+      serviceOverview: 'Descripción del Servicio',
+      serviceOverviewDescription:
+        'Para mantener la calidad de la experiencia de Skill Bridge, hemos establecido nuestros términos de servicio para el beneficio de ambas partes. La violación de estas reglas constituye una violación de los términos de servicio y puede resultar en la cancelación de su cuenta.',
+      tasksDescription:
+        'Cada envío de tarea debe hacerse individualmente por teléfono, correo electrónico o SMS. Requerimos que cada comunicación con su asistente se centre en una tarea claramente definida. Aunque le animamos a enviar varias tareas a la vez, le pedimos amablemente que cree un correo electrónico separado para cada tarea. Esta práctica garantiza una mayor eficiencia en la finalización de sus solicitudes de manera oportuna.',
+      guaranteeWarranty: 'Garantía',
+      guaranteeWarrantyDescription:
+        'Si bien nos esforzamos por ofrecer la información más precisa y efectiva posible, no hay garantía sobre ninguna de las informaciones, tareas o proyectos completados por su Asistente Virtual. Estamos comprometidos a proporcionar asistencia de alta calidad, ya que creemos que los Asistentes Virtuales destacan en este aspecto. Sin embargo, si alguna información o resultados proporcionados son incorrectos, lamentamos no poder ser considerados responsables legal o moralmente por ellos. Nos disculpamos sinceramente por cualquier inconveniente que esto pueda causar.',
+      thirdPartyContent: 'Sitios y Contenidos de Terceros',
+      thirdPartyContentDescription:
+        'Los servicios pueden incluir funciones u opciones que le permitan acceder o vincularse a otros sitios web, aplicaciones o recursos en Internet, y viceversa. Sin embargo, es importante señalar que estos sitios externos están fuera de nuestro control, y no podemos ser considerados responsables por el contenido, productos o servicios de terceros, incluida su precisión, integridad, calidad, legalidad, seguridad o derechos de propiedad intelectual.',
+      limitationOfLiability: 'Limitación de Responsabilidad',
+      limitationOfLiabilityDescription:
+        'Nos reservamos el derecho de cooperar plenamente con las autoridades policiales o con órdenes judiciales que soliciten o nos dirijan a revelar la identidad u otra información de cualquier persona que publique algún contenido u otros materiales en o a través de los servicios. Usted exime y mantiene indemnes a nosotros y nuestras afiliadas de cualquier reclamación resultante de cualquier acción tomada por cualquiera de las partes mencionadas durante o como consecuencia de investigaciones por dichas partes o autoridades policiales.',
+      miscellaneous: 'Varios',
+      miscellaneousDescription:
+        'Al proporcionarnos su dirección de correo electrónico, usted acepta recibir todas las notificaciones necesarias electrónicamente en esa dirección de correo electrónico. Usted es responsable de mantener y actualizar su dirección de correo electrónico según sea necesario.',
       latestUpdate: 'Última actualización',
     },
   },
