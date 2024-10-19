@@ -202,6 +202,96 @@ const resources = {
       EmailIsRequired: 'Email is required',
       BookingLimitReached:
         'You have reached the booking limit of 3 active bookings. Please complete them first.',
+
+      PrivacyPolicy: 'Privacy Policy',
+      Introduction: 'Introduction',
+      WelcomeMessage: 'Welcome to Skill Bridge Marketing Agency!',
+      PrivacyCommitment:
+        'At Skill Bridge Marketing Agency, we are committed to protecting your privacy and ensuring the security of your personal information. This privacy policy outlines how we collect, use, and safeguard the information you provide to us through our website and related services.',
+      TransparencyMessage:
+        'We understand the importance of transparency and trust when it comes to handling your data. By using our website and services, you consent to the practices described in this privacy policy. Please take the time to read this document carefully to understand our practices regarding your personal information.',
+      QuestionsConcernsMessage:
+        "If you have any questions or concerns about our privacy policy or data practices, please don't hesitate to contact us. Your privacy and satisfaction are of utmost importance to us.",
+
+      TypesOfInformationCollected: 'Types of Information Collected',
+      PersonalInformation: 'Personal Information',
+      PersonalInformationDescription:
+        'This may include your name, email address, phone number, mailing address, and other contact details that you provide to us when signing up for our services, contacting us through our website, or communicating with our team.',
+      BillingInformation: 'Billing Information',
+      BillingInformationDescription:
+        'If you engage in transactions with us, we may collect billing information, such as credit card details or other payment information necessary to process payments and fulfill orders.',
+      UsageData: 'Usage Data',
+      UsageDataDescription:
+        "We collect information about how you interact with our website, including pages visited, links clicked, and other actions taken. This data helps us analyze user behavior, improve our website's functionality, and personalize your experience.",
+      DeviceBrowserInformation: 'Device and Browser Information',
+      DeviceBrowserInformationDescription:
+        'We may automatically collect information about the device you use to access our website, such as your IP address, device type, browser type, operating system, and other technical details. This information helps us optimize our website for compatibility and security purposes.',
+      CookiesTrackingTechnologies: 'Cookies and Tracking Technologies',
+      CookiesTrackingTechnologiesDescription:
+        'Like many websites, we use cookies and similar tracking technologies to enhance your browsing experience and collect information about your preferences and activities on our website. For more information about how we use cookies, please refer to our Cookie Policy.',
+      FeedbackAndCommunications: 'Feedback and Communications',
+      FeedbackAndCommunicationsDescription:
+        'If you choose to provide feedback, submit inquiries, or communicate with us through our website or other channels, we may collect the content of your messages and any other information you voluntarily provide.',
+
+      HowInformationCollected: 'How Information is Collected',
+      VoluntarySubmission: 'Voluntary Information Submission',
+      VoluntarySubmissionDescription:
+        'We may collect information that you voluntarily provide to us when you interact with our website or services. This includes filling out forms, signing up for an account, subscribing to our newsletter, contacting us through our website, or providing feedback.',
+      AutomatedDataCollection: 'Automated Data Collection',
+      AutomatedDataCollectionDescription:
+        'When you visit our website, we may automatically collect certain information about your interactions with our site using cookies, web beacons, and other tracking technologies.',
+      CommunicationChannels: 'Communication Channels',
+      CommunicationChannelsDescription:
+        'We may collect information when you communicate with us through various channels, such as email, phone, or live chat. This includes the content of your messages, as well as any attachments or other information you provide during the communication process.',
+
+      PurposeOfDataCollection: 'Purpose of Data Collection',
+      ProvidingServices: 'Providing Services',
+      ProvidingServicesDescription:
+        'We collect information to provide virtual assistant services to our clients effectively. This includes tasks such as administrative support, customer service, scheduling, research, and other tasks requested by our clients.',
+      Communication: 'Communication',
+      CommunicationDescription:
+        'We may use your contact information to communicate with you about our services, updates, promotions, or important announcements. This includes responding to inquiries, resolving issues, and delivering requested information.',
+      ImprovingUserExperience: 'Improving User Experience',
+      ImprovingUserExperienceDescription:
+        "We collect data to analyze user behavior, preferences, and trends to improve our website's functionality, usability, and content.",
+      Personalization: 'Personalization',
+      PersonalizationDescription:
+        'We may use information collected to personalize your experience on our website and services, such as providing targeted content, recommendations, or advertisements based on your interests and preferences.',
+
+      DataProtectionSecurityMeasures: 'Data Protection and Security Measures',
+      Encryption: 'Encryption',
+      EncryptionDescription:
+        'We use industry-standard encryption protocols to secure data transmission and protect sensitive information submitted through our website.',
+      AccessControls: 'Access Controls',
+      AccessControlsDescription:
+        'Access to personal information is restricted to authorized personnel who require access to perform their duties.',
+      EmployeeTraining: 'Employee Training and Awareness',
+      EmployeeTrainingDescription:
+        'We provide ongoing training and awareness programs to our employees to ensure they understand their responsibilities regarding data protection and security.',
+
+      UserRights: 'User Rights',
+      RightToAccess: 'Right to Access',
+      RightToAccessDescription:
+        'You have the right to request access to the personal information we hold about you.',
+      RightToRectification: 'Right to Rectification',
+      RightToRectificationDescription:
+        'If you believe that any of the personal information we hold about you is inaccurate, incomplete, or outdated, you have the right to request corrections or updates to your data.',
+      RightToErasure: 'Right to Erasure',
+      RightToErasureDescription:
+        'You have the right to request the deletion of your personal information from our systems under certain circumstances.',
+
+      CookiesAndTracking: 'Cookies and Tracking',
+      PolicyUpdates: 'Policy Updates',
+      PolicyUpdatesDescription:
+        'We may update this privacy policy from time to time to reflect changes in our data practices, legal requirements, or business operations.',
+
+      ContactInformation: 'Contact Information',
+      LastUpdated: 'Latest update: 9th of February, 2024',
+      AtSkillBridgeMarketingAgency:
+        'At Skill Bridge Marketing Agency, we collect several types of information from users to provide our services effectively. The types of information we may collect include:',
+      PersonalInformation: 'Personal Information',
+      ContactUsRegardingPrivacy:
+        " If you have any questions, concerns, or feedback regarding our privacy policy or data practices, please don't hesitate to contact us.",
     },
   },
   es: {
@@ -405,6 +495,97 @@ const resources = {
       EmailIsRequired: 'El correo electrónico es obligatorio',
       BookingLimitReached:
         'Has alcanzado el límite de 3 reservas activas. Por favor, completa esas reservas primero.',
+
+      PrivacyPolicy: 'Política de Privacidad',
+      Introduction: 'Introducción',
+      WelcomeMessage: '¡Bienvenido a Skill Bridge Marketing Agency!',
+      PrivacyCommitment:
+        'En Skill Bridge Marketing Agency, nos comprometemos a proteger su privacidad y garantizar la seguridad de su información personal. Esta política de privacidad describe cómo recopilamos, utilizamos y protegemos la información que nos proporciona a través de nuestro sitio web y servicios relacionados.',
+      TransparencyMessage:
+        'Entendemos la importancia de la transparencia y la confianza cuando se trata de manejar sus datos. Al utilizar nuestro sitio web y servicios, usted consiente las prácticas descritas en esta política de privacidad. Tómese el tiempo para leer este documento detenidamente para comprender nuestras prácticas con respecto a su información personal.',
+      QuestionsConcernsMessage:
+        'Si tiene alguna pregunta o inquietud sobre nuestra política de privacidad o prácticas de datos, no dude en contactarnos. Su privacidad y satisfacción son de suma importancia para nosotros.',
+
+      TypesOfInformationCollected: 'Tipos de Información Recopilada',
+      PersonalInformation: 'Información Personal',
+      PersonalInformationDescription:
+        'Esto puede incluir su nombre, dirección de correo electrónico, número de teléfono, dirección postal y otros detalles de contacto que nos proporcione al registrarse para nuestros servicios, contactarnos a través de nuestro sitio web o comunicarse con nuestro equipo.',
+      BillingInformation: 'Información de Facturación',
+      BillingInformationDescription:
+        'Si realiza transacciones con nosotros, podemos recopilar información de facturación, como detalles de la tarjeta de crédito u otra información de pago necesaria para procesar pagos y cumplir con los pedidos.',
+      UsageData: 'Datos de Uso',
+      UsageDataDescription:
+        'Recopilamos información sobre cómo interactúa con nuestro sitio web, incluidas las páginas visitadas, los enlaces en los que hace clic y otras acciones realizadas. Estos datos nos ayudan a analizar el comportamiento del usuario, mejorar la funcionalidad de nuestro sitio web y personalizar su experiencia.',
+      DeviceBrowserInformation: 'Información del Dispositivo y Navegador',
+      DeviceBrowserInformationDescription:
+        'Podemos recopilar automáticamente información sobre el dispositivo que utiliza para acceder a nuestro sitio web, como su dirección IP, tipo de dispositivo, tipo de navegador, sistema operativo y otros detalles técnicos.',
+      CookiesTrackingTechnologies: 'Cookies y Tecnologías de Seguimiento',
+      CookiesTrackingTechnologiesDescription:
+        'Como muchos sitios web, utilizamos cookies y tecnologías de seguimiento similares para mejorar su experiencia de navegación y recopilar información sobre sus preferencias y actividades en nuestro sitio web. Para obtener más información sobre cómo utilizamos las cookies, consulte nuestra Política de Cookies.',
+      FeedbackAndCommunications: 'Comentarios y Comunicaciones',
+      FeedbackAndCommunicationsDescription:
+        'Si elige proporcionar comentarios, enviar consultas o comunicarse con nosotros a través de nuestro sitio web u otros canales, podemos recopilar el contenido de sus mensajes y cualquier otra información que proporcione voluntariamente.',
+
+      HowInformationCollected: 'Cómo se Recopila la Información',
+      VoluntarySubmission: 'Envío Voluntario de Información',
+      VoluntarySubmissionDescription:
+        'Podemos recopilar información que nos proporcione voluntariamente cuando interactúe con nuestro sitio web o servicios.',
+      AutomatedDataCollection: 'Recopilación Automática de Datos',
+      AutomatedDataCollectionDescription:
+        'Cuando visita nuestro sitio web, podemos recopilar automáticamente cierta información sobre sus interacciones con nuestro sitio utilizando cookies, balizas web y otras tecnologías de seguimiento.',
+      CommunicationChannels: 'Canales de Comunicación',
+      CommunicationChannelsDescription:
+        'Podemos recopilar información cuando se comunique con nosotros a través de varios canales, como correo electrónico, teléfono o chat en vivo.',
+
+      PurposeOfDataCollection: 'Propósito de la Recopilación de Datos',
+      ProvidingServices: 'Prestación de Servicios',
+      ProvidingServicesDescription:
+        'Recopilamos información para proporcionar servicios de asistente virtual a nuestros clientes de manera efectiva.',
+      Communication: 'Comunicación',
+      CommunicationDescription:
+        'Podemos usar su información de contacto para comunicarnos con usted sobre nuestros servicios, actualizaciones, promociones o anuncios importantes.',
+      ImprovingUserExperience: 'Mejora de la Experiencia del Usuario',
+      ImprovingUserExperienceDescription:
+        'Recopilamos datos para analizar el comportamiento del usuario, las preferencias y las tendencias para mejorar la funcionalidad, la usabilidad y el contenido de nuestro sitio web.',
+      Personalization: 'Personalización',
+      PersonalizationDescription:
+        'Podemos utilizar la información recopilada para personalizar su experiencia en nuestro sitio web y servicios, como proporcionar contenido dirigido, recomendaciones o anuncios basados en sus intereses y preferencias.',
+
+      DataProtectionSecurityMeasures:
+        'Medidas de Protección y Seguridad de los Datos',
+      Encryption: 'Cifrado',
+      EncryptionDescription:
+        'Utilizamos protocolos de cifrado estándar de la industria para asegurar la transmisión de datos y proteger la información sensible.',
+      AccessControls: 'Controles de Acceso',
+      AccessControlsDescription:
+        'El acceso a la información personal está restringido al personal autorizado que lo necesite para realizar sus funciones.',
+      EmployeeTraining: 'Capacitación y Conciencia de los Empleados',
+      EmployeeTrainingDescription:
+        'Proporcionamos programas continuos de capacitación y concienciación a nuestros empleados para garantizar que comprendan sus responsabilidades con respecto a la protección y seguridad de los datos.',
+
+      UserRights: 'Derechos del Usuario',
+      RightToAccess: 'Derecho de Acceso',
+      RightToAccessDescription:
+        'Tiene el derecho de solicitar acceso a la información personal que tenemos sobre usted.',
+      RightToRectification: 'Derecho a la Rectificación',
+      RightToRectificationDescription:
+        'Si cree que alguno de los datos personales que tenemos sobre usted es inexacto o incompleto, tiene derecho a solicitar correcciones o actualizaciones.',
+      RightToErasure: 'Derecho a la Eliminación',
+      RightToErasureDescription:
+        'Tiene derecho a solicitar la eliminación de su información personal de nuestros sistemas en determinadas circunstancias.',
+
+      CookiesAndTracking: 'Cookies y Seguimiento',
+      PolicyUpdates: 'Actualizaciones de la Política',
+      PolicyUpdatesDescription:
+        'Podemos actualizar esta política de privacidad de vez en cuando para reflejar cambios en nuestras prácticas de datos, requisitos legales o operaciones comerciales.',
+
+      ContactInformation: 'Información de Contacto',
+      LastUpdated: 'Última actualización: 9 de febrero de 2024',
+      AtSkillBridgeMarketingAgency:
+        'En Skill Bridge Marketing Agency, recopilamos varios tipos de información de los usuarios para ofrecer nuestros servicios de manera efectiva. Los tipos de información que podemos recopilar incluyen:',
+      PersonalInformation: 'Información personal',
+      ContactUsRegardingPrivacy:
+        'Si tienes alguna pregunta, inquietud o comentario sobre nuestra política de privacidad o prácticas de datos, no dudes en contactarnos.',
     },
   },
 }
