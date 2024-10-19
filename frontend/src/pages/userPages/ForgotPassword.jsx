@@ -4,8 +4,11 @@ import { FaLongArrowAltLeft } from 'react-icons/fa'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next' // Import the translation hook
 
 const ForgotPassword = () => {
+  const { t } = useTranslation() // Use the translation hook
+
   const [email, setEmail] = useState('')
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [loadingResend, setLoadingResend] = useState(false)
@@ -25,11 +28,8 @@ const ForgotPassword = () => {
     },
     onError: (error) => {
       const errorMessage =
-        error.response?.data?.message || 'An error occurred. Please try again.'
-      if (
-        errorMessage ===
-        'Your account is not verified. Please verify your account first'
-      ) {
+        error.response?.data?.message || t('AnErrorOccurredPleaseTryAgain')
+      if (errorMessage === t('AccountNotVerifiedPleaseVerify')) {
         setShowVerificationModal(true) // Show the modal if account is not verified
       } else {
         toast.error(errorMessage)
@@ -49,15 +49,12 @@ const ForgotPassword = () => {
       return response.data
     },
     onSuccess: (data) => {
-      toast.success('Verification email resent successfully')
+      toast.success(t('VerificationEmailResentSuccessfully'))
       setShowVerificationModal(false)
     },
     onError: (error) => {
       setLoadingResend(false)
-      toast.error(
-        error.response?.data?.message ||
-          'An error occurred while resending the email'
-      )
+      toast.error(error.response?.data?.message || t('ErrorResendingEmail'))
     },
   })
 
@@ -65,7 +62,7 @@ const ForgotPassword = () => {
     e.preventDefault()
 
     if (!email) {
-      toast.error('Please enter your email')
+      toast.error(t('PleaseEnterYourEmail'))
       return
     }
 
@@ -83,7 +80,7 @@ const ForgotPassword = () => {
           <div className='w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0'>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
               <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
-                Forgot password
+                {t('ForgotPassword')}
               </h1>
 
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
@@ -92,14 +89,14 @@ const ForgotPassword = () => {
                     htmlFor='email'
                     className='block mb-2 text-sm font-medium text-gray-900'
                   >
-                    Your email
+                    {t('YourEmail')}
                   </label>
                   <input
                     type='email'
                     name='email'
                     id='email'
                     className='input input-bordered w-full'
-                    placeholder='example@gmail.com'
+                    placeholder={t('example@gmail.com')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -112,8 +109,8 @@ const ForgotPassword = () => {
                   disabled={forgotPasswordMutation.isPending}
                 >
                   {forgotPasswordMutation.isPending
-                    ? 'Sending...'
-                    : 'Forgot password'}
+                    ? t('Sending')
+                    : t('ForgotPassword')}
                 </button>
 
                 <p className='text-sm font-light text-gray-500 text-end'>
@@ -121,7 +118,7 @@ const ForgotPassword = () => {
                     to='/login'
                     className='font-medium text-black hover:underline flex items-center justify-end gap-x-2'
                   >
-                    <FaLongArrowAltLeft /> <span>Back to Login</span>
+                    <FaLongArrowAltLeft /> <span>{t('BackToLogin')}</span>
                   </Link>
                 </p>
               </form>
@@ -134,23 +131,21 @@ const ForgotPassword = () => {
       {showVerificationModal && (
         <div className='modal modal-open'>
           <div className='modal-box'>
-            <h3 className='font-bold text-lg'>Account not verified</h3>
-            <p className='py-4'>
-              Please verify your email address to continue.
-            </p>
+            <h3 className='font-bold text-lg'>{t('AccountNotVerified')}</h3>
+            <p className='py-4'>{t('PleaseVerifyYourEmailToContinue')}</p>
             <div className='modal-action'>
               <button
                 className={`btn ${loadingResend ? 'loading' : ''}`}
                 onClick={handleResendVerification}
                 disabled={loadingResend}
               >
-                {loadingResend ? 'Resending...' : 'Resend Verification Email'}
+                {loadingResend ? t('Resending') : t('ResendVerificationEmail')}
               </button>
               <button
                 className='btn'
                 onClick={() => setShowVerificationModal(false)}
               >
-                Cancel
+                {t('Cancel')}
               </button>
             </div>
           </div>

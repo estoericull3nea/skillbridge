@@ -121,6 +121,26 @@ const resources = {
       YouMustAcceptTerms: 'You must accept the terms and conditions',
       AlreadyHaveAnAccount: 'Already have an account?',
       LoginHere: 'Login here',
+
+      ForgotPassword: 'Forgot password',
+      YourEmail: 'Your email',
+      examplegmailcom: 'example@gmail.com',
+      Sending: 'Sending...',
+      ForgotPasswordButton: 'Forgot password',
+      PleaseEnterYourEmail: 'Please enter your email',
+      AccountNotVerified: 'Account not verified',
+      PleaseVerifyYourEmailToContinue:
+        'Please verify your email address to continue.',
+      Resending: 'Resending...',
+      ResendVerificationEmail: 'Resend Verification Email',
+      Cancel: 'Cancel',
+      BackToLogin: 'Back to Login',
+      AnErrorOccurredPleaseTryAgain: 'An error occurred. Please try again.',
+      AccountNotVerifiedPleaseVerify:
+        'Your account is not verified. Please verify your account first.',
+      VerificationEmailResentSuccessfully:
+        'Verification email resent successfully',
+      ErrorResendingEmail: 'An error occurred while resending the email',
     },
   },
   es: {
@@ -241,6 +261,27 @@ const resources = {
       YouMustAcceptTerms: 'Debes aceptar los términos y condiciones',
       AlreadyHaveAnAccount: '¿Ya tienes una cuenta?',
       LoginHere: 'Inicia sesión aquí',
+
+      ForgotPassword: '¿Olvidaste tu contraseña?',
+      YourEmail: 'Tu correo electrónico',
+      examplegmailcom: 'ejemplo@gmail.com',
+      Sending: 'Enviando...',
+      ForgotPasswordButton: '¿Olvidaste tu contraseña?',
+      PleaseEnterYourEmail: 'Por favor ingresa tu correo electrónico',
+      AccountNotVerified: 'Cuenta no verificada',
+      PleaseVerifyYourEmailToContinue:
+        'Por favor verifica tu dirección de correo electrónico para continuar.',
+      Resending: 'Reenviando...',
+      ResendVerificationEmail: 'Reenviar correo de verificación',
+      Cancel: 'Cancelar',
+      BackToLogin: 'Volver a Iniciar sesión',
+      AnErrorOccurredPleaseTryAgain:
+        'Ocurrió un error. Por favor intenta de nuevo.',
+      AccountNotVerifiedPleaseVerify:
+        'Tu cuenta no está verificada. Por favor verifica tu cuenta primero.',
+      VerificationEmailResentSuccessfully:
+        'Correo de verificación reenviado con éxito',
+      ErrorResendingEmail: 'Ocurrió un error al reenviar el correo.',
     },
   },
 }
