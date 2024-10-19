@@ -3,14 +3,15 @@ import { useMutation } from '@tanstack/react-query'
 import { useParams, Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
+import { useTranslation } from 'react-i18next'
 
 const ResetPassword = () => {
+  const { t } = useTranslation()
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const { resetToken } = useParams()
   const navigate = useNavigate()
 
-  // Password reset mutation using TanStack Query
   const resetPasswordMutation = useMutation({
     mutationFn: async ({ password }) => {
       const response = await axios.post(
@@ -23,11 +24,11 @@ const ResetPassword = () => {
     },
     onSuccess: (data) => {
       toast.success(data.message)
-      navigate('/login') // Redirect to login after successful password reset
+      navigate('/login')
     },
     onError: (error) => {
       toast.error(
-        error.response?.data?.message || 'An error occurred. Please try again.'
+        error.response?.data?.message || t('AnErrorOccurredPleaseTryAgain')
       )
     },
   })
@@ -35,18 +36,16 @@ const ResetPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
 
-    // Password validation
     if (password.length < 8) {
-      toast.error('Password must be at least 8 characters long')
+      toast.error(t('PasswordMustBe8Chars'))
       return
     }
 
     if (password !== confirmPassword) {
-      toast.error('Passwords do not match')
+      toast.error(t('PasswordsDoNotMatch'))
       return
     }
 
-    // Trigger the mutation to reset the password
     resetPasswordMutation.mutate({ password })
   }
 
@@ -57,7 +56,7 @@ const ResetPassword = () => {
           <div className='w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0'>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
               <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
-                Reset password
+                {t('ResetPassword')}
               </h1>
 
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
@@ -66,13 +65,13 @@ const ResetPassword = () => {
                     htmlFor='password'
                     className='block mb-2 text-sm font-medium text-gray-900'
                   >
-                    Password
+                    {t('Password')}
                   </label>
                   <input
                     type='password'
                     name='password'
                     id='password'
-                    placeholder='Enter new password'
+                    placeholder={t('EnterNewPassword')}
                     className='input input-bordered w-full'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -85,13 +84,13 @@ const ResetPassword = () => {
                     htmlFor='confirm-password'
                     className='block mb-2 text-sm font-medium text-gray-900'
                   >
-                    Confirm password
+                    {t('ConfirmPassword')}
                   </label>
                   <input
                     type='password'
                     name='confirm-password'
                     id='confirm-password'
-                    placeholder='Re-enter new password'
+                    placeholder={t('ReEnterNewPassword')}
                     className='input input-bordered w-full'
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -105,8 +104,8 @@ const ResetPassword = () => {
                   disabled={resetPasswordMutation.isPending}
                 >
                   {resetPasswordMutation.isPending
-                    ? 'Resetting...'
-                    : 'Reset password'}
+                    ? t('Resetting')
+                    : t('ResetPasswordButton')}
                 </button>
 
                 <p className='text-sm font-light text-gray-500 text-end'>
@@ -114,7 +113,7 @@ const ResetPassword = () => {
                     to='/login'
                     className='font-medium text-black hover:underline flex items-center justify-end gap-x-2'
                   >
-                    Back to Login
+                    {t('BackToLogin')}
                   </Link>
                 </p>
               </form>

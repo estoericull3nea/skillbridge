@@ -141,6 +141,18 @@ const resources = {
       VerificationEmailResentSuccessfully:
         'Verification email resent successfully',
       ErrorResendingEmail: 'An error occurred while resending the email',
+
+      ResetPassword: 'Reset password',
+      Password: 'Password',
+      ConfirmPassword: 'Confirm password',
+      EnterNewPassword: 'Enter new password',
+      ReEnterNewPassword: 'Re-enter new password',
+      Resetting: 'Resetting...',
+      ResetPasswordButton: 'Reset password',
+      BackToLogin: 'Back to Login',
+      PasswordMustBe8Chars: 'Password must be at least 8 characters long',
+      PasswordsDoNotMatch: 'Passwords do not match',
+      AnErrorOccurredPleaseTryAgain: 'An error occurred. Please try again.',
     },
   },
   es: {
@@ -282,6 +294,19 @@ const resources = {
       VerificationEmailResentSuccessfully:
         'Correo de verificación reenviado con éxito',
       ErrorResendingEmail: 'Ocurrió un error al reenviar el correo.',
+
+      ResetPassword: 'Restablecer contraseña',
+      Password: 'Contraseña',
+      ConfirmPassword: 'Confirmar contraseña',
+      EnterNewPassword: 'Ingresa la nueva contraseña',
+      ReEnterNewPassword: 'Reingresa la nueva contraseña',
+      Resetting: 'Restableciendo...',
+      ResetPasswordButton: 'Restablecer contraseña',
+      BackToLogin: 'Volver a Iniciar sesión',
+      PasswordMustBe8Chars: 'La contraseña debe tener al menos 8 caracteres',
+      PasswordsDoNotMatch: 'Las contraseñas no coinciden',
+      AnErrorOccurredPleaseTryAgain:
+        'Ocurrió un error. Por favor intenta de nuevo.',
     },
   },
 }
