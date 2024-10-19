@@ -4,6 +4,7 @@ import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import Sidebar from './sidebar'
 import BookingHistory from './BookingHistory'
 import DeleteAccount from './DeleteAccount'
+import LoginActivity from './LoginActivity'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
@@ -67,6 +68,8 @@ const Profile = () => {
             <Route path='/user-info' element={<UserInfo />} />
             <Route path='/booking-history' element={<BookingHistory />} />
             <Route path='/deletion' element={<DeleteAccount />} />
+            <Route path='/deletion' element={<DeleteAccount />} />
+            <Route path='/login-activity' element={<LoginActivity />} />
           </Routes>
         </div>
       </div>
