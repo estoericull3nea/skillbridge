@@ -292,6 +292,36 @@ const resources = {
       PersonalInformation: 'Personal Information',
       ContactUsRegardingPrivacy:
         " If you have any questions, concerns, or feedback regarding our privacy policy or data practices, please don't hesitate to contact us.",
+
+      cookiePolicy: 'Cookie Policy',
+      introduction: 'Introduction',
+      welcomeToSkillBridge: 'Welcome to Skill Bridge Marketing Agency!',
+      cookiePolicyDescription:
+        "This policy describes how Skill Bridge uses cookies and other related technologies (collectively referred to as 'cookies') when you interact with uson ://skillbridgevirtualcareers.com (the 'Site') as set forth in the Skill Bridge Privacy Policy.",
+      cookiePolicyAgreement:
+        "By using our website, you agree to the use of cookies as described in our Cookie Policy. You can change your cookie preferences by adjusting your browser settings or by visiting the 'Cookie Settings' section at the bottom of the homepage. We may update this agreement without notice, so please check back regularly for any changes.",
+      whatAreCookies: 'What are Cookies?',
+      whatAreCookiesDescription:
+        'Cookies are small text files that contain information and are downloaded to your device (like a computer or smartphone) when you visit a website. These cookies can be recognized by the website that downloaded them or by other websites that use the same cookies.',
+      whatAreCookiesUsedFor: 'What are Cookies Used For?',
+      whatAreCookiesUsedForDescription:
+        'Cookies serve various functions, such as helping us understand how the website is used, enabling efficient navigation between pages, remembering your preferences, and enhancing your overall browsing experience. Additionally, cookies can help ensure that the marketing you encounter online is more relevant to your interests.',
+      typesOfCookiesUsed: 'What Types of Cookies Does Skill Bridge Use?',
+      strictlyNecessaryCookies: 'Strictly Necessary Cookies',
+      strictlyNecessaryCookiesDescription:
+        'These cookies are crucial as they allow you to navigate the website and utilize its features, including accessing secure areas. Without these cookies, certain services such as payment submissions cannot be provided. These cookies are integral to the functionality of the website and cannot be disabled in our systems.',
+      performanceCookies: 'Performance Cookies',
+      performanceCookiesDescription:
+        'These cookies gather information about your usage of the website, such as the pages you visit frequently and whether you encounter error messages on certain pages. The information collected by these cookies is aggregated or anonymous, meaning it does not personally identify you.',
+      functionalityCookies: 'Functionality Cookies',
+      functionalityCookiesDescription:
+        "These cookies enable the website to remember your preferences, such as your username or preferred region. They may also facilitate services you've requested, such as watching a video or commenting on a blog.",
+      cookieDuration: 'How Long Will Cookies Stay on My Browsing Device?',
+      cookieDurationDescription:
+        "The duration for which a cookie remains on your browsing device depends on whether it is a 'persistent' or 'session' cookie. Session cookies are temporary and will only remain on your device until you finish your browsing session. Persistent cookies, on the other hand, remain on your device until they expire or are manually deleted.",
+      cookieSettingsUpdate:
+        "You may update your cookie preferences by clicking the 'Cookie Settings' button at the bottom of the Site's homepage.",
+      latestUpdate: 'Latest update',
     },
   },
   es: {
@@ -586,6 +616,37 @@ const resources = {
       PersonalInformation: 'Información personal',
       ContactUsRegardingPrivacy:
         'Si tienes alguna pregunta, inquietud o comentario sobre nuestra política de privacidad o prácticas de datos, no dudes en contactarnos.',
+
+      cookiePolicy: 'Política de Cookies',
+      introduction: 'Introducción',
+      welcomeToSkillBridge: '¡Bienvenido a Skill Bridge Marketing Agency!',
+      cookiePolicyDescription:
+        "Esta política describe cómo Skill Bridge utiliza cookies y otras tecnologías relacionadas (colectivamente denominadas 'cookies') cuando interactúas con nosotros enhttp://skillbridgevirtualcareers.com (el 'Sitio') como se establece en la Política de Privacidad de Skill Bridge.",
+      cookiePolicyAgreement:
+        "Al utilizar nuestro sitio web, aceptas el uso de cookies como se describe en nuestra Política de Cookies. Puedes cambiar tus preferencias de cookies ajustando la configuración de tu navegador o visitando la sección 'Configuración de Cookies' en la parte inferior de la página de inicio. Podemos actualizar este acuerdo sin previo aviso, por lo que te recomendamos revisarlo periódicamente para cualquier cambio.",
+      whatAreCookies: '¿Qué son las Cookies?',
+      whatAreCookiesDescription:
+        'Las cookies son pequeños archivos de texto que contienen información y se descargan en tu dispositivo (como una computadora o un teléfono inteligente) cuando visitas un sitio web. Estas cookies pueden ser reconocidas por el sitio web que las descargó o por otros sitios web que utilizan las mismas cookies.',
+      whatAreCookiesUsedFor: '¿Para qué se utilizan las Cookies?',
+      whatAreCookiesUsedForDescription:
+        'Las cookies tienen varias funciones, como ayudarnos a comprender cómo se utiliza el sitio web, permitir la navegación eficiente entre páginas, recordar tus preferencias y mejorar tu experiencia de navegación en general. Además, las cookies pueden ayudar a garantizar que la publicidad que ves en línea sea más relevante para tus intereses.',
+      typesOfCookiesUsed: '¿Qué tipos de cookies utiliza Skill Bridge?',
+      strictlyNecessaryCookies: 'Cookies estrictamente necesarias',
+      strictlyNecessaryCookiesDescription:
+        'Estas cookies son cruciales ya que te permiten navegar por el sitio web y utilizar sus funciones, incluido el acceso a áreas seguras. Sin estas cookies, ciertos servicios como las transacciones de pago no se pueden proporcionar. Estas cookies son fundamentales para la funcionalidad del sitio web y no se pueden desactivar en nuestros sistemas.',
+      performanceCookies: 'Cookies de Rendimiento',
+      performanceCookiesDescription:
+        'Estas cookies recopilan información sobre tu uso del sitio web, como las páginas que visitas con frecuencia y si encuentras mensajes de error en ciertas páginas. La información recopilada por estas cookies es agregada o anónima, lo que significa que no te identifica personalmente.',
+      functionalityCookies: 'Cookies de Funcionalidad',
+      functionalityCookiesDescription:
+        'Estas cookies permiten que el sitio web recuerde tus preferencias, como tu nombre de usuario o región preferida. También pueden facilitar servicios que has solicitado, como ver un video o comentar en un blog.',
+      cookieDuration:
+        '¿Cuánto tiempo permanecerán las cookies en mi dispositivo de navegación?',
+      cookieDurationDescription:
+        "La duración de una cookie en tu dispositivo depende de si es una cookie 'persistente' o 'de sesión'. Las cookies de sesión son temporales y permanecerán en tu dispositivo solo hasta que termines tu sesión de navegación. Las cookies persistentes, por otro lado, permanecen en tu dispositivo hasta que expiren o se eliminen manualmente.",
+      cookieSettingsUpdate:
+        "Puedes actualizar tus preferencias de cookies haciendo clic en el botón 'Configuración de Cookies' en la parte inferior de la página de inicio del Sitio.",
+      latestUpdate: 'Última actualización',
     },
   },
 }
