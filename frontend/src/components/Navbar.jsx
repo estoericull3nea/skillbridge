@@ -6,6 +6,7 @@ import SBLogo from '../assets/icons/sb_logo.png'
 import { toast } from 'react-hot-toast'
 import { jwtDecode } from 'jwt-decode'
 import axios from 'axios'
+import LanguageSelector from './LanguageSelector'
 
 import { CiUser } from 'react-icons/ci'
 import { CiLogout } from 'react-icons/ci'
@@ -120,7 +121,6 @@ const Navbar = () => {
                   ></label>
                   <ul className='menu bg-base-200 text-base-content min-h-full w-80 p-4 '>
                     {/* Sidebar content here */}
-
                     <Link
                       to='/'
                       className='btn btn-ghost text-xl justify-start hover:bg-transparent'
@@ -128,7 +128,6 @@ const Navbar = () => {
                       <img src={SBLogo} alt='' className='w-9' />
                       SkillBridge
                     </Link>
-
                     <li className='mt-3'>
                       <Link to='/'>Home</Link>
                     </li>
@@ -307,9 +306,6 @@ const Navbar = () => {
                         </ul>
                       </details>
                     </li>
-                    <li>
-                      <Link to='/about'>About</Link>
-                    </li>
 
                     <ul>
                       <li>
@@ -328,7 +324,7 @@ const Navbar = () => {
                           </li>
                         </div>
                       )}
-
+                      qwe
                       <li>
                         <Link
                           to='/book-appointment'
@@ -555,6 +551,8 @@ const Navbar = () => {
               <li>
                 <Link to='/about'>About</Link>
               </li>
+              {/* here */}
+              <LanguageSelector />
             </ul>
           </div>
           <div className='navbar-end'>

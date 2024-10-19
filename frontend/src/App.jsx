@@ -22,6 +22,8 @@ import About from './pages/userPages/About'
 import Profile from './pages/userPages/profile/Profile'
 import ProtectRoute from './components/ProtectRoute'
 
+import './i18n/i18n.js'
+
 const App = () => {
   return (
     <>

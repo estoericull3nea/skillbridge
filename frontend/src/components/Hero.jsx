@@ -2,8 +2,10 @@ import React from 'react'
 
 import HeroImage from '../assets/images/hero_section_img.png'
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Hero = () => {
+  const { t } = useTranslation()
   return (
     <div className=' grid grid-cols-1 lg:grid-cols-2 items-center lg:py-16 lg:my-0'>
       <div className='left py-8 lg:py-0  space-y-5 mb-8 lg:mb-0'>
