@@ -8,6 +8,8 @@ import { GiCheckMark } from 'react-icons/gi'
 import { toast } from 'react-hot-toast'
 import { formatDate } from '../../utils/formatDate'
 
+import { useTranslation } from 'react-i18next'
+
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
   if (!date) return { availableTimes: [] }
@@ -52,6 +54,8 @@ const createMeeting = async ({ topic, startTime, duration, email }) => {
 // zoom
 
 const BookAppointment = () => {
+  const { t } = useTranslation()
+
   const [step, setStep] = useState(1)
   const [selectedService, setSelectedService] = useState('')
   const [selectedDate, setSelectedDate] = useState(null)
@@ -77,12 +81,9 @@ const BookAppointment = () => {
   const mutation = useMutation({
     mutationFn: submitBooking,
     onSuccess: () => {
-      toast.success(
-        'Your booking has been successfully submitted. Please check your email for further details.',
-        {
-          duration: 6000,
-        }
-      )
+      toast.success(t('YourBookingSubmitted'), {
+        duration: 6000,
+      })
 
       setFormData({
         firstName: localStorage.getItem('firstName')
@@ -103,7 +104,15 @@ const BookAppointment = () => {
       setStep(1)
     },
     onError: (error) => {
-      toast.error(`${error.response?.data?.message || 'An error occurred'}`)
+      if (
+        error.response?.data?.message ===
+        'You have reached the booking limit of 3 active bookings. Please complete them first.'
+      ) {
+        return toast.error(t('BookingLimitReached'))
+      }
+      return toast.error(
+        `${error.response?.data?.message || t('AnErrorOccurred')}`
+      )
     },
   })
 
@@ -179,9 +188,9 @@ const BookAppointment = () => {
   const validateForm = () => {
     let formErrors = {}
     if (!formData.firstName.trim())
-      formErrors.firstName = 'First Name is required'
-    if (!formData.lastName.trim()) formErrors.lastName = 'Last Name is required'
-    if (!formData.email.trim()) formErrors.email = 'Email is required'
+      formErrors.firstName = t('FirstNameIsRequired')
+    if (!formData.lastName.trim()) formErrors.lastName = t('LastNameIsRequired')
+    if (!formData.email.trim()) formErrors.email = t('EmailIsRequired')
     // if (!formData.phoneNumber.trim())
     //   formErrors.phoneNumber = 'Phone Number is required'
     // if (!formData.notes.trim()) formErrors.notes = 'Notes is required'
@@ -208,37 +217,46 @@ const BookAppointment = () => {
             step >= 1 ? 'step-neutral' : ''
           }`}
         >
-          <span className='block md:hidden text-xs'>Service</span>
-          <span className='hidden md:block md:text-lg'>Select Service</span>
+          <span className='block md:hidden text-xs'>{t('Service')}</span>
+          <span className='hidden md:block md:text-lg'>
+            {t('SelectService')}
+          </span>
         </li>
         <li
           className={`step text-xs md:text-lg ${
             step >= 2 ? 'step-neutral' : ''
           }`}
         >
-          <span className='block md:hidden text-xs'>Date & Time</span>
-          <span className='hidden md:block md:text-lg'>Select Date & Time</span>
+          <span className='block md:hidden text-xs'>
+            {t('Date')} & {t('Time')}
+          </span>
+          <span className='hidden md:block md:text-lg'>
+            {t('SelectDateAndTime')}
+          </span>
         </li>
         <li
           className={`step text-xs md:text-lg ${
             step >= 3 ? 'step-neutral' : ''
           }`}
         >
-          <span className='block md:hidden text-xs'>Details</span>
-          <span className='hidden md:block md:text-lg'> Enter Details</span>
+          <span className='block md:hidden text-xs'>{t('Details')}</span>
+          <span className='hidden md:block md:text-lg'>
+            {' '}
+            {t('EnterDetails')}
+          </span>
         </li>
         <li
           className={`step text-xs md:text-lg ${
             step >= 4 ? 'step-neutral' : ''
           }`}
         >
-          Review & Submit
+          {t('ReviewAndSubmit')}
         </li>
       </ul>
 
       {step === 1 && (
         <div className='max-w-[900px] mx-auto'>
-          <h2 className='text-xl mb-3'>Select a Service</h2>
+          <h2 className='text-xl mb-3'>{t('SelectAService')}</h2>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-3 place-items-center  overflow-hidden'>
             <div
               className={`border rounded-lg shadow-md bg-white cursor-pointer max-w-[400px] w-full ${
@@ -259,7 +277,7 @@ const BookAppointment = () => {
                 />
                 <div className='text-center'>
                   <h2 className='text-xl tracking-wide font-medium py-3 '>
-                    Virtual Assistance
+                    {t('VirtualAssistance')}
                   </h2>
                   <ul className='menu  rounded-box '>
                     <li>
@@ -268,35 +286,35 @@ const BookAppointment = () => {
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Administrative Support
+                            {t('VirtualAssistance')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Customer Service
+                            {t('CustomerService')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Writing and Editing
+                            {t('WritingAndEditing')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Social Media Management
+                            {t('SocialMediaManagement')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Technical Skills
+                            {t('TechnicalSkills')}
                           </a>
                         </li>
                       </ul>
@@ -324,7 +342,7 @@ const BookAppointment = () => {
                 />
                 <div className='text-center'>
                   <h2 className='text-xl tracking-wide font-medium py-3 '>
-                    Recruitment Services
+                    {t('RecruitmentServices')}
                   </h2>
                   <ul className='menu  rounded-box '>
                     <li>
@@ -333,35 +351,35 @@ const BookAppointment = () => {
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Talent Sourcing
+                            {t('TalentSourcing')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Talent Screen
+                            {t('TalentScreen')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Interviewing and Assessment
+                            {t('InterviewingAndAssessment')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Endorsement
+                            {t('Endorsement')}
                           </a>
                         </li>
                         <li>
                           <a className='hover:bg-white'>
                             {' '}
                             <GiCheckMark />
-                            Onboarding (optional)
+                            {t('OnboardingOptional')}
                           </a>
                         </li>
                       </ul>
@@ -377,7 +395,7 @@ const BookAppointment = () => {
       {step === 2 && (
         <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
           <div>
-            <h2 className='text-xl mb-3'>Select a Date</h2>
+            <h2 className='text-xl mb-3'>{t('SelectADate')}</h2>
 
             <Calendar
               // tileContent={({ date }) => {
@@ -421,9 +439,9 @@ const BookAppointment = () => {
             />
           </div>
           <div className=' flex flex-col justify-center'>
-            <h2 className='text-xl mb-3'>Select a Time Slot</h2>
+            <h2 className='text-xl mb-3'>{t('SelectATimeSlot')}</h2>
             {loadingTimes ? (
-              <p>Loading available times...</p>
+              <p>{t('LoadingAvailableTimes')}</p>
             ) : (
               <div className='grid grid-cols-4 gap-4'>
                 {data?.availableTimes?.map((time) => (
@@ -447,22 +465,25 @@ const BookAppointment = () => {
       {step === 3 && (
         <div className='grid grid-cols-1 lg:grid-cols-2 px-3 gap-10 max-w-[900px] mx-auto'>
           <div>
-            <h2 className='text-xl mb-3'>Review Your Selection</h2>
+            <h2 className='text-xl mb-3'>{t('ReviewYourSelection')}</h2>
             <ul>
               <li>
-                Service:{' '}
+                {t('Service')}:{' '}
                 {selectedService === `recruitment_services`
                   ? `Recruitment Services`
                   : `Virtual Assistant`}
               </li>
               <li>
-                Date: {selectedDate ? selectedDate.toLocaleDateString() : ''}
+                {t('Date')}:{' '}
+                {selectedDate ? selectedDate.toLocaleDateString() : ''}
               </li>
-              <li>Time: {selectedTime}</li>
+              <li>
+                {t('Time')}: {selectedTime}
+              </li>
             </ul>
           </div>
           <div>
-            <h2 className='text-xl mb-3'>Enter Your Details</h2>
+            <h2 className='text-xl mb-3'>{t('EnterYourDetails')}</h2>
             <form className='grid grid-cols-1 gap-5'>
               <div className='flex gap-x-3'>
                 <div>
@@ -470,7 +491,7 @@ const BookAppointment = () => {
                     htmlFor='firstName'
                     className='block mb-2 text-sm font-medium text-gray-900 '
                   >
-                    First Name
+                    {t('FirstName')}
                   </label>
                   <input
                     type='text'
@@ -493,7 +514,7 @@ const BookAppointment = () => {
                     htmlFor='lastName'
                     className='block mb-2 text-sm font-medium text-gray-900 '
                   >
-                    Last Name
+                    {t('LastName')}
                   </label>
                   <input
                     type='text'
@@ -517,7 +538,7 @@ const BookAppointment = () => {
                   htmlFor='email'
                   className='block mb-2 text-sm font-medium text-gray-900 '
                 >
-                  Email
+                  {t('Email')}
                 </label>
                 <input
                   type='email'
@@ -539,7 +560,7 @@ const BookAppointment = () => {
                   htmlFor='phoneNumber'
                   className='block mb-2 text-sm font-medium text-gray-900 '
                 >
-                  Phone Number
+                  {t('PhoneNumber')}
                 </label>
                 <input
                   type='tel'
@@ -562,7 +583,7 @@ const BookAppointment = () => {
                   htmlFor='notes'
                   className='block mb-2 text-sm font-medium text-gray-900 '
                 >
-                  Notes
+                  {t('Notes')}
                 </label>
                 <textarea
                   name='notes'
@@ -583,9 +604,11 @@ const BookAppointment = () => {
 
       {step === 4 && (
         <div className='max-w-[900px] mx-auto'>
-          <h2 className='text-xl mb-3'>Final Review</h2>
+          <h2 className='text-xl mb-3'>{t('FinalReview')}</h2>
           <ul>
-            <h6 className='text-sm text-slate-400 italic'>Service Details</h6>
+            <h6 className='text-sm text-slate-400 italic'>
+              {t('ServiceDetails')}
+            </h6>
             <li>
               Service:{' '}
               {selectedService === `recruitment_services`
@@ -593,30 +616,37 @@ const BookAppointment = () => {
                 : `Virtual Assistant`}
             </li>
             <li>
-              Date:{' '}
+              {t('Date')}:{' '}
               {selectedDate
                 ? formatDate(selectedDate.toLocaleDateString())
                 : ''}
             </li>
-            <li>Time: {selectedTime}</li>
+            <li>
+              {t('Time')}: {selectedTime}
+            </li>
             <li>
               <h6 className='text-sm text-slate-400 italic mt-3'>
-                User Details
+                {t('UserDetails')}
               </h6>
-              Name: {formData.firstName} {formData.lastName}
+              {t('Name')}: {formData.firstName} {formData.lastName}
             </li>
-            <li>Email: {formData.email}</li>
             <li>
-              Phone: {formData.phoneNumber ? formData.phoneNumber : `N/A`}
+              {t('Email')}: {formData.email}
             </li>
-            <li>Notes: {formData.notes ? formData.notes : `N/A`}</li>
+            <li>
+              {t('Phone')}:{' '}
+              {formData.phoneNumber ? formData.phoneNumber : `N/A`}
+            </li>
+            <li>
+              {t('Notes')}: {formData.notes ? formData.notes : `N/A`}
+            </li>
           </ul>
           <button
             className='mt-10 btn'
             onClick={handleSubmit}
             disabled={mutation.isLoading}
           >
-            {mutation.isPending ? 'Submitting...' : 'Submit'}
+            {mutation.isPending ? t('Submitting') : t('Submit')}
           </button>
         </div>
       )}
@@ -624,7 +654,7 @@ const BookAppointment = () => {
       <div className='mt-10 flex justify-end gap-x-3'>
         {step > 1 && (
           <button className='btn' onClick={handlePreviousStep}>
-            Prev
+            {t('Prev')}
           </button>
         )}
         {step < 4 && (
@@ -633,7 +663,7 @@ const BookAppointment = () => {
             onClick={handleNextStep}
             disabled={step === 2 && (!selectedDate || !selectedTime)}
           >
-            Next
+            {t('Next')}
           </button>
         )}
       </div>
