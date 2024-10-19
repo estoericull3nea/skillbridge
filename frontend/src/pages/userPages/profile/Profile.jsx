@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import BookingHistory from './BookingHistory'
 import DeleteAccount from './DeleteAccount'
 import LoginActivity from './LoginActivity'
+import ContactUsForm from './ContactUsForm'
 import DataExport from './DataExport'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
@@ -72,6 +73,7 @@ const Profile = () => {
             <Route path='/deletion' element={<DeleteAccount />} />
             <Route path='/login-activity' element={<LoginActivity />} />
             <Route path='/data-export' element={<DataExport />} />
+            <Route path='/contact-support' element={<ContactUsForm />} />
           </Routes>
         </div>
       </div>

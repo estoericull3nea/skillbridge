@@ -12,6 +12,7 @@ import userRouter from './api/routes/user.route.js'
 import meetingRouter from './api/routes/meeting.route.js'
 import loginHistoryRouter from './api/routes/loginHistory.route.js'
 import exportUserDataRouter from './api/routes/dataExport.route.js'
+import contactRouter from './api/routes/contact.route.js'
 // import loginHistoryRouter from './api/routes/loginHistory.route.js'
 // import feedbackRouter from './api/routes/feedback.route.js'
 // import contactRouter from './api/routes/contact.route.js'
@@ -64,6 +65,7 @@ app.use('/api/v1/users', userRouter)
 app.use('/api/v1/meetings', meetingRouter)
 app.use('/api/v1/login-histories', loginHistoryRouter)
 app.use('/api/v1/data-export', exportUserDataRouter)
+app.use('/api/v1/contacts', contactRouter)
 
 // app.use('/api/feedbacks', feedbackRouter)
 // app.use('/api/contacts', contactRouter)
