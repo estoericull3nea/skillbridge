@@ -5,6 +5,13 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      no_contacts: 'No Contacts',
+      contacts: 'Contacts',
+      subject: 'Subject',
+      message: 'Message',
+      created_at: 'Created At',
+      updated_at: 'Updated At',
+
       virtual_assistance: 'Virtual Assistance',
       recruitment_services: 'Recruitment Services',
       other_service: 'Other Service',
@@ -409,6 +416,13 @@ const resources = {
   },
   es: {
     translation: {
+      no_contacts: 'No hay contactos',
+      contacts: 'Contactos',
+      subject: 'Asunto',
+      message: 'Mensaje',
+      created_at: 'Creado el',
+      updated_at: 'Actualizado el',
+
       virtual_assistance: 'Asistencia Virtual',
       recruitment_services: 'Servicios de Reclutamiento',
       other_service: 'Otro Servicio',

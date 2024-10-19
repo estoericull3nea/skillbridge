@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const GetContacts = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const [contacts, setContacts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -62,26 +64,26 @@ const GetContacts = () => {
   if (error) {
     return (
       <div className='p-4 w-max bg-base-100 rounded-lg'>
-        <h2 className='text-2xl font-semibold'>No Contacts</h2>
+        <h2 className='text-2xl font-semibold'>{t('no_contacts')}</h2>
       </div>
     )
   }
 
   return (
     <div className='p-4 bg-base-100 rounded-lg shadow-2xl'>
-      <h2 className='text-2xl font-semibold mb-4'>Contacts</h2>
+      <h2 className='text-2xl font-semibold mb-4'>{t('contacts')}</h2>
       <DataTable value={contacts} paginator rows={10}>
-        <Column field='subject' header='Subject' sortable />
-        <Column field='message' header='Message' />
+        <Column field='subject' header={t('subject')} sortable />
+        <Column field='message' header={t('message')} />
         <Column
           field='createdAt'
-          header='Created At'
+          header={t('created_at')}
           sortable
           body={(rowData) => formatDate(rowData.createdAt)}
         />
         <Column
           field='updatedAt'
-          header='Updated At'
+          header={t('updated_at')}
           sortable
           body={(rowData) => formatDate(rowData.updatedAt)}
         />
