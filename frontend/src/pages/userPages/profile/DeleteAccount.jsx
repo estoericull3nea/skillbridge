@@ -2,8 +2,10 @@ import React, { useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const RequestDeleteAccount = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const [isRequesting, setIsRequesting] = useState(false)
   const [showModal, setShowModal] = useState(false)
   const { userId } = useParams()
@@ -18,9 +20,7 @@ const RequestDeleteAccount = () => {
       )
 
       if (status === 200) {
-        toast.success(
-          'Account deletion request submitted. Pending admin approval.'
-        )
+        toast.success(t('request_submitted')) // Use translation for success message
         setShowModal(false)
       }
     } catch (error) {
@@ -29,6 +29,8 @@ const RequestDeleteAccount = () => {
         'A pending deletion request already exists.'
       ) {
         toast.error(error.response.data.message)
+      } else {
+        toast.error(t('request_failed')) // Use translation for failure message
       }
     } finally {
       setIsRequesting(false)
@@ -38,16 +40,16 @@ const RequestDeleteAccount = () => {
   return (
     <div className='mt-6'>
       <button className='btn btn-error' onClick={() => setShowModal(true)}>
-        Request Account Deletion
+        {t('request_account_deletion')} {/* Use translation */}
       </button>
 
       {showModal && (
         <div className={`modal ${showModal ? 'modal-open' : ''}`}>
           <div className='modal-box'>
-            <h3 className='font-bold text-lg'>Are you sure?</h3>
+            <h3 className='font-bold text-lg'>{t('are_you_sure')}</h3>{' '}
+            {/* Use translation */}
             <p className='py-4'>
-              This action is irreversible. Your account deletion request will be
-              submitted for admin approval.
+              {t('irreversible_action')} {/* Use translation */}
             </p>
             <div className='modal-action'>
               <button
@@ -55,10 +57,11 @@ const RequestDeleteAccount = () => {
                 onClick={handleDeleteRequest}
                 disabled={isRequesting}
               >
-                {isRequesting ? 'Requesting...' : 'Yes, Submit Request'}
+                {isRequesting ? t('requesting') : t('yes_submit_request')}{' '}
+                {/* Use translation */}
               </button>
               <button className='btn' onClick={() => setShowModal(false)}>
-                Cancel
+                {t('cancel')} {/* Use translation */}
               </button>
             </div>
           </div>

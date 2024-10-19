@@ -5,6 +5,17 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      request_account_deletion: 'Request Account Deletion',
+      are_you_sure: 'Are you sure?',
+      irreversible_action:
+        'This action is irreversible. Your account deletion request will be submitted for admin approval.',
+      request_submitted:
+        'Account deletion request submitted. Pending admin approval.',
+      request_failed: 'Failed to submit account deletion request.',
+      yes_submit_request: 'Yes, Submit Request',
+      cancel: 'Cancel',
+      requesting: 'Requesting...',
+
       basic_credentials: 'Basic Credentials',
       profile_picture: 'Profile Picture',
       first_name: 'First Name',
@@ -464,6 +475,17 @@ const resources = {
   },
   es: {
     translation: {
+      request_account_deletion: 'Solicitar eliminación de cuenta',
+      are_you_sure: '¿Estás seguro?',
+      irreversible_action:
+        'Esta acción es irreversible. Tu solicitud de eliminación de cuenta será enviada para aprobación del administrador.',
+      request_submitted:
+        'Solicitud de eliminación de cuenta enviada. Pendiente de aprobación del administrador.',
+      request_failed: 'Error al enviar la solicitud de eliminación de cuenta.',
+      yes_submit_request: 'Sí, enviar solicitud',
+      cancel: 'Cancelar',
+      requesting: 'Solicitando...',
+
       basic_credentials: 'Credenciales Básicas',
       profile_picture: 'Foto de Perfil',
       first_name: 'Nombre',
