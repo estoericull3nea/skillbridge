@@ -38,6 +38,12 @@ const Sidebar = () => {
               Contacts
             </Link>
           </li>
+
+          <li>
+            <Link to={`/profile/${userId}/${firstName}/all-feedbacks`}>
+              Feedbacks
+            </Link>
+          </li>
         </ul>
         <ul className='menu rounded-box '>
           <li className='menu-title'>

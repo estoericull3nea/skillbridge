@@ -7,6 +7,7 @@ import DeleteAccount from './DeleteAccount'
 import LoginActivity from './LoginActivity'
 import GetContacts from './GetContacts'
 import ContactUsForm from './ContactUsForm'
+import GetFeedbacks from './GetFeedbacks'
 import Feedback from './Feedback'
 import DataExport from './DataExport'
 import Dashboard from './Dashboard'
@@ -78,6 +79,7 @@ const Profile = () => {
             <Route path='/contact-support' element={<ContactUsForm />} />
             <Route path='/feedback' element={<Feedback />} />
             <Route path='/all-contacts' element={<GetContacts />} />
+            <Route path='/all-feedbacks' element={<GetFeedbacks />} />
           </Routes>
         </div>
       </div>
