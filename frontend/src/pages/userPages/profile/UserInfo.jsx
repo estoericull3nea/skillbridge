@@ -4,8 +4,10 @@ import { useParams } from 'react-router-dom'
 import { FiEdit2 } from 'react-icons/fi'
 import { toast } from 'react-hot-toast'
 import { RiErrorWarningLine } from 'react-icons/ri'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const UserInfo = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const { userId } = useParams()
   const [formData, setFormData] = useState({
     firstName: '',
@@ -50,7 +52,7 @@ const UserInfo = () => {
         })
       } catch (error) {
         console.error('Error fetching user data:', error)
-        toast.error('Failed to load user data')
+        toast.error(t('update_failed')) // Use translation for error message
       } finally {
         setLoading(false)
       }
@@ -115,10 +117,10 @@ const UserInfo = () => {
         picture: false,
         role: false,
       })
-      toast.success('User information updated successfully')
+      toast.success(t('update_success')) // Use translation for success message
     } catch (error) {
       console.error('Error updating user information:', error)
-      toast.error('Failed to update user information')
+      toast.error(t('update_failed')) // Use translation for error message
     } finally {
       setUpdating(false)
     }
@@ -136,21 +138,21 @@ const UserInfo = () => {
       ) : (
         <form className='space-y-4 max-w-[500px] p-3' onSubmit={handleSubmit}>
           <p className='mt-4 mb-1 ps-1 font-medium italic text-gray-500 font-xs'>
-            Basic Credentials
+            {t('basic_credentials')} {/* Use translation */}
           </p>
 
           {/* Profile Picture */}
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>Profile Picture</span>
+                <span className='label-text'>{t('profile_picture')}</span>{' '}
+                {/* Use translation */}
               </div>
               <div className='flex items-center gap-2'>
                 {/* Display the profile picture */}
                 <div className='w-36 h-2w-36 rounded-full bg-gray-200 overflow-hidden'>
                   {formData.picture ? (
                     <img
-                      // src={localStorage.getItem('picture')}
                       src={`${localStorage.getItem('picture')}`}
                       alt='Profile'
                       className='object-cover w-full h-full'
@@ -183,7 +185,8 @@ const UserInfo = () => {
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>First Name</span>
+                <span className='label-text'>{t('first_name')}</span>{' '}
+                {/* Use translation */}
               </div>
               <div className='flex items-center gap-2'>
                 <input
@@ -208,7 +211,8 @@ const UserInfo = () => {
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>Last Name</span>
+                <span className='label-text'>{t('last_name')}</span>{' '}
+                {/* Use translation */}
               </div>
               <div className='flex items-center gap-2'>
                 <input
@@ -232,7 +236,8 @@ const UserInfo = () => {
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>Password</span>
+                <span className='label-text'>{t('password')}</span>{' '}
+                {/* Use translation */}
               </div>
               <div className='flex items-center gap-2'>
                 <input
@@ -253,7 +258,7 @@ const UserInfo = () => {
                 <div className='flex items-center gap-2 mt-1 text-sm text-gray-500'>
                   <RiErrorWarningLine className='text-yellow-500' />
                   <span>
-                    Leave blank if you don't want to change your password.
+                    {t('leave_blank_for_no_change')} {/* Use translation */}
                   </span>
                 </div>
               )}
@@ -264,7 +269,8 @@ const UserInfo = () => {
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>Email</span>
+                <span className='label-text'>{t('email')}</span>{' '}
+                {/* Use translation */}
               </div>
               <div className='flex items-center gap-2'>
                 <input
@@ -285,7 +291,8 @@ const UserInfo = () => {
           <div className='flex items-center gap-3'>
             <label className='form-control w-full'>
               <div className='label'>
-                <span className='label-text'>Role</span>
+                <span className='label-text'>{t('role')}</span>{' '}
+                {/* Use translation */}
               </div>
               <select
                 name='role'
@@ -294,8 +301,10 @@ const UserInfo = () => {
                 className='select select-bordered w-full'
                 disabled={!editableFields.role}
               >
-                <option value='customer'>Customer</option>
-                <option value='admin'>Admin</option>
+                <option value='customer'>{t('customer')}</option>{' '}
+                {/* Use translation */}
+                <option value='admin'>{t('admin')}</option>{' '}
+                {/* Use translation */}
               </select>
             </label>
           </div>
@@ -306,7 +315,7 @@ const UserInfo = () => {
             className='btn bg-black text-white hover:bg-transparent hover:border-black hover:text-black mt-4'
             disabled={!Object.values(editableFields).some(Boolean) || updating}
           >
-            {updating ? 'Updating...' : 'Submit'}
+            {updating ? t('updating') : t('submit')} {/* Use translation */}
           </button>
         </form>
       )}

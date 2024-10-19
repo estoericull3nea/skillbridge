@@ -5,6 +5,23 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      basic_credentials: 'Basic Credentials',
+      profile_picture: 'Profile Picture',
+      first_name: 'First Name',
+      last_name: 'Last Name',
+      password: 'Password',
+      email: 'Email',
+      role: 'Role',
+      customer: 'Customer',
+      admin: 'Admin',
+      leave_blank_for_no_change:
+        "Leave blank if you don't want to change your password.",
+      update_success: 'User information updated successfully',
+      update_failed: 'Failed to update user information',
+      loading_user_data: 'Loading user data',
+      submit: 'Submit',
+      updating: 'Updating...',
+
       no_feedbacks: 'No Feedbacks',
       feedbacks: 'Feedbacks',
       feedback: 'Feedback',
@@ -447,6 +464,23 @@ const resources = {
   },
   es: {
     translation: {
+      basic_credentials: 'Credenciales Básicas',
+      profile_picture: 'Foto de Perfil',
+      first_name: 'Nombre',
+      last_name: 'Apellido',
+      password: 'Contraseña',
+      email: 'Correo Electrónico',
+      role: 'Rol',
+      customer: 'Cliente',
+      admin: 'Administrador',
+      leave_blank_for_no_change:
+        'Deja en blanco si no deseas cambiar tu contraseña.',
+      update_success: 'Información del usuario actualizada con éxito',
+      update_failed: 'Error al actualizar la información del usuario',
+      loading_user_data: 'Cargando datos del usuario',
+      submit: 'Enviar',
+      updating: 'Actualizando...',
+
       no_feedbacks: 'No hay comentarios',
       feedbacks: 'Comentarios',
       feedback: 'Comentarios',
