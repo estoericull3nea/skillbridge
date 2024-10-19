@@ -2,9 +2,11 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { MdOutlineMailOutline } from 'react-icons/md'
+import { useTranslation } from 'react-i18next'
 
 const Sidebar = () => {
   const { userId, firstName } = useParams()
+  const { t } = useTranslation()
 
   return (
     <div>
@@ -19,97 +21,80 @@ const Sidebar = () => {
         </div>
         <ul className='menu rounded-box'>
           <li className='menu-title'>
-            <span>Main Menu</span>
+            <span>{t('mainMenu')}</span>
           </li>
           <li>
             <Link to={`/profile/${userId}/${firstName}/dashboard`}>
-              Dashboard
+              {t('dashboard')}
             </Link>
           </li>
 
           <li>
             <Link to={`/profile/${userId}/${firstName}/booking-history`}>
-              Booking History
+              {t('bookingHistory')}
             </Link>
           </li>
 
           <li>
             <Link to={`/profile/${userId}/${firstName}/all-contacts`}>
-              Contacts
+              {t('contacts')}
             </Link>
           </li>
 
           <li>
             <Link to={`/profile/${userId}/${firstName}/all-feedbacks`}>
-              Feedbacks
+              {t('feedbacks')}
             </Link>
           </li>
         </ul>
-        <ul className='menu rounded-box '>
+        <ul className='menu rounded-box'>
           <li className='menu-title'>
-            <span>Account Settings</span>
+            <span>{t('accountSettings')}</span>
           </li>
           <li>
             <Link to={`/profile/${userId}/${firstName}/user-info`}>
-              User Information
+              {t('userInfo')}
             </Link>
           </li>
           <li>
             <Link to={`/profile/${userId}/${firstName}/notifications`}>
-              Notifications
+              {t('notifications')}
             </Link>
           </li>
           <li>
             <Link to={`/profile/${userId}/${firstName}/deletion`}>
-              Delete Account
+              {t('deleteAccount')}
             </Link>
           </li>
         </ul>
 
-        <ul className='menu rounded-box '>
+        <ul className='menu rounded-box'>
           <li className='menu-title'>
-            <span>Security and Privacy</span>
+            <span>{t('securityAndPrivacy')}</span>
           </li>
           <li>
-            <Link
-              to={`/profile/${userId}/${firstName}/login-activity`}
-              href='#login-activity'
-            >
-              Login Activity
+            <Link to={`/profile/${userId}/${firstName}/login-activity`}>
+              {t('loginActivity')}
             </Link>
           </li>
-          {/* <li>
-            <Link
-              to={`/profile/${userId}/${firstName}/privacy`}
-              href='#privacy-settings'
-            >
-              Privacy Settings
-            </Link>
-          </li> */}
           <li>
-            <Link
-              to={`/profile/${userId}/${firstName}/data-export`}
-              href='#data-export'
-            >
-              Download Your Data
+            <Link to={`/profile/${userId}/${firstName}/data-export`}>
+              {t('dataExport')}
             </Link>
           </li>
         </ul>
-        <ul className='menu rounded-box '>
+        <ul className='menu rounded-box'>
           <li className='menu-title'>
-            <span>Support and Feedback</span>
+            <span>{t('supportAndFeedback')}</span>
           </li>
           <li>
             <Link to={`/profile/${userId}/${firstName}/contact-support`}>
-              Contact Support
+              {t('contactSupport')}
             </Link>
           </li>
-          {/* <li>
-            <Link to={`/profile/${userId}/${firstName}/faq`}>FAQs</Link>
-          </li> */}
           <li>
             <Link to={`/profile/${userId}/${firstName}/feedback`}>
-              Submit Feedback
+              {t('submitFeedback')}
             </Link>
           </li>
         </ul>
