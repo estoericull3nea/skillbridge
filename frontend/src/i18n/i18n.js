@@ -5,6 +5,13 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      login_history_id: 'Login History ID',
+      ip_address: 'IP Address',
+      user_agent: 'User Agent',
+      login_at: 'Login At',
+      global_search: 'Global Search',
+      no_login_history: 'No login history found.',
+
       request_account_deletion: 'Request Account Deletion',
       are_you_sure: 'Are you sure?',
       irreversible_action:
@@ -475,6 +482,13 @@ const resources = {
   },
   es: {
     translation: {
+      login_history_id: 'ID de historial de inicio de sesión',
+      ip_address: 'Dirección IP',
+      user_agent: 'Agente de usuario',
+      login_at: 'Iniciado sesión en',
+      global_search: 'Búsqueda global',
+      no_login_history: 'No se encontró historial de inicio de sesión.',
+
       request_account_deletion: 'Solicitar eliminación de cuenta',
       are_you_sure: '¿Estás seguro?',
       irreversible_action:

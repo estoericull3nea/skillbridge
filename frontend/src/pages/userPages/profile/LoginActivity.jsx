@@ -5,8 +5,10 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { FilterMatchMode } from 'primereact/api'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const LoginActivity = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const [isLoadingAllLoginHistory, setIsLoadingAllLoginHistory] =
     useState(false)
   const [allLoginHistory, setAllLoginHistory] = useState([])
@@ -81,7 +83,7 @@ const LoginActivity = () => {
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder='Global Search'
+            placeholder={t('global_search')} // Use translation for placeholder
             className='py-3 shadow-lg px-3'
           />
         </span>
@@ -122,32 +124,32 @@ const LoginActivity = () => {
           header={header}
           filters={filters}
           globalFilterFields={['_id', 'ipAddress', 'userAgent', 'createdAt']}
-          emptyMessage='No login history found.'
+          emptyMessage={t('no_login_history')} // Use translation for empty message
         >
           <Column
             field='_id'
-            header='Login History ID'
+            header={t('login_history_id')} // Use translation
             filter
             filterPlaceholder='Search by ID'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='ipAddress'
-            header='IP Address'
+            header={t('ip_address')} // Use translation
             filter
             filterPlaceholder='Search by IP'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='userAgent'
-            header='User Agent'
+            header={t('user_agent')} // Use translation
             filter
             filterPlaceholder='Search by User Agent'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='createdAt'
-            header='Login At'
+            header={t('login_at')} // Use translation
             body={(rowData) => formatDate(rowData.createdAt)}
             filter
             filterPlaceholder='Search by Date'
