@@ -5,6 +5,27 @@ import { initReactI18next } from 'react-i18next'
 const resources = {
   en: {
     translation: {
+      home: 'Home',
+      user: 'User',
+
+      contact_support: 'Contact Support',
+      full_name: 'Full Name',
+      email: 'Email',
+      subject: 'Subject',
+      message: 'Message',
+      loading: 'Loading...',
+      sending: 'Sending...',
+      send_message: 'Send Message',
+      message_sent: 'Message Sent',
+      error_fetching_user: 'Error fetching user data.',
+
+      select_format: 'Select Format: ',
+      json: 'JSON',
+      csv: 'CSV',
+      zip: 'ZIP',
+      exporting: 'Exporting...',
+      export_data: 'Export Data',
+
       login_history_id: 'Login History ID',
       ip_address: 'IP Address',
       user_agent: 'User Agent',
@@ -482,6 +503,27 @@ const resources = {
   },
   es: {
     translation: {
+      home: 'Inicio',
+      user: 'Usuario',
+
+      contact_support: 'Contactar Soporte',
+      full_name: 'Nombre Completo',
+      email: 'Correo Electrónico',
+      subject: 'Asunto',
+      message: 'Mensaje',
+      loading: 'Cargando...',
+      sending: 'Enviando...',
+      send_message: 'Enviar Mensaje',
+      message_sent: 'Mensaje Enviado',
+      error_fetching_user: 'Error al obtener los datos del usuario.',
+
+      select_format: 'Seleccionarformat: ',
+      json: 'JSON',
+      csv: 'CSV',
+      zip: 'ZIP',
+      exporting: 'Exportando...',
+      export_data: 'Exportar datos',
+
       login_history_id: 'ID de historial de inicio de sesión',
       ip_address: 'Dirección IP',
       user_agent: 'Agente de usuario',

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const ContactUsForm = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
@@ -24,6 +26,7 @@ const ContactUsForm = () => {
         setEmail(email)
       } catch (error) {
         console.error('Error fetching user data:', error)
+        toast.error(t('error_fetching_user')) // Show error message using toast
       } finally {
         setLoading(false) // Set loading to false after fetching
       }
@@ -50,7 +53,7 @@ const ContactUsForm = () => {
       )
 
       if (response.status === 201) {
-        toast.success('Message Sent')
+        toast.success(t('message_sent')) // Show success message
         setSubject('')
         setMessage('')
       } else {
@@ -65,7 +68,7 @@ const ContactUsForm = () => {
 
   return (
     <div className='p-5 shadow-xl bg-base-100 rounded-lg'>
-      <h1 className='text-2xl font-semibold mb-4'>Contact Support</h1>
+      <h1 className='text-2xl font-semibold mb-4'>{t('contact_support')}</h1>
 
       {loading ? (
         <div className='space-y-4'>
@@ -74,13 +77,15 @@ const ContactUsForm = () => {
           <div className='skeleton h-10 w-full rounded'></div>
           <div className='skeleton h-32 w-full rounded'></div>
           <button className='btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3'>
-            Loading...
+            {t('loading')}
           </button>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div>
-            <label className='block text-sm font-medium mb-2'>Full Name</label>
+            <label className='block text-sm font-medium mb-2'>
+              {t('full_name')}
+            </label>
             <input
               type='text'
               value={fullName}
@@ -91,7 +96,9 @@ const ContactUsForm = () => {
             />
           </div>
           <div>
-            <label className='block text-sm font-medium mb-2'>Email</label>
+            <label className='block text-sm font-medium mb-2'>
+              {t('email')}
+            </label>
             <input
               type='email'
               value={email}
@@ -102,7 +109,9 @@ const ContactUsForm = () => {
             />
           </div>
           <div>
-            <label className='block text-sm font-medium mb-2'>Subject</label>
+            <label className='block text-sm font-medium mb-2'>
+              {t('subject')}
+            </label>
             <input
               type='text'
               value={subject}
@@ -112,7 +121,9 @@ const ContactUsForm = () => {
             />
           </div>
           <div>
-            <label className='block text-sm font-medium mb-2'>Message</label>
+            <label className='block text-sm font-medium mb-2'>
+              {t('message')}
+            </label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
@@ -125,7 +136,7 @@ const ContactUsForm = () => {
             className={`btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3`}
             disabled={sending}
           >
-            {sending ? 'Sending...' : 'Send Message'}
+            {sending ? t('sending') : t('send_message')}
           </button>
         </form>
       )}

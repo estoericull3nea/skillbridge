@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const DataExport = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const { userId } = useParams()
   const [format, setFormat] = useState('json')
   const [loading, setLoading] = useState(false)
@@ -35,7 +37,7 @@ const DataExport = () => {
 
   return (
     <div>
-      <label>Select Format: </label>
+      <label>{t('select_format')}</label>
 
       <div className='form-control'>
         <select
@@ -43,9 +45,9 @@ const DataExport = () => {
           onChange={(e) => setFormat(e.target.value)}
           className='select select-bordered'
         >
-          <option value='json'>JSON</option>
-          <option value='csv'>CSV</option>
-          <option value='zip'>ZIP</option>
+          <option value='json'>{t('json')}</option>
+          <option value='csv'>{t('csv')}</option>
+          <option value='zip'>{t('zip')}</option>
         </select>
       </div>
 
@@ -54,7 +56,7 @@ const DataExport = () => {
         className='btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3'
         disabled={loading}
       >
-        {loading ? 'Exporting...' : 'Export Data'}
+        {loading ? t('exporting') : t('export_data')}
       </button>
     </div>
   )

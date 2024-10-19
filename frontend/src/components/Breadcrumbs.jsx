@@ -1,7 +1,9 @@
 import React from 'react'
 import { useParams, useLocation, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 const Breadcrumbs = () => {
+  const { t } = useTranslation() // Initialize the translation function
   const { userId, firstName } = useParams()
   const location = useLocation()
 
@@ -13,7 +15,7 @@ const Breadcrumbs = () => {
     <div className='breadcrumbs text-sm mb-3'>
       <ul>
         <li>
-          <Link to='/'>Home</Link>
+          <Link to='/'>{t('home')}</Link> {/* Use translation for 'Home' */}
         </li>
         {pathnames.map((value, index) => {
           if (value === userId && pathnames[index + 1] === firstName) {
