@@ -1,10 +1,11 @@
 // src/pages/userPages/profile/Profile.jsx
 import React, { useState, useEffect } from 'react'
 import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
-import Sidebar from './sidebar'
+import Sidebar from './Sidebar'
 import BookingHistory from './BookingHistory'
 import DeleteAccount from './DeleteAccount'
 import LoginActivity from './LoginActivity'
+import DataExport from './DataExport'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
@@ -70,6 +71,7 @@ const Profile = () => {
             <Route path='/deletion' element={<DeleteAccount />} />
             <Route path='/deletion' element={<DeleteAccount />} />
             <Route path='/login-activity' element={<LoginActivity />} />
+            <Route path='/data-export' element={<DataExport />} />
           </Routes>
         </div>
       </div>
