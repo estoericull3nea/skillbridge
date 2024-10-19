@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <div className='container'>
       <Hero />
-      <WhyChooseSkillBridge />
+      {/* <WhyChooseSkillBridge /> */}
       <BridgingTalent />
       <Services />
       <Partnership />

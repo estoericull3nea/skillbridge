@@ -30,3 +30,84 @@ make the calendar UI beaty
         </div>
 
 implement showing of bookings using primereact
+
+
+
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+
+import HeroImage from '../assets/images/hero_section_img.png';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+const translateText = async (text, targetLanguage) => {
+  const url = `https://libretranslate.de/translate`;
+
+  try {
+    const response = await axios.post(url, {
+      q: text,
+      source: 'en', // Assuming the original language is English
+      target: targetLanguage,
+      format: 'text',
+    });
+
+    return response.data.translatedText;
+  } catch (error) {
+    console.error('Error translating text:', error);
+    return text; // Return original text if translation fails
+  }
+};
+
+const Hero = () => {
+  const { t } = useTranslation();
+  const [translatedHeading, setTranslatedHeading] = useState('');
+  const [translatedParagraph, setTranslatedParagraph] = useState('');
+
+  useEffect(() => {
+    const originalHeading = 'Experience Global Excellence with Premier Filipino Talent';
+    const originalParagraph = 'At Skill Bridge Virtual Careers, we specialize in connecting businesses worldwide with exceptional Filipino professionals. As experts in facilitating remote work relationships, we offer a dynamic range of virtual assistant services tailored to meet the unique needs of small and medium-sized enterprises across industries like construction, HVAC, coaching, and entrepreneurship.';
+
+    const targetLanguage = localStorage.getItem('language') || 'en'; // Get the target language from local storage
+
+    // Translate heading
+    translateText(originalHeading, targetLanguage).then((translation) => {
+      setTranslatedHeading(translation);
+    });
+
+    // Translate paragraph
+    translateText(originalParagraph, targetLanguage).then((translation) => {
+      setTranslatedParagraph(translation);
+    });
+  }, []);
+
+  return (
+    <div className='grid grid-cols-1 lg:grid-cols-2 items-center lg:py-16 lg:my-0'>
+      <div className='left py-8 lg:py-0 space-y-5 mb-8 lg:mb-0'>
+        <h1 className='font-bold text-4xl mt-3 lg:mt-0 lg:text-5xl max-w-[500px] lg:leading-[3.2rem]'>
+          {t('welcome')} <span className='text-main'>Skill Bridge </span>Virtual Careers
+        </h1>
+        <h3 className='font-medium text-lg max-w-[490px]'>
+          {translatedHeading || 'Experience Global Excellence with Premier Filipino Talent'} {/* Display the translated heading */}
+        </h3>
+        <div className='space-y-4 max-w-[500px]'>
+          <p className='text-sm'>
+            {translatedParagraph || 'At Skill Bridge Virtual Careers, we specialize in connecting businesses worldwide with exceptional Filipino professionals. As experts in facilitating remote work relationships, we offer a dynamic range of virtual assistant services tailored to meet the unique needs of small and medium-sized enterprises across industries like construction, HVAC, coaching, and entrepreneurship.'} {/* Display the translated paragraph */}
+          </p>
+        </div>
+
+        <Link
+          to='/book-appointment'
+          className='btn bg-black text-white rounded-full hover:bg-transparent hover:border-black hover:text-black font-normal'
+        >
+          {t('consultation')} {/* Use translation key for this text */}
+        </Link>
+      </div>
+      <div className='right'>
+        <img src={HeroImage} alt='' />
+      </div>
+    </div>
+  );
+};
+
+export default Hero;

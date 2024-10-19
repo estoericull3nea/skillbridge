@@ -11,12 +11,13 @@ import LanguageSelector from './LanguageSelector'
 import { CiUser } from 'react-icons/ci'
 import { CiLogout } from 'react-icons/ci'
 import { IoIosNotificationsOutline } from 'react-icons/io'
+import { useTranslation } from 'react-i18next'
 
 const Navbar = () => {
+  const { t } = useTranslation()
+
   const token = localStorage.getItem('token')
   const decoded = token ? jwtDecode(token) : ''
-
-  console.log(decoded)
 
   // if (!decoded?.picture) {
   //   localStorage.setItem('picture', decoded.picture)
@@ -85,7 +86,7 @@ const Navbar = () => {
   return (
     <div className='shadow'>
       <div className='container'>
-        <div className='navbar bg-base-100 '>
+        <div className='navbar bg-base-100'>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>
               <div className='drawer z-10 lg:hidden'>
@@ -129,42 +130,44 @@ const Navbar = () => {
                       SkillBridge
                     </Link>
                     <li className='mt-3'>
-                      <Link to='/'>Home</Link>
+                      <Link to='/'>{t('Home')}</Link>
                     </li>
                     <li>
                       <details>
-                        <summary className='cursor-pointer'>Services</summary>
+                        <summary className='cursor-pointer'>
+                          {t('Services')}
+                        </summary>
                         <ul>
                           <li>
                             <details>
                               <summary className='cursor-pointer'>
-                                Virtual Assistance
+                                {t('VirtualAssistance')}
                               </summary>
                               <ul>
                                 <li>
                                   <Link to='/service/administrative-support'>
-                                    Administrative Support
+                                    {t('AdministrativeSupport')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/customer-service'>
-                                    Customer Service
+                                    {t('CustomerService')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/writing-and-editing'>
-                                    Writing and Editing
+                                    {t('WritingandEditing')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/social-media-management'>
                                     {' '}
-                                    Social Media Management
+                                    {t('SocialMediaManagement')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/technical-skill'>
-                                    Technical Skills
+                                    {t('TechnicalSkills')}
                                   </Link>
                                 </li>
                               </ul>
@@ -173,38 +176,38 @@ const Navbar = () => {
                           <li>
                             <details>
                               <summary className='cursor-pointer'>
-                                Recruitment Services
+                                {t('RecruitmentServices')}
                               </summary>
                               <ul>
                                 <li>
                                   <Link to='/service/talent-sourcing'>
-                                    Talent Sourcing{' '}
+                                    {t('TalentSourcing')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/talent-screening'>
-                                    Talent Screening{' '}
+                                    {t('TalentScreening')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/interviewing-and-assessment'>
-                                    Interviewing and Assessment{' '}
+                                    {t('InterviewingandAssessment')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/endorsement'>
-                                    Endorsement
+                                    {t('Endorsement')}
                                   </Link>
                                 </li>
                                 <li>
                                   <Link to='/service/onboarding'>
-                                    Onboarding (optional){' '}
+                                    {t('OnboardingOptional')}
                                   </Link>
                                 </li>
                               </ul>
                             </details>
                           </li>
-                          <li>
+                          {/* <li>
                             <details>
                               <summary className='cursor-pointer'>
                                 Web Development Services
@@ -302,37 +305,36 @@ const Navbar = () => {
                                 </li>
                               </ul>
                             </details>
-                          </li>
+                          </li> */}
                         </ul>
                       </details>
                     </li>
 
                     <ul>
                       <li>
-                        <Link to='/about'>About</Link>
+                        <Link to='/about'> {t('About')}</Link>
                       </li>
                       <li>
-                        <Link to='/contact'>Contact</Link>
+                        <Link to='/contact'> {t('Contact')}</Link>
                       </li>
                       {!token && (
                         <div>
                           <li>
-                            <Link to='/register'>Register</Link>
+                            <Link to='/register'> {t('Register')}</Link>
                           </li>
                           <li>
-                            <Link to='/login'>Login</Link>
+                            <Link to='/login'> {t('Login')}</Link>
                           </li>
                         </div>
                       )}
-                      qwe
                       <li>
                         <Link
                           to='/book-appointment'
                           className='py-0 btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal mt-2'
                         >
-                          Get Started{' '}
+                          {t('GetStarted')}{' '}
                           <span className='font-normal  md:block '>
-                            -- it's free
+                            -- {t('itsFree')}
                           </span>{' '}
                         </Link>
                       </li>
@@ -353,7 +355,7 @@ const Navbar = () => {
           <div className='navbar-center hidden lg:flex'>
             <ul className='menu menu-horizontal px-1'>
               <li>
-                <Link to='/'>Home</Link>
+                <Link to='/'>{t('Home')}</Link>
               </li>
               <li>
                 <div className='dropdown dropdown-hover'>
@@ -362,7 +364,7 @@ const Navbar = () => {
                     role='button'
                     className='flex items-center gap-x-1'
                   >
-                    <span>Services</span>{' '}
+                    <span>{t('Services')}</span>{' '}
                     <IoIosArrowDown className='font-bold' />
                   </div>
                   <ul
@@ -371,65 +373,67 @@ const Navbar = () => {
                   >
                     <ul className='menu menu-horizontal rounded-box lg:min-w-max w-full'>
                       <li>
-                        <a>Virtual Assistance</a>
+                        <a>{t('VirtualAssistance')}</a>
                         <ul>
                           <li>
                             <Link to='/service/administrative-support'>
-                              Administrative Support
+                              {t('AdministrativeSupport')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/customer-service'>
-                              Customer Service
+                              {t('CustomerService')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/writing-and-editing'>
-                              Writing and Editing
+                              {t('WritingandEditing')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/social-media-management'>
                               {' '}
-                              Social Media Management
+                              {t('SocialMediaManagement')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/technical-skill'>
-                              Technical Skills
+                              {t('TechnicalSkills')}
                             </Link>
                           </li>
                         </ul>
                       </li>
                       <li>
-                        <a>Recruitment Services</a>
+                        <a>{t('RecruitmentServices')}</a>
                         <ul>
                           <li>
                             <Link to='/service/talent-sourcing'>
-                              Talent Sourcing{' '}
+                              {t('TalentSourcing')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/talent-screening'>
-                              Talent Screening{' '}
+                              {t('TalentScreening')}
                             </Link>
                           </li>
                           <li>
                             <Link to='/service/interviewing-and-assessment'>
-                              Interviewing and Assessment{' '}
+                              {t('InterviewingandAssessment')}
                             </Link>
                           </li>
                           <li>
-                            <Link to='/service/endorsement'>Endorsement</Link>
+                            <Link to='/service/endorsement'>
+                              {t('Endorsement')}
+                            </Link>
                           </li>
                           <li>
                             <Link to='/service/onboarding'>
-                              Onboarding (optional){' '}
+                              {t('OnboardingOptional')}
                             </Link>
                           </li>
                         </ul>
                       </li>
-                      <li>
+                      {/* <li>
                         <a>Web Development Services</a>
                         <ul>
                           <li>
@@ -523,24 +527,26 @@ const Navbar = () => {
                             </ul>
                           </li>
                         </ul>
-                      </li>
+                      </li> */}
 
                       <li>
                         <ul>
                           <li>
-                            <Link to='/about'>About</Link>
+                            <Link to='/about'>{t('About')}</Link>
                           </li>
                           <li>
-                            <Link to='/contact'>Contact</Link>
+                            <Link to='/contact'>{t('Contact')}</Link>
                           </li>
                           <li>
-                            <Link to='/privacy-policy'>Privacy policy</Link>
+                            <Link to='/privacy-policy'>
+                              {t('PrivacyPolicy')}
+                            </Link>
                           </li>
                           <li>
-                            <Link to='/cookie-policy'>Cookie policy</Link>
+                            <Link to='/cookie-policy'>{t('CookiePolicy')}</Link>
                           </li>
                           <li>
-                            <Link to='/terms'>Terms</Link>
+                            <Link to='/terms'>{t('Terms')}</Link>
                           </li>
                         </ul>
                       </li>
@@ -549,10 +555,9 @@ const Navbar = () => {
                 </div>
               </li>
               <li>
-                <Link to='/about'>About</Link>
+                <Link to='/about'>{t('About')}</Link>
               </li>
               {/* here */}
-              <LanguageSelector />
             </ul>
           </div>
           <div className='navbar-end'>
@@ -560,12 +565,12 @@ const Navbar = () => {
               <ul className='menu menu-horizontal px-1 min-w-max'>
                 <li>
                   <Link to='/login' className='hover:bg-transparent'>
-                    Login
+                    {t('Login')}
                   </Link>
                 </li>
                 <li className='hidden md:block  '>
                   <Link to='/register' className='hover:bg-transparent'>
-                    Register
+                    {t('Register')}
                   </Link>
                 </li>
               </ul>
@@ -573,11 +578,15 @@ const Navbar = () => {
 
             <Link
               to='/book-appointment'
-              className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal'
+              className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal mr-3'
             >
-              Get Started{' '}
-              <span className='font-normal hidden md:block '>-- it's free</span>{' '}
+              {t('GetStarted')}{' '}
+              <span className='font-normal hidden md:block '>
+                -- {t('itsFree')}
+              </span>{' '}
             </Link>
+
+            <LanguageSelector />
 
             {token ? (
               <div className='flex items-center ms-3'>
@@ -610,18 +619,18 @@ const Navbar = () => {
                         >
                           {' '}
                           <CiUser />
-                          Profile
+                          {t('Profile')}
                         </Link>
                       </li>
                       <li>
                         <a>
-                          <IoIosNotificationsOutline /> Notifications
+                          <IoIosNotificationsOutline /> {t('Notifications')}
                         </a>
                       </li>
                       <li>
                         <a onClick={handleLogout}>
                           <CiLogout />
-                          Logout
+                          {t('Logout')}
                         </a>
                       </li>
                     </ul>

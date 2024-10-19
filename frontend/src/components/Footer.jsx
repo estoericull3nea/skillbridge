@@ -2,8 +2,11 @@ import React from 'react'
 import SBLogo from '../assets/icons/sb_logo.png'
 
 import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 
 const Footer = () => {
+  const { t } = useTranslation()
+
   return (
     <div className='bg-base-200'>
       <div className='max-w-[1500px] mx-auto'>
@@ -20,53 +23,50 @@ const Footer = () => {
 
           <footer className='footer bg-base-200 text-base-content p-6'>
             <nav>
-              <h6 className='footer-title'>Quick Links</h6>
-              <a className='link link-hover'>Home</a>
-              <a className='link link-hover'>Services</a>
+              <h6 className='footer-title'>{t('QuickLinks')}</h6>
+              <a className='link link-hover'>{t('Home')}</a>
+              <a className='link link-hover'>{t('Services')}</a>
               <Link to='/about' className='link link-hover'>
-                About
+                {t('About')}
               </Link>
-              <a className='link link-hover'>Contact</a>
+              <a className='link link-hover'>{t('Contact')}</a>
             </nav>
             <nav>
-              <h6 className='footer-title'>Social Links</h6>
-              <a className='link link-hover'>Facebook</a>
-              <a className='link link-hover'>LinkedIn</a>
-              <a className='link link-hover'>Tiktok</a>
-              <a className='link link-hover'>Instagram</a>
+              <h6 className='footer-title'>{t('SocialLinks')}</h6>
+              <a className='link link-hover'>{t('Facebook')}</a>
+              <a className='link link-hover'>{t('LinkedIn')}</a>
+              <a className='link link-hover'>{t('Instagram')}</a>
+              <a className='link link-hover'>{t('Tiktok')}</a>
             </nav>
             <nav>
-              <h6 className='footer-title'>Contact</h6>
+              <h6 className='footer-title'>{t('Contact')}</h6>
               <a className='link link-hover'>
                 support@skillbridgevirtualcareers.com
               </a>
             </nav>
             <nav>
               <h6 className='footer-title max-w-[300px] font-normal leading-loose text-lg capitalize'>
-                Your one-stop shop for marketing success
+                {t('Youronestopshopformarketingsuccess')}
               </h6>
             </nav>
             <nav>
               <h6 className='footer-title max-w-[300px] font-normal leading-loose text-lg capitalize'>
-                At Skill Bridge, we are a proud Filipino professional, reliable,
-                and friendly. They're the backbone of our success, delivering
-                top-notch service with a smile! Join us and experience their
-                expertise firsthand.
+                {t('AtSkillBridgeweareaproud')}
               </h6>
             </nav>
           </footer>
           <footer className='footer bg-base-200 text-base-content border-base-300 border-t px-6 py-4'>
             <aside className='grid-flow-col items-center text-center '>
               <p>
-                v1.0.2.1 © 2024 Skill Bridge | All Rights Reserved
+                {t('AllRightsReserved')}
                 <br />
               </p>
             </aside>
             <nav className='md:place-self-center md:justify-self-end '>
               <div className='grid grid-flow-col gap-4'>
-                <Link to='/privacy-policy'>Privacy Policy</Link>
-                <Link to='/cookie-policy'>Cookie Policy</Link>
-                <Link to='/terms'>Terms</Link>
+                <Link to='/privacy-policy'> {t('PrivacyPolicy')}</Link>
+                <Link to='/cookie-policy'> {t('CookiePolicy')}</Link>
+                <Link to='/terms'> {t('Terms')}</Link>
               </div>
             </nav>
           </footer>

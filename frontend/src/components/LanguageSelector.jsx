@@ -12,10 +12,7 @@ const LanguageSelector = () => {
   }
 
   return (
-    <div className='mb-4'>
-      <label htmlFor='language' className='label'>
-        <span className='label-text'>Select Language:</span>
-      </label>
+    <div>
       <select
         id='language'
         className='select select-bordered w-full'
