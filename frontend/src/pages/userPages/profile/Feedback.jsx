@@ -1,35 +1,73 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const Feedback = () => {
-  const [name, setName] = useState('')
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [bookingExperience, setBookingExperience] = useState('')
-  const [paymentExperience, setPaymentExperience] = useState('')
   const [serviceQuality, setServiceQuality] = useState('')
-  const [localization, setLocalization] = useState('')
   const [overallSatisfaction, setOverallSatisfaction] = useState('')
   const [feedbackType, setFeedbackType] = useState('General Feedback')
   const [suggestions, setSuggestions] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const firstName = localStorage.getItem('firstName') || ''
+    const lastName = localStorage.getItem('lastName') || ''
+    const email = localStorage.getItem('email') || ''
+
+    setFullName(`${firstName} ${lastName}`.trim())
+    setEmail(email)
+  }, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Handle form submission logic (e.g., send data to an API)
-    alert('Thank you for your feedback!')
-    // Reset the form after submission
-    setName('')
-    setEmail('')
-    setBookingExperience('')
-    setPaymentExperience('')
-    setServiceQuality('')
-    setLocalization('')
-    setOverallSatisfaction('')
-    setFeedbackType('General Feedback')
-    setSuggestions('')
+    setLoading(true)
+    setError('')
+
+    try {
+      const feedbackData = {
+        name: fullName,
+        email: email,
+        bookingExperience,
+        serviceQuality,
+        overallSatisfaction,
+        feedbackType,
+        suggestions,
+      }
+
+      console.log(feedbackData)
+      return
+
+      // Sending feedback data to the backend
+      await axios.post(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}/api/v1/feedback`,
+        feedbackData
+      )
+
+      alert('Thank you for your feedback!')
+
+      // Reset the form after submission
+      setBookingExperience('')
+      setServiceQuality('')
+      setOverallSatisfaction('')
+      setFeedbackType('General Feedback')
+      setSuggestions('')
+    } catch (error) {
+      console.error('Error submitting feedback:', error)
+      setError(
+        'There was an error submitting your feedback. Please try again later.'
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
     <div className='p-5'>
       <h2 className='text-2xl font-semibold mb-4'>Submit Feedback</h2>
+      {error && <p className='text-red-500'>{error}</p>}
       <form onSubmit={handleSubmit} className='space-y-4'>
         <div>
           <label className='label' htmlFor='name'>
@@ -39,8 +77,8 @@ const Feedback = () => {
             type='text'
             id='name'
             className='input input-bordered w-full'
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={fullName}
+            onChange={(e) => setFullName(e.target.value)}
           />
         </div>
 
@@ -65,7 +103,7 @@ const Feedback = () => {
           <textarea
             id='bookingExperience'
             className='textarea textarea-bordered w-full'
-            placeholder='Please describe your booking experience.'
+            placeholder='Describe your booking experience.'
             value={bookingExperience}
             onChange={(e) => setBookingExperience(e.target.value)}
           />
@@ -78,7 +116,7 @@ const Feedback = () => {
           <textarea
             id='serviceQuality'
             className='textarea textarea-bordered w-full'
-            placeholder='Please rate the quality of service.'
+            placeholder='Rate the quality of the service.'
             value={serviceQuality}
             onChange={(e) => setServiceQuality(e.target.value)}
           />
@@ -136,9 +174,10 @@ const Feedback = () => {
 
         <button
           type='submit'
-          className='btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3 '
+          className='btn bg-main text-white hover:bg-transparent hover:border-main hover:text-main mt-3'
+          disabled={loading}
         >
-          Submit Feedback
+          {loading ? 'Submitting...' : 'Submit Feedback'}
         </button>
       </form>
     </div>
