@@ -5,6 +5,7 @@ import Sidebar from './Sidebar'
 import BookingHistory from './BookingHistory'
 import DeleteAccount from './DeleteAccount'
 import LoginActivity from './LoginActivity'
+import GetContacts from './GetContacts'
 import ContactUsForm from './ContactUsForm'
 import Feedback from './Feedback'
 import DataExport from './DataExport'
@@ -76,6 +77,7 @@ const Profile = () => {
             <Route path='/data-export' element={<DataExport />} />
             <Route path='/contact-support' element={<ContactUsForm />} />
             <Route path='/feedback' element={<Feedback />} />
+            <Route path='/all-contacts' element={<GetContacts />} />
           </Routes>
         </div>
       </div>

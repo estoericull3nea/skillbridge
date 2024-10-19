@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 
 const ContactUsForm = () => {
-  const [name, setName] = useState('')
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
   const [message, setMessage] = useState('')
@@ -20,7 +20,7 @@ const ContactUsForm = () => {
           `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
         )
         const { firstName, lastName, email } = response.data
-        setName(`${firstName} ${lastName}`)
+        setFullName(`${firstName} ${lastName}`)
         setEmail(email)
       } catch (error) {
         console.error('Error fetching user data:', error)
@@ -34,7 +34,7 @@ const ContactUsForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const formData = { name, email, subject, message, userId }
+    const formData = { fullName, email, subject, message, userId }
 
     setSending(true)
 
@@ -83,8 +83,8 @@ const ContactUsForm = () => {
             <label className='block text-sm font-medium mb-2'>Full Name</label>
             <input
               type='text'
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
               required
               className='input input-bordered w-full'
               readOnly

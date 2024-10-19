@@ -32,6 +32,12 @@ const Sidebar = () => {
               Booking History
             </Link>
           </li>
+
+          <li>
+            <Link to={`/profile/${userId}/${firstName}/all-contacts`}>
+              Contacts
+            </Link>
+          </li>
         </ul>
         <ul className='menu rounded-box '>
           <li className='menu-title'>
