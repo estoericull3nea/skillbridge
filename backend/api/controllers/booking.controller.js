@@ -409,7 +409,9 @@ export const getBookingsByUser = async (req, res) => {
     const bookings = await Booking.find({
       email,
       isDeleted: { $ne: true },
-    }).populate('user')
+    })
+      .populate('user')
+      .populate('meeting')
 
     if (!bookings.length) {
       return res

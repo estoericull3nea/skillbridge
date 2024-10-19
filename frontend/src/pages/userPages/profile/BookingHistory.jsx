@@ -4,10 +4,15 @@ import { Column } from 'primereact/column'
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { Dropdown } from 'primereact/dropdown'
+import { IoSendOutline } from 'react-icons/io5'
+import { MdOutlineCancelScheduleSend } from 'react-icons/md'
+import { toast } from 'react-hot-toast'
 
 const BookingHistory = () => {
   const [isLoadingAllBookings, setIsLoadingAllBookings] = useState(false)
   const [allBookings, setAllBookings] = useState([])
+
+  const [loadingCancel, setLoadingCancel] = useState({})
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: 'contains' },
@@ -55,6 +60,26 @@ const BookingHistory = () => {
       console.error('Error fetching pending bookings:', error.message)
     } finally {
       setIsLoadingAllBookings(false)
+    }
+  }
+
+  const cancelMeeting = async (bookingId) => {
+    setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: true }))
+    try {
+      const { status } = await axios.patch(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/update-status/${bookingId}`, // Updated URL
+        { status: 'canceled' } // Pass the 'canceled' status in the request body
+      )
+      if (status === 200) {
+        await fetchAllBookings()
+        toast.success('Canceled')
+      }
+    } catch (error) {
+      console.error('Error canceling meeting:', error.message)
+    } finally {
+      setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: false }))
     }
   }
 
@@ -260,13 +285,12 @@ const BookingHistory = () => {
           ></Column>
 
           {/* Actions Column */}
-          <Column
+          {/* <Column
             header='Actions'
             body={(rowData) => (
               <div className='flex space-x-2'>
                 {rowData.meeting?.join_url ? (
                   <>
-                    {/* Join Zoom Button */}
                     <div
                       className='tooltip tooltip-left'
                       data-tip='Join Zoom meeting'
@@ -277,11 +301,10 @@ const BookingHistory = () => {
                         rel='noopener noreferrer'
                         className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
                       >
-                        <i className='pi pi-send' />
+                        <IoSendOutline />
                       </a>
                     </div>
 
-                    {/* Cancel Meeting Button */}
                     <div
                       className='tooltip tooltip-left'
                       data-tip='Cancel meeting'
@@ -298,7 +321,7 @@ const BookingHistory = () => {
                             aria-hidden='true'
                           ></span>
                         ) : (
-                          <i className='pi pi-times' />
+                          <MdOutlineCancelScheduleSend />
                         )}
                       </button>
                     </div>
@@ -309,7 +332,7 @@ const BookingHistory = () => {
               </div>
             )}
             sortable
-          ></Column>
+          ></Column> */}
         </DataTable>
       )}
     </>
