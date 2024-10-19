@@ -28,18 +28,16 @@ const Login = () => {
     onSuccess: (data) => {
       toast.success(data.message)
       localStorage.setItem('token', data.token)
-      // navigate('/')
 
       const queryParams = new URLSearchParams(window.location.search)
       const redirectUrl = queryParams.get('redirect') || '/'
 
       navigate(decodeURIComponent(redirectUrl))
-      // toast.success('Login successful')
     },
     onError: (error) => {
       const errorMessage =
-        error.response?.data?.message || 'An error occurred during login'
-      if (errorMessage === 'Please verify your account before logging in.') {
+        error.response?.data?.message || t('Anerroroccurredduringlogin')
+      if (errorMessage === t('Pleaseverifyyouremailaddresstologin')) {
         setShowVerificationModal(true)
       } else {
         toast.error(errorMessage)
@@ -58,7 +56,7 @@ const Login = () => {
       return response.data
     },
     onSuccess: (data) => {
-      toast.success('Verification email resent successfully')
+      toast.success(t('Verificationemailresentsuccessfully'))
       setEmail('')
       setPassword('')
       setShowVerificationModal(false)
@@ -67,7 +65,7 @@ const Login = () => {
       setLoadingResend(false)
       toast.error(
         error.response?.data?.message ||
-          'An error occurred while resending the email'
+          t('Anerroroccurredwhileresendingtheemail')
       )
     },
   })
@@ -77,7 +75,7 @@ const Login = () => {
     if (email && password) {
       loginMutation.mutate({ email, password })
     } else {
-      toast.error('Please fill in all fields')
+      toast.error(t('Pleasefillinallfields'))
     }
   }
 
@@ -108,7 +106,7 @@ const Login = () => {
           <div className='w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0'>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
               <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
-                Login to your account
+                {t('Logintoyouraccount')}
               </h1>
 
               {/* Google login button */}
@@ -116,10 +114,10 @@ const Login = () => {
                 className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
                 onClick={handleGoogleLogin}
               >
-                <FcGoogle className='text-xl' /> Continue with Google
+                <FcGoogle className='text-xl' /> {t('ContinuewithGoogle')}
               </button>
 
-              <div className='divider'>or</div>
+              <div className='divider'>{t('or')}</div>
 
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
                 <div>
@@ -127,14 +125,14 @@ const Login = () => {
                     htmlFor='email'
                     className='block mb-2 text-sm font-medium text-gray-900'
                   >
-                    Your email
+                    {t('Youremail')}
                   </label>
                   <input
                     type='email'
                     name='email'
                     id='email'
                     className='input input-bordered w-full'
-                    placeholder='example@gmail.com'
+                    placeholder={t('example@gmail.com')}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -146,13 +144,13 @@ const Login = () => {
                     htmlFor='password'
                     className='block mb-2 text-sm font-medium text-gray-900'
                   >
-                    Password
+                    {t('Password')}
                   </label>
                   <input
                     type='password'
                     name='password'
                     id='password'
-                    placeholder='Enter password'
+                    placeholder={t('Enterpassword')}
                     className='input input-bordered w-full'
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -166,7 +164,7 @@ const Login = () => {
                       to='/forgot'
                       className='font-medium text-black hover:underline'
                     >
-                      Forgot Password?
+                      {t('ForgotPassword')}
                     </Link>
                   </label>
                 </div>
@@ -176,17 +174,17 @@ const Login = () => {
                   className='btn bg-black text-white rounded-full hover:bg-transparent hover:text-black hover:border-black w-full'
                 >
                   {loginMutation.isPending
-                    ? 'Logging in...'
-                    : 'Login to your account'}
+                    ? t('Loggingin')
+                    : t('Logintoyouraccount')}
                 </button>
 
                 <p className='text-sm font-light text-gray-500'>
-                  Don't have an account?{' '}
+                  {t('Donthaveanaccount')}{' '}
                   <Link
                     to='/register'
                     className='font-medium text-black hover:underline'
                   >
-                    Register here
+                    {t('Registerhere')}
                   </Link>
                 </p>
               </form>
@@ -199,21 +197,21 @@ const Login = () => {
       {showVerificationModal && (
         <div className='modal modal-open'>
           <div className='modal-box'>
-            <h3 className='font-bold text-lg'>Account not verified</h3>
-            <p className='py-4'>Please verify your email address to log in.</p>
+            <h3 className='font-bold text-lg'>{t('Accountnotverified')}</h3>
+            <p className='py-4'>{t('Pleaseverifyyouremailaddresstologin')}</p>
             <div className='modal-action'>
               <button
                 className={`btn ${loadingResend ? 'loading' : ''}`}
                 onClick={handleResendVerification}
                 disabled={loadingResend}
               >
-                {loadingResend ? 'Resending...' : 'Resend Verification Email'}
+                {loadingResend ? t('Resending') : t('ResendVerificationEmail')}
               </button>
               <button
                 className='btn'
                 onClick={() => setShowVerificationModal(false)}
               >
-                Cancel
+                {t('Cancel')}
               </button>
             </div>
           </div>

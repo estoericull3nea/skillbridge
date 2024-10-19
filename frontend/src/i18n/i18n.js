@@ -98,6 +98,7 @@ const resources = {
       Resending: 'Resending...',
       ResendVerificationEmail: 'Resend Verification Email...',
       Cancel: 'Cancel',
+      Enterpassword: 'Enter Password',
     },
   },
   es: {
@@ -177,6 +178,24 @@ const resources = {
       APIIntegration: 'Integración API',
       ThirdPartyAPIIntegration: 'Integración de API de Terceros',
       CustomAPIDevelopment: 'Desarrollo de API Personalizado',
+
+      Logintoyouraccount: 'Iniciar sesión en tu cuenta',
+      ContinuewithGoogle: 'Continuar con Google',
+      Youremail: 'Tu correo electrónico',
+      Password: 'Contraseña',
+      ForgotPassword: '¿Olvidaste tu contraseña?',
+      Donthaveanaccount: '¿No tienes una cuenta?',
+      Registerhere: 'Regístrate aquí',
+      Loggingin: 'Iniciando sesión...',
+      Logintoyouraccount: 'Iniciar sesión en tu cuenta',
+      Accountnotverified: 'Cuenta no verificada',
+      Pleaseverifyyouremailaddresstologin:
+        'Por favor verifica tu dirección de correo electrónico para iniciar sesión',
+      loading: 'cargando',
+      Resending: 'Reenviando...',
+      ResendVerificationEmail: 'Reenviar correo de verificación...',
+      Cancel: 'Cancelar',
+      Enterpassword: 'Introduce la contraseña',
     },
   },
 }
