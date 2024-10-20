@@ -31,7 +31,7 @@ const RecentBookings = () => {
         <table className='table table-zebra w-full'>
           <thead>
             <tr>
-              <th>User Name</th>
+              <th>Full Name</th>
               <th>Email</th>
               <th>Booking Date</th>
               <th>Status</th>

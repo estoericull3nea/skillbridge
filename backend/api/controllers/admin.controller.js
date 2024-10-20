@@ -78,8 +78,38 @@ export const getRecentBookings = async (req, res) => {
         'topic start_time duration timezone start_url join_url'
       )
 
-    // Respond with the recent bookings
     res.status(200).json(recentBookings)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
+
+export const getNewUsers = async (req, res) => {
+  try {
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+
+    const newUsers = await User.find({ createdAt: { $gte: sevenDaysAgo } })
+      .sort({ createdAt: -1 })
+      .limit(10)
+
+    res.status(200).json(newUsers)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
+
+export const getActiveUsers = async (req, res) => {
+  try {
+    const activeUsers = await User.find({
+      active: true,
+    })
+      .sort({ lastLogin: -1 })
+      .limit(10)
+
+    res.status(200).json(activeUsers)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Server Error' })
