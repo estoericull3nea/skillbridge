@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { GrSchedules } from 'react-icons/gr'
 import axios from 'axios'
+import RecentBookings from './components/RecentBookings'
 
 const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -100,6 +101,8 @@ const AdminDashboard = () => {
           </div>
         ))}
       </div>
+
+      <RecentBookings />
     </div>
   )
 }

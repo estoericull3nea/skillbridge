@@ -65,3 +65,23 @@ export const getBookingStats = async (req, res) => {
     res.status(500).json({ message: 'Server Error' })
   }
 }
+
+export const getRecentBookings = async (req, res) => {
+  try {
+    const recentBookings = await Booking.find({ isDeleted: false })
+      .sort({ createdAt: -1 })
+      .limit(10)
+      .populate('user', 'firstName lastName email')
+      .select('service date status meeting email')
+      .populate(
+        'meeting',
+        'topic start_time duration timezone start_url join_url'
+      )
+
+    // Respond with the recent bookings
+    res.status(200).json(recentBookings)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
