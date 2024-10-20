@@ -8,9 +8,7 @@ const AdminSidebar = () => {
       <aside className='min-w-[300px] shadow-xl rounded-xl bg-white sticky top-0'>
         <div className='pl-5 pt-5'>
           <h1 className='text-2xl font-semibold'>Admin Panel</h1>
-          <h3 className='flex items-center text-sm gap-1 text-gray-500'>
-            {/* <MdOutlineMailOutline /> {localStorage.getItem('adminEmail')} */}
-          </h3>
+          <h3 className='flex items-center text-sm gap-1 text-gray-500'></h3>
         </div>
 
         {/* Dashboard */}

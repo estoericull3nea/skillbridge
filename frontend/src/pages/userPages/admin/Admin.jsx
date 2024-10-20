@@ -4,6 +4,8 @@ import { convertDateToWords } from '../../../utils/convertDaysToWords'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import { CiCalendar } from 'react-icons/ci'
 import { IoMdNotificationsOutline } from 'react-icons/io'
+import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
+import AdminDashboard from './AdminDashboard'
 
 const Admin = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -40,19 +42,9 @@ const Admin = () => {
             </div>
           </div>
 
-          {/* <Routes>
-            <Route path='/dashboard' element={<Dashboard />} />
-            <Route path='/user-info' element={<UserInfo />} />
-            <Route path='/booking-history' element={<BookingHistory />} />
-            <Route path='/deletion' element={<DeleteAccount />} />
-            <Route path='/deletion' element={<DeleteAccount />} />
-            <Route path='/login-activity' element={<LoginActivity />} />
-            <Route path='/data-export' element={<DataExport />} />
-            <Route path='/contact-support' element={<ContactUsForm />} />
-            <Route path='/feedback' element={<Feedback />} />
-            <Route path='/all-contacts' element={<GetContacts />} />
-            <Route path='/all-feedbacks' element={<GetFeedbacks />} />
-          </Routes> */}
+          <Routes>
+            <Route path='/dashboard' element={<AdminDashboard />} />
+          </Routes>
         </div>
       </div>
     </div>
