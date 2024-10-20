@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { GrSchedules } from 'react-icons/gr'
-import axios from 'axios' // Assuming you will fetch data using Axios or any other library
+import axios from 'axios'
 
 const AdminDashboard = () => {
-  const [isLoading, setIsLoading] = useState(true) // Loading state
+  const [isLoading, setIsLoading] = useState(true)
   const [stats, setStats] = useState({
     totalBookings: 0,
     pendingBookings: 0,
@@ -13,24 +13,25 @@ const AdminDashboard = () => {
     doneBookings: 0,
     rejectedBookings: 0,
     missedBookings: 0,
+    totalUsers: 0,
+    activeUsers: 0,
+    inActiveUsers: 0,
   })
 
   useEffect(() => {
-    // Simulate fetching data with an API call
     const fetchStats = async () => {
       try {
-        // Here you would make an actual API call
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/booking-stats`
-        ) // Replace with your actual API endpoint
-        setStats(data) // Set the fetched data
-        setIsLoading(false) // Stop loading after data is fetched
+          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/stats`
+        )
+        setStats(data)
+        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching booking stats:', error)
       }
     }
 
-    setTimeout(fetchStats, 2000) // Simulating a delay for the loading effect
+    setTimeout(fetchStats, 2000)
   }, [])
 
   const statItems = [
@@ -42,6 +43,9 @@ const AdminDashboard = () => {
     { title: 'Done Bookings', value: stats.doneBookings },
     { title: 'Rejected Bookings', value: stats.rejectedBookings },
     { title: 'Missed Bookings', value: stats.missedBookings },
+    { title: 'Total Users', value: stats.totalUsers },
+    { title: 'Active Users', value: stats.activeUsers },
+    { title: 'Inactive Users', value: stats.inActiveUsers },
   ]
 
   return (
@@ -78,7 +82,6 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              {/* Loading skeleton */}
               <div className='stat-value'>
                 {isLoading ? (
                   <div className='h-6 w-16 bg-gray-200 rounded animate-pulse'></div>

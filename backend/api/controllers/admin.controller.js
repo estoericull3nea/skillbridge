@@ -1,4 +1,5 @@
 import Booking from '../models/booking.model.js'
+import User from '../models/user.model.js'
 
 export const getBookingStats = async (req, res) => {
   try {
@@ -40,6 +41,12 @@ export const getBookingStats = async (req, res) => {
       //   isDeleted: false,
     })
 
+    const totalUsers = await User.countDocuments()
+
+    const activeUsers = await User.countDocuments({ active: true })
+
+    const inActiveUsers = await User.countDocuments({ active: false })
+
     res.status(200).json({
       totalBookings,
       pendingBookings,
@@ -49,6 +56,9 @@ export const getBookingStats = async (req, res) => {
       rejectedBookings,
       missedBookings,
       upcomingBookings,
+      totalUsers,
+      activeUsers,
+      inActiveUsers,
     })
   } catch (error) {
     console.error(error)

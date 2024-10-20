@@ -52,13 +52,10 @@ const Dashboard = () => {
     const bookingDate = new Date(dateString)
     const today = new Date()
 
-    // Calculate the time difference in milliseconds
     const timeDiff = bookingDate.getTime() - today.getTime()
 
-    // Convert time difference from milliseconds to days
     const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24))
 
-    // Return the number of days remaining
     return dayDiff
   }
 
@@ -96,8 +93,8 @@ const Dashboard = () => {
       const { status } = await axios.patch(
         `${
           import.meta.env.VITE_DEV_BACKEND_URL
-        }book/update-status/${bookingId}`, // Updated URL
-        { status: 'canceled' } // Pass the 'canceled' status in the request body
+        }book/update-status/${bookingId}`,
+        { status: 'canceled' }
       )
       if (status === 200) {
         await fetchUpcomingBookings()
