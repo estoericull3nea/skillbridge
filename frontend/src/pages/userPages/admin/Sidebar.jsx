@@ -19,9 +19,9 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/dashboard'>Overview</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/analytics'>Analytics</Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* User Management */}

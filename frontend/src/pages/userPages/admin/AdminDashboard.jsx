@@ -4,6 +4,7 @@ import axios from 'axios'
 import RecentBookings from './components/RecentBookings'
 import RecentNewAndActiveUsers from './components/RecentNewAndActiveUsers'
 import RecentFeedback from './components/RecentFeedback'
+import DashboardCharts from './components/ChartComponent'
 
 const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -60,7 +61,7 @@ const AdminDashboard = () => {
             className='stat bg-white shadow-xl rounded-xl p-6 mb-4'
           >
             <div className='stat-figure text-secondary'>
-              <svg
+              {/* <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
@@ -72,7 +73,7 @@ const AdminDashboard = () => {
                   strokeWidth='2'
                   d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
                 ></path>
-              </svg>
+              </svg> */}
             </div>
 
             <div>
@@ -92,13 +93,13 @@ const AdminDashboard = () => {
                   stat.value
                 )}
               </div>
-              <div className='stat-desc'>
+              {/* <div className='stat-desc'>
                 {isLoading ? (
                   <div className='h-4 w-32 bg-gray-200 rounded animate-pulse'></div>
                 ) : (
                   'Jan 1st - Feb 1st'
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         ))}
@@ -107,6 +108,7 @@ const AdminDashboard = () => {
       <RecentBookings />
       <RecentNewAndActiveUsers />
       <RecentFeedback />
+      <DashboardCharts />
     </div>
   )
 }

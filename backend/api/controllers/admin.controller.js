@@ -129,3 +129,59 @@ export const getRecentFeedback = async (req, res) => {
     res.status(500).json({ message: 'Server Error' })
   }
 }
+
+export const getNewUsersTrend = async (req, res) => {
+  try {
+    const today = new Date()
+    const lastWeek = new Date(today)
+    lastWeek.setDate(today.getDate() - 7)
+
+    const newUsersTrend = await User.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: lastWeek },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ])
+
+    res.status(200).json(newUsersTrend)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
+
+export const getBookingTrend = async (req, res) => {
+  try {
+    const today = new Date()
+    const lastWeek = new Date(today)
+    lastWeek.setDate(today.getDate() - 7)
+
+    const bookingTrend = await Booking.aggregate([
+      {
+        $match: {
+          createdAt: { $gte: lastWeek },
+        },
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ])
+
+    res.status(200).json(bookingTrend)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
