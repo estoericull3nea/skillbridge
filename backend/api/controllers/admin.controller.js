@@ -1,5 +1,6 @@
 import Booking from '../models/booking.model.js'
 import User from '../models/user.model.js'
+import Feedback from '../models/feedback.model.js'
 
 export const getBookingStats = async (req, res) => {
   try {
@@ -110,6 +111,19 @@ export const getActiveUsers = async (req, res) => {
       .limit(10)
 
     res.status(200).json(activeUsers)
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: 'Server Error' })
+  }
+}
+
+export const getRecentFeedback = async (req, res) => {
+  try {
+    const recentFeedback = await Feedback.find({})
+      .sort({ createdAt: -1 })
+      .limit(10)
+
+    res.status(200).json(recentFeedback)
   } catch (error) {
     console.error(error)
     res.status(500).json({ message: 'Server Error' })

@@ -39,83 +39,85 @@ const RecentNewAndActiveUsers = () => {
   const skeletonRows = Array(5).fill(0)
 
   return (
-    <div>
+    <div className='mt-3'>
       {/* New Users Section */}
-      <h2 className='text-2xl font-semibold mb-4'>New Users</h2>
-      <div className='overflow-x-auto mb-8'>
-        <table className='table table-zebra w-full'>
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Registration Date</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoadingNewUsers
-              ? skeletonRows.map((_, index) => (
-                  <tr key={index} className='animate-pulse'>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-32'></div>
-                    </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-48'></div>
-                    </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-32'></div>
-                    </td>
-                  </tr>
-                ))
-              : newUsers.map((user) => (
-                  <tr key={user._id}>
-                    <td>
-                      {user.firstName} {user.lastName}
-                    </td>
-                    <td>{user.email}</td>
-                    <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
-      </div>
+      <div className='grid grid-cols-1 xl:grid-cols-2'>
+        <div className='overflow-x-auto mb-8'>
+          <h2 className='text-2xl font-semibold mb-4'>New Users</h2>
+          <table className='table table-zebra w-full'>
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Registration Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoadingNewUsers
+                ? skeletonRows.map((_, index) => (
+                    <tr key={index} className='animate-pulse'>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      </td>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-48'></div>
+                      </td>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      </td>
+                    </tr>
+                  ))
+                : newUsers.map((user) => (
+                    <tr key={user._id}>
+                      <td>
+                        {user.firstName} {user.lastName}
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+            </tbody>
+          </table>
+        </div>
 
-      {/* Active Users Section */}
-      <h2 className='text-2xl font-semibold mb-4'>Active Users</h2>
-      <div className='overflow-x-auto'>
-        <table className='table table-zebra w-full'>
-          <thead>
-            <tr>
-              <th>Full Name</th>
-              <th>Email</th>
-              <th>Last Login</th>
-            </tr>
-          </thead>
-          <tbody>
-            {isLoadingActiveUsers
-              ? skeletonRows.map((_, index) => (
-                  <tr key={index} className='animate-pulse'>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-32'></div>
-                    </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-48'></div>
-                    </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-32'></div>
-                    </td>
-                  </tr>
-                ))
-              : activeUsers.map((user) => (
-                  <tr key={user._id}>
-                    <td>
-                      {user.firstName} {user.lastName}
-                    </td>
-                    <td>{user.email}</td>
-                    <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
-                  </tr>
-                ))}
-          </tbody>
-        </table>
+        {/* Active Users Section */}
+        <div className='overflow-x-auto'>
+          <h2 className='text-2xl font-semibold mb-4'>Active Users</h2>
+          <table className='table table-zebra w-full'>
+            <thead>
+              <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Last Login</th>
+              </tr>
+            </thead>
+            <tbody>
+              {isLoadingActiveUsers
+                ? skeletonRows.map((_, index) => (
+                    <tr key={index} className='animate-pulse'>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      </td>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-48'></div>
+                      </td>
+                      <td>
+                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      </td>
+                    </tr>
+                  ))
+                : activeUsers.map((user) => (
+                    <tr key={user._id}>
+                      <td>
+                        {user.firstName} {user.lastName}
+                      </td>
+                      <td>{user.email}</td>
+                      <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
+                    </tr>
+                  ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   )
