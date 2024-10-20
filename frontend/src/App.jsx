@@ -20,6 +20,7 @@ import NotFound from './pages/NotFound'
 import GoogleCallback from './pages/userPages/GoogleCallback'
 import About from './pages/userPages/About'
 import Profile from './pages/userPages/profile/Profile'
+import Admin from './pages/userPages/admin/Admin'
 import ProtectRoute from './components/ProtectRoute'
 
 import './i18n/i18n.js'
@@ -69,6 +70,8 @@ const App = () => {
             path='/profile/:userId/:firstName/*'
             element={<Profile />}
           />
+
+          <Route exact path='/admin/*' element={<Admin />} />
 
           <Route
             path='/about'
