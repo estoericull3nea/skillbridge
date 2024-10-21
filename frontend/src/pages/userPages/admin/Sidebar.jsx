@@ -48,12 +48,9 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/booking-management'>View Bookings</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/approve-bookings'>Approve Bookings</Link>
-          </li>
-          <li>
-            <Link to='/admin/booking-history'>Booking History</Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* Feedback & Support */}
