@@ -3,9 +3,23 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import axios from 'axios'
 import { Button } from 'primereact/button'
-import { Toast } from 'primereact/toast'
+import { toast } from 'react-hot-toast'
 import { Dialog } from 'primereact/dialog'
 import { FaPlus, FaPencilAlt, FaTrash, FaEye } from 'react-icons/fa'
+
+const dateFormatter = (dateString) => {
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }
+
+  const date = new Date(dateString)
+  return date.toLocaleString(undefined, options) // returns a string in a human-readable format
+}
 
 const UserManagement = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -22,7 +36,6 @@ const UserManagement = () => {
   const [showDialog, setShowDialog] = useState(false)
   const [viewDialog, setViewDialog] = useState(false)
   const [loadingUser, setLoadingUser] = useState(false)
-  const toast = useRef(null)
 
   // Fetch all users
   const fetchUsers = async () => {
@@ -56,29 +69,20 @@ const UserManagement = () => {
       )
       if (status === 201) {
         setUsers((prev) => [...prev, data])
-        toast.current.show({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'User created successfully!',
-          life: 3000,
-        })
+        toast.success('User created successfully!')
         resetForm()
         setShowDialog(false)
+        fetchUsers()
       }
     } catch (error) {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error.message,
-        life: 3000,
-      })
+      toast.error(error.message)
     }
   }
 
   // Update user
   const updateUser = async (userId) => {
     try {
-      const { status, data } = await axios.put(
+      const { status, data } = await axios.patch(
         `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`,
         userForm
       )
@@ -86,21 +90,12 @@ const UserManagement = () => {
         setUsers((prev) =>
           prev.map((user) => (user._id === userId ? data : user))
         )
-        toast.current.show({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'User updated successfully!',
-          life: 3000,
-        })
+        toast.success('User updated successfully!')
         setShowDialog(false)
+        fetchUsers()
       }
     } catch (error) {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error.message,
-        life: 3000,
-      })
+      toast.error(error.message)
     }
   }
 
@@ -112,20 +107,10 @@ const UserManagement = () => {
       )
       if (status === 200) {
         setUsers((prev) => prev.filter((user) => user._id !== userId))
-        toast.current.show({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'User deleted successfully!',
-          life: 3000,
-        })
+        toast.success('User deleted successfully!')
       }
     } catch (error) {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error.message,
-        life: 3000,
-      })
+      toast.error(error.message)
     }
   }
 
@@ -157,12 +142,7 @@ const UserManagement = () => {
       setSelectedUser(data)
       setViewDialog(true)
     } catch (error) {
-      toast.current.show({
-        severity: 'error',
-        summary: 'Error',
-        detail: error.message,
-        life: 3000,
-      })
+      toast.error(error.message)
     } finally {
       setLoadingUser(false)
     }
@@ -198,7 +178,6 @@ const UserManagement = () => {
 
   return (
     <>
-      <Toast ref={toast} />
       <Button
         label='Add User'
         icon={<FaPlus />}
@@ -289,7 +268,6 @@ const UserManagement = () => {
               value={userForm.lastName}
               onChange={handleInputChange}
               className='input input-bordered w-full'
-              required
             />
           </div>
           <div className='mb-4'>
@@ -359,6 +337,7 @@ const UserManagement = () => {
         onHide={() => setViewDialog(false)}
         footer={<Button label='Close' onClick={() => setViewDialog(false)} />}
       >
+        {console.log(selectedUser)}
         {loadingUser ? (
           <div className='flex flex-col space-y-4'>
             <div className='skeleton h-6 w-1/2 rounded-md' />
@@ -370,6 +349,9 @@ const UserManagement = () => {
         ) : (
           <div>
             <p>
+              <strong>User ID:</strong> {selectedUser?._id}
+            </p>
+            <p>
               <strong>First Name:</strong> {selectedUser?.firstName}
             </p>
             <p>
@@ -379,11 +361,25 @@ const UserManagement = () => {
               <strong>Email:</strong> {selectedUser?.email}
             </p>
             <p>
+              <strong>Role:</strong> {selectedUser?.role}
+            </p>
+            <p>
+              <strong>Pfp:</strong> {selectedUser?.picture}
+            </p>
+            <p>
               <strong>Active:</strong> {selectedUser?.active ? 'Yes' : 'No'}
             </p>
             <p>
               <strong>Verified:</strong>{' '}
               {selectedUser?.isVerified ? 'Yes' : 'No'}
+            </p>
+            <p>
+              <strong>Registere At:</strong>{' '}
+              {dateFormatter(selectedUser?.createdAt)}
+            </p>
+            <p>
+              <strong>Updated At:</strong>{' '}
+              {dateFormatter(selectedUser?.updatedAt)}
             </p>
           </div>
         )}
