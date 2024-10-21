@@ -177,6 +177,9 @@ const Dashboard = () => {
       const filteredData = response.data.filter((item, index) => {
         return item.status === 'pending'
       })
+
+      console.log(filteredData)
+
       setTotalPendingCount(filteredData.length || 0)
     } catch (error) {
       console.error('Error fetching pending bookings:', error.message)
