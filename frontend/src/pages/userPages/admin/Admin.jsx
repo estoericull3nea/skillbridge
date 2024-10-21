@@ -8,6 +8,7 @@ import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import AdminDashboard from './AdminDashboard'
 import UserManagement from './UserManagement'
 import UserActivityLogs from './UserActivityLogs'
+import ViewBookings from './ViewBookings'
 
 const Admin = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -48,6 +49,7 @@ const Admin = () => {
             <Route path='/dashboard' element={<AdminDashboard />} />
             <Route path='/user-management' element={<UserManagement />} />
             <Route path='/user-activity-logs' element={<UserActivityLogs />} />
+            <Route path='/booking-management' element={<ViewBookings />} />
           </Routes>
         </div>
       </div>
