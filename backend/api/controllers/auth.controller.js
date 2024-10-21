@@ -9,6 +9,7 @@ import crypto from 'crypto'
 import axios from 'axios'
 import { jwtDecode } from 'jwt-decode'
 import LogLogin from '../models/loginHistory.model.js'
+import Logger from '../models/log.model.js'
 dotenv.config()
 
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID)
@@ -56,6 +57,14 @@ export const register = async (req, res) => {
 
     await newUser.save()
 
+    // logging
+    await Logger.create({
+      user: newUser._id,
+      action: 'User Registered',
+      details: { email: newUser.email },
+    })
+    // logging
+
     const verificationUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}verify?token=${verificationToken}`
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -89,12 +98,22 @@ export const verifyEmail = async (req, res) => {
     const user = await User.findOne({ email })
 
     if (!user) {
+      await Logger.create({
+        action: 'Email Verification Attempt Failed',
+        details: { email, reason: 'User not found or expired token' },
+      })
+
       return res
         .status(404)
         .json({ message: 'User Not Found or Expired Token' })
     }
 
     if (user.isVerified) {
+      await Logger.create({
+        action: 'Email Verification Attempt Failed',
+        details: { email, reason: 'User already verified' },
+      })
+
       return res.status(400).json({ message: 'User Already Verified' })
     }
 
@@ -103,6 +122,12 @@ export const verifyEmail = async (req, res) => {
     user.verificationTokenExpires = undefined
 
     await user.save()
+
+    await Logger.create({
+      user: user._id,
+      action: 'Email Verified',
+      details: { email: user.email },
+    })
 
     return res.status(200).json({ message: 'Email Verified Successfully' })
   } catch (error) {
@@ -129,18 +154,34 @@ export const login = async (req, res) => {
         { expiresIn: '1h' }
       )
 
+      await Logger.create({
+        user: thisUser._id,
+        action: 'User Logged In',
+        details: { email: thisUser.email },
+      })
+
       return res.status(200).json({
         message: 'Login Successful',
         token,
       })
     } else {
       if (!thisUser) {
+        await Logger.create({
+          action: 'Failed Login Attempt',
+          details: { email, reason: 'User not found' },
+        })
+
         return res
           .status(404)
           .json({ message: 'User not found with this email' })
       }
 
       if (!thisUser.isVerified) {
+        await Logger.create({
+          action: 'Failed Login Attempt',
+          details: { email, reason: 'User not verified' },
+        })
+
         return res
           .status(403)
           .json({ message: 'Please verify your account before logging in.' })
@@ -152,6 +193,12 @@ export const login = async (req, res) => {
         const lockDuration = Math.ceil(
           (thisUser.lockUntil - Date.now()) / 1000 / 60
         )
+
+        await Logger.create({
+          action: 'Failed Login Attempt',
+          details: { email, reason: 'Account is locked', lockDuration },
+        })
+
         return res.status(403).json({
           message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
         })
@@ -169,6 +216,10 @@ export const login = async (req, res) => {
           thisUser.lockUntil = Date.now() + LOCK_TIME
         }
 
+        await Logger.create({
+          action: 'Failed Login Attempt',
+          details: { email, reason: 'Incorrect password' },
+        })
         await thisUser.save()
 
         return res.status(401).json({
@@ -194,6 +245,12 @@ export const login = async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       )
+
+      await Logger.create({
+        user: thisUser._id,
+        action: 'User Logged In',
+        details: { email: thisUser.email },
+      })
 
       return res.status(200).json({
         message: 'Login Successful',
@@ -391,6 +448,12 @@ export const resetPassword = async (req, res) => {
       `,
     })
 
+    await Logger.create({
+      user: user._id,
+      action: 'Password Reset',
+      details: { email: user.email },
+    })
+
     return res
       .status(200)
       .json({ message: 'Password has been reset successfully' })
@@ -457,9 +520,15 @@ export const googleSignup = async (req, res) => {
         const ipAddress = req.ip || req.connection.remoteAddress
         const userAgent = req.get('User-Agent')
 
+        await Logger.create({
+          user: user._id,
+          action: 'User Google Sign-In',
+          details: { email: user.email, ipAddress, userAgent },
+        })
+
         // Save login activity to the LoginHistory model
         await LogLogin.create({
-          userId: existingUser._id,
+          user: existingUser._id,
           ipAddress,
           userAgent,
         })
@@ -502,6 +571,12 @@ export const googleSignup = async (req, res) => {
         userAgent,
       })
 
+      await Logger.create({
+        user: user._id,
+        action: 'User Logged In',
+        details: { email: user.email },
+      })
+
       return res.status(200).json({
         token,
       })
@@ -528,6 +603,12 @@ export const googleSignup = async (req, res) => {
         user: userGoogleRegistered[0]._id,
         ipAddress,
         userAgent,
+      })
+
+      await Logger.create({
+        user: userGoogleRegistered[0]._id,
+        action: 'User Logged In',
+        details: { email: userGoogleRegistered[0].email },
       })
 
       return res.status(200).json({

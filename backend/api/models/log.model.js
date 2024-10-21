@@ -7,6 +7,4 @@ const logSchema = new mongoose.Schema({
   details: { type: Object, default: {} },
 })
 
-const Log = mongoose.model('Log', logSchema)
-
-export default Log
+export default mongoose.model('Log', logSchema)

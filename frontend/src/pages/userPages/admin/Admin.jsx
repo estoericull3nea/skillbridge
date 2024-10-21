@@ -7,6 +7,7 @@ import { IoMdNotificationsOutline } from 'react-icons/io'
 import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import AdminDashboard from './AdminDashboard'
 import UserManagement from './UserManagement'
+import UserActivityLogs from './UserActivityLogs'
 
 const Admin = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -46,6 +47,7 @@ const Admin = () => {
           <Routes>
             <Route path='/dashboard' element={<AdminDashboard />} />
             <Route path='/user-management' element={<UserManagement />} />
+            <Route path='/user-activity-logs' element={<UserActivityLogs />} />
           </Routes>
         </div>
       </div>
