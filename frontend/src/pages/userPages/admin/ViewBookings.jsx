@@ -26,7 +26,6 @@ const ViewBookings = () => {
         )
         setBookings(response.data)
         setFilteredBookings(response.data) // Initialize filteredBookings
-        console.log(response.data)
       } catch (err) {
         setError(err.response?.data?.message || 'Error fetching bookings')
       } finally {
@@ -61,7 +60,7 @@ const ViewBookings = () => {
       setBookings((prevBookings) =>
         prevBookings.map((booking) =>
           booking._id === bookingId
-            ? { ...booking, status: 'ongoing' }
+            ? { ...booking, status: 'ongoing', startTime: new Date() }
             : booking
         )
       )
@@ -100,7 +99,9 @@ const ViewBookings = () => {
       )
       setBookings((prevBookings) =>
         prevBookings.map((booking) =>
-          booking._id === bookingId ? { ...booking, status: 'done' } : booking
+          booking._id === bookingId
+            ? { ...booking, status: 'done', endTime: new Date() }
+            : booking
         )
       )
     } catch (err) {
@@ -172,6 +173,16 @@ const ViewBookings = () => {
     )
   }
 
+  const calculateDuration = (startTime, endTime) => {
+    const start = new Date(startTime)
+    const end = new Date(endTime)
+    const durationInMinutes = Math.ceil((end - start) / 1000 / 60) // Convert milliseconds to minutes
+    const hours = Math.floor(durationInMinutes / 60)
+    const minutes = durationInMinutes % 60
+
+    return { hours, minutes }
+  }
+
   return (
     <div className='p-5'>
       <h1 className='text-2xl font-semibold mb-4'>View Bookings</h1>
@@ -230,6 +241,30 @@ const ViewBookings = () => {
             </p>
             <p>
               <strong>Status:</strong> {selectedBooking.status}
+            </p>
+            <p>
+              <strong>Start Time:</strong>{' '}
+              {selectedBooking.startTime
+                ? new Date(selectedBooking.startTime).toLocaleString()
+                : 'N/A'}
+            </p>
+            <p>
+              <strong>End Time:</strong>{' '}
+              {selectedBooking.endTime
+                ? new Date(selectedBooking.endTime).toLocaleString()
+                : 'N/A'}
+            </p>
+            <p>
+              <strong>Duration:</strong>{' '}
+              {selectedBooking.startTime && selectedBooking.endTime
+                ? (() => {
+                    const { hours, minutes } = calculateDuration(
+                      selectedBooking.startTime,
+                      selectedBooking.endTime
+                    )
+                    return `${hours} hour(s) and ${minutes} minute(s)`
+                  })()
+                : 'N/A'}
             </p>
             <p>
               <strong>Join URL:</strong>{' '}

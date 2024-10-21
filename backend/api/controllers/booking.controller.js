@@ -501,9 +501,44 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   }
 }
 
+// export const updateBookingStatus = async (req, res) => {
+//   const { bookingId } = req.params // Extract bookingId from params
+//   const { status } = req.body // Extract status from request body
+
+//   try {
+//     // Check if the status is valid
+//     const validStatuses = Booking.schema.path('status').enumValues
+//     if (!validStatuses.includes(status)) {
+//       return res.status(400).json({
+//         message: `Invalid status. Valid statuses are: ${validStatuses.join(
+//           ', '
+//         )}.`,
+//       })
+//     }
+
+//     // Update the booking status by matching the bookingId
+//     const updatedBooking = await Booking.findOneAndUpdate(
+//       { _id: bookingId, isDeleted: false }, // Correct usage of bookingId here
+//       { status },
+//       { new: true }
+//     )
+
+//     // If booking not found
+//     if (!updatedBooking) {
+//       return res.status(404).json({ message: 'Booking not found.' })
+//     }
+
+//     return res
+//       .status(200)
+//       .json({ message: 'Update Successfully', updatedBooking })
+//   } catch (error) {
+//     return res.status(500).json({ message: error.message })
+//   }
+// }
+
 export const updateBookingStatus = async (req, res) => {
   const { bookingId } = req.params // Extract bookingId from params
-  const { status } = req.body // Extract status from request body
+  const { status, startTime, endTime } = req.body // Extract status and time fields from request body
 
   try {
     // Check if the status is valid
@@ -516,10 +551,45 @@ export const updateBookingStatus = async (req, res) => {
       })
     }
 
+    // Prepare fields to update
+    const updateFields = { status }
+
+    // Calculate duration and update startTime/endTime as needed
+    if (status === 'ongoing' && startTime && endTime) {
+      const start = new Date(startTime)
+      const end = new Date(endTime)
+
+      // Check if startTime is before endTime
+      if (start >= end) {
+        return res
+          .status(400)
+          .json({ message: 'End time must be after start time.' })
+      }
+
+      // Calculate duration in minutes
+      const duration = Math.ceil((end - start) / 1000 / 60) // Convert milliseconds to minutes
+      updateFields.startTime = startTime
+      updateFields.endTime = endTime
+      updateFields.duration = duration
+    }
+
+    // If marking as done, set endTime to current time and calculate duration
+    if (status === 'done') {
+      const now = new Date()
+      updateFields.endTime = now // Set endTime to the current time
+
+      // Assuming startTime is already set, calculate duration based on it
+      if (updateFields.startTime) {
+        const start = new Date(updateFields.startTime)
+        const duration = Math.ceil((now - start) / 1000 / 60) // Calculate duration in minutes
+        updateFields.duration = duration
+      }
+    }
+
     // Update the booking status by matching the bookingId
     const updatedBooking = await Booking.findOneAndUpdate(
       { _id: bookingId, isDeleted: false }, // Correct usage of bookingId here
-      { status },
+      updateFields, // Include the fields to update
       { new: true }
     )
 

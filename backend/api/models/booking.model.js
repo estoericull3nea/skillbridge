@@ -45,6 +45,10 @@ const bookingSchema = new mongoose.Schema(
       ref: 'User',
     },
 
+    startTime: { type: String }, // New field
+    endTime: { type: String }, // New field
+    duration: { type: Number }, // Duration in minutes
+
     isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
