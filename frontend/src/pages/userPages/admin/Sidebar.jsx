@@ -32,9 +32,9 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/user-management'>Manage Users</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/roles-permissions'>Roles & Permissions</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/admin/user-activity-logs'>User Activity Logs</Link>
           </li>

@@ -337,7 +337,6 @@ const UserManagement = () => {
         onHide={() => setViewDialog(false)}
         footer={<Button label='Close' onClick={() => setViewDialog(false)} />}
       >
-        {console.log(selectedUser)}
         {loadingUser ? (
           <div className='flex flex-col space-y-4'>
             <div className='skeleton h-6 w-1/2 rounded-md' />

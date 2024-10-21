@@ -15,6 +15,7 @@ import exportUserDataRouter from './api/routes/dataExport.route.js'
 import contactRouter from './api/routes/contact.route.js'
 import feedbackRouter from './api/routes/feedback.route.js'
 import adminRouter from './api/routes/admin.route.js'
+import logRouter from './api/routes/log.route.js'
 
 import connectDB from './api/utils/connectDB.js'
 
@@ -63,6 +64,7 @@ app.use('/api/v1/data-export', exportUserDataRouter)
 app.use('/api/v1/contacts', contactRouter)
 app.use('/api/v1/feedbacks', feedbackRouter)
 app.use('/api/v1/admin', adminRouter)
+app.use('/api/v1/logs', logRouter)
 
 // app.use('/api/feedbacks', feedbackRouter)
 // app.use('/api/contacts', contactRouter)
