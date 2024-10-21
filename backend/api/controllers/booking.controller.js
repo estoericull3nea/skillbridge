@@ -250,9 +250,9 @@ export const book = async (req, res) => {
 export const getAllBookings = async (req, res) => {
   try {
     // Find bookings where isDeleted is false and populate the 'user' field
-    const bookings = await Booking.find({ isDeleted: { $ne: true } }).populate(
-      'user'
-    )
+    const bookings = await Booking.find({ isDeleted: { $ne: true } })
+      .populate('user')
+      .populate('meeting')
 
     if (!bookings.length) {
       return res.status(404).json({ message: 'No Bookings Found' })
@@ -361,6 +361,8 @@ export const getAllAvailableTimesByDate = async (req, res) => {
 
 export const getAllBookingsByStatus = async (req, res) => {
   const { status } = req.params
+
+  console.log(status)
 
   try {
     const validStatuses = Booking.schema.path('status').enumValues
@@ -500,10 +502,11 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
 }
 
 export const updateBookingStatus = async (req, res) => {
-  const { bookingId } = req.params
-  const { status } = req.body
+  const { bookingId } = req.params // Extract bookingId from params
+  const { status } = req.body // Extract status from request body
 
   try {
+    // Check if the status is valid
     const validStatuses = Booking.schema.path('status').enumValues
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
@@ -513,12 +516,14 @@ export const updateBookingStatus = async (req, res) => {
       })
     }
 
+    // Update the booking status by matching the bookingId
     const updatedBooking = await Booking.findOneAndUpdate(
-      { _id: bookingId, isDeleted: false },
+      { _id: bookingId, isDeleted: false }, // Correct usage of bookingId here
       { status },
       { new: true }
     )
 
+    // If booking not found
     if (!updatedBooking) {
       return res.status(404).json({ message: 'Booking not found.' })
     }

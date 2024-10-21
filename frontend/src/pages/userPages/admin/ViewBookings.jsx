@@ -2,15 +2,21 @@
 
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
-import { Link } from 'react-router-dom'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Skeleton } from 'primereact/skeleton'
+import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
+import { InputText } from 'primereact/inputtext'
 
 const ViewBookings = () => {
   const [bookings, setBookings] = useState([])
+  const [filteredBookings, setFilteredBookings] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [selectedBooking, setSelectedBooking] = useState(null)
+  const [displayDialog, setDisplayDialog] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
     const fetchBookings = async () => {
@@ -19,6 +25,8 @@ const ViewBookings = () => {
           `${import.meta.env.VITE_DEV_BACKEND_URL}book`
         )
         setBookings(response.data)
+        setFilteredBookings(response.data) // Initialize filteredBookings
+        console.log(response.data)
       } catch (err) {
         setError(err.response?.data?.message || 'Error fetching bookings')
       } finally {
@@ -28,6 +36,87 @@ const ViewBookings = () => {
 
     fetchBookings()
   }, [])
+
+  useEffect(() => {
+    const result = bookings.filter((booking) => {
+      return (
+        booking.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.status.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    })
+    setFilteredBookings(result)
+  }, [searchTerm, bookings])
+
+  const handleApprove = async (bookingId) => {
+    try {
+      await axios.patch(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/update-status/${bookingId}`,
+        { status: 'ongoing' }
+      )
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: 'ongoing' }
+            : booking
+        )
+      )
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error approving booking')
+    }
+  }
+
+  const handleReject = async (bookingId) => {
+    try {
+      await axios.patch(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/update-status/${bookingId}`,
+        { status: 'rejected' }
+      )
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking._id === bookingId
+            ? { ...booking, status: 'rejected' }
+            : booking
+        )
+      )
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error rejecting booking')
+    }
+  }
+
+  const handleMarkAsDone = async (bookingId) => {
+    try {
+      await axios.patch(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/update-status/${bookingId}`,
+        { status: 'done' }
+      )
+      setBookings((prevBookings) =>
+        prevBookings.map((booking) =>
+          booking._id === bookingId ? { ...booking, status: 'done' } : booking
+        )
+      )
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error marking booking as done')
+    }
+  }
+
+  const handleView = (booking) => {
+    setSelectedBooking(booking)
+    setDisplayDialog(true)
+  }
+
+  const closeDialog = () => {
+    setDisplayDialog(false)
+    setSelectedBooking(null)
+  }
 
   if (loading) {
     return (
@@ -46,22 +135,122 @@ const ViewBookings = () => {
     return <div className='text-red-500'>{error}</div>
   }
 
+  const actionBodyTemplate = (rowData) => {
+    return (
+      <div className='flex gap-2'>
+        <Button
+          label='View'
+          icon='pi pi-eye'
+          onClick={() => handleView(rowData)}
+          className='p-button-info'
+        />
+        {rowData.status === 'pending' && (
+          <>
+            <Button
+              label='Approve'
+              icon='pi pi-check'
+              onClick={() => handleApprove(rowData._id)}
+              className='p-button-success'
+            />
+            <Button
+              label='Reject'
+              icon='pi pi-times'
+              onClick={() => handleReject(rowData._id)}
+              className='p-button-danger'
+            />
+          </>
+        )}
+        {rowData.status === 'ongoing' && (
+          <Button
+            label='Mark as Done'
+            icon='pi pi-check'
+            onClick={() => handleMarkAsDone(rowData._id)}
+            className='p-button-warning'
+          />
+        )}
+      </div>
+    )
+  }
+
   return (
     <div className='p-5'>
       <h1 className='text-2xl font-semibold mb-4'>View Bookings</h1>
-      {bookings.length === 0 ? (
+
+      <div className='mb-4'>
+        <InputText
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder='Search by email, service, date, time, or status...'
+          className='w-full'
+        />
+      </div>
+
+      {filteredBookings.length === 0 ? (
         <p>No bookings found.</p>
       ) : (
-        <DataTable value={bookings} className='p-datatable-striped'>
-          <Column field='firstName' header='First Name' />
-          <Column field='lastName' header='Last Name' />
-          <Column field='email' header='Email' />
-          <Column field='service' header='Service' />
-          <Column field='date' header='Date' />
-          <Column field='time' header='Time' />
-          <Column field='status' header='Status' />
+        <DataTable
+          value={filteredBookings}
+          className='p-datatable-striped'
+          sortable
+        >
+          <Column field='email' header='Email' sortable />
+          <Column field='service' header='Service' sortable />
+          <Column field='date' header='Date' sortable />
+          <Column field='time' header='Time' sortable />
+          <Column field='status' header='Status' sortable />
+          <Column header='Actions' body={actionBodyTemplate} />
         </DataTable>
       )}
+
+      <Dialog
+        header='Booking Details'
+        visible={displayDialog}
+        onHide={closeDialog}
+        style={{ width: '50vw' }}
+      >
+        {selectedBooking && (
+          <div>
+            <p>
+              <strong>First Name:</strong> {selectedBooking.firstName}
+            </p>
+            <p>
+              <strong>Last Name:</strong> {selectedBooking.lastName}
+            </p>
+            <p>
+              <strong>Email:</strong> {selectedBooking.email}
+            </p>
+            <p>
+              <strong>Service:</strong> {selectedBooking.service}
+            </p>
+            <p>
+              <strong>Date:</strong> {selectedBooking.date}
+            </p>
+            <p>
+              <strong>Time:</strong> {selectedBooking.time}
+            </p>
+            <p>
+              <strong>Status:</strong> {selectedBooking.status}
+            </p>
+            <p>
+              <strong>Join URL:</strong>{' '}
+              {['canceled', 'rejected', 'done'].includes(
+                selectedBooking.status
+              ) ? (
+                'N/A'
+              ) : (
+                <a
+                  href={selectedBooking.meeting.join_url}
+                  target='_blank'
+                  rel='noopener noreferrer'
+                  className='underline'
+                >
+                  Join Zoom
+                </a>
+              )}
+            </p>
+          </div>
+        )}
+      </Dialog>
     </div>
   )
 }
