@@ -1,6 +1,7 @@
 import express from 'express'
 import {
   clear,
+  createUser,
   deleteUser,
   getUser,
   getUsers,
@@ -22,6 +23,7 @@ const router = express.Router()
 
 router.delete('/clear', clear)
 router.get('/', getUsers)
+router.post('/', createUser)
 router.get('/:userId', getUser)
 router.delete('/:userId', deleteUser)
 router.patch('/:userId', upload.single('picture'), updateUser)

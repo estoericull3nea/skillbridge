@@ -58,7 +58,7 @@ const RecentFeedback = () => {
                     </td>
                     <td>
                       <div className='h-4 bg-gray-200 rounded w-24'></div>
-                    </td>{' '}
+                    </td>
                     <td>
                       <div className='h-4 bg-gray-200 rounded w-24'></div>
                     </td>

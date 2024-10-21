@@ -4,16 +4,13 @@ import { Column } from 'primereact/column'
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { Dropdown } from 'primereact/dropdown'
-import { IoSendOutline } from 'react-icons/io5'
-import { MdOutlineCancelScheduleSend } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
-import { useTranslation } from 'react-i18next' // Import translation hook
+import { useTranslation } from 'react-i18next'
 
 const BookingHistory = () => {
-  const { t } = useTranslation() // Initialize translation hook
+  const { t } = useTranslation()
   const [isLoadingAllBookings, setIsLoadingAllBookings] = useState(false)
   const [allBookings, setAllBookings] = useState([])
-  const [loadingCancel, setLoadingCancel] = useState({})
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: 'contains' },
@@ -42,8 +39,8 @@ const BookingHistory = () => {
 
   const onServiceFilterChange = (e) => {
     let _filters = { ...filters }
-    _filters['service'].value = e.value // Update the service filter value
-    setFilters(_filters) // Update the filters state
+    _filters['service'].value = e.value
+    setFilters(_filters)
   }
 
   const fetchAllBookings = async () => {
@@ -64,26 +61,6 @@ const BookingHistory = () => {
     }
   }
 
-  const cancelMeeting = async (bookingId) => {
-    setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: true }))
-    try {
-      const { status } = await axios.patch(
-        `${
-          import.meta.env.VITE_DEV_BACKEND_URL
-        }book/update-status/${bookingId}`,
-        { status: 'canceled' }
-      )
-      if (status === 200) {
-        await fetchAllBookings()
-        toast.success(t('canceled')) // Use translation for toast message
-      }
-    } catch (error) {
-      console.error('Error canceling meeting:', error.message)
-    } finally {
-      setLoadingCancel((prevState) => ({ ...prevState, [bookingId]: false }))
-    }
-  }
-
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString(undefined, options)
@@ -97,7 +74,6 @@ const BookingHistory = () => {
     <>
       {isLoadingAllBookings ? (
         <div className='space-y-3'>
-          {/* Skeleton Table Header */}
           <div className='flex space-x-4'>
             <div className='skeleton h-9 rounded-lg w-full'></div>
             <div className='skeleton h-9 rounded-lg w-full'></div>
@@ -105,7 +81,6 @@ const BookingHistory = () => {
             <div className='skeleton h-9 rounded-lg w-full'></div>
             <div className='skeleton h-9 rounded-lg w-full'></div>
           </div>
-          {/* Skeleton Rows */}
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className='flex space-x-4'>
               <div className='skeleton h-9 rounded-lg w-full'></div>
@@ -126,8 +101,8 @@ const BookingHistory = () => {
           className='bg-white shadow-xl rounded-xl p-6'
           size='medium'
           removableSort
-          filters={filters} // Pass the filters state to the DataTable
-          globalFilterFields={['service', 'status', 'notes', 'phone']} // Fields to be globally filtered
+          filters={filters}
+          globalFilterFields={['service', 'status', 'notes', 'phone']}
           header={
             <div className='table-header'>
               <span className='p-input-icon-left'>
@@ -141,16 +116,15 @@ const BookingHistory = () => {
                       global: { value: e.target.value, matchMode: 'contains' },
                     })
                   }
-                  placeholder={t('search_placeholder')} // Use translation for search placeholder
+                  placeholder={t('search_placeholder')}
                 />
               </span>
             </div>
           }
         >
-          {/* Service Column with Dropdown Filter */}
           <Column
             header={t('service')}
-            field='service' // This will filter by the 'service' field
+            field='service'
             body={(rowData) =>
               rowData.service === 'virtual_assistance'
                 ? t('virtual_assistance')
@@ -159,31 +133,29 @@ const BookingHistory = () => {
                 : t('other_service')
             }
             sortable
-            filter // Enable filtering
+            filter
             filterElement={
               <Dropdown
-                value={filters.service.value} // Bind dropdown value to the filter state
+                value={filters.service.value}
                 options={serviceOptions}
-                onChange={onServiceFilterChange} // Update the filter state when dropdown changes
-                placeholder={t('filter_by_service')} // Use translation for dropdown placeholder
+                onChange={onServiceFilterChange}
+                placeholder={t('filter_by_service')}
                 className='p-column-filter'
                 showClear
               />
             }
           />
 
-          {/* Date & Time Column */}
           <Column
             field='date'
             header={t('date_time')}
             body={(rowData) => `${formatDate(rowData.date)} ${rowData.time}`}
             sortable
             filter
-            filterPlaceholder={t('filter_by_date')} // Use translation for filter placeholder
+            filterPlaceholder={t('filter_by_date')}
             filterMatchMode='contains'
           />
 
-          {/* Notes Column */}
           <Column
             field='notes'
             header={t('notes')}
@@ -209,11 +181,10 @@ const BookingHistory = () => {
             }
             sortable
             filter
-            filterPlaceholder={t('filter_by_notes')} // Use translation for filter placeholder
+            filterPlaceholder={t('filter_by_notes')}
             filterMatchMode='contains'
           />
 
-          {/* Phone Column */}
           <Column
             field='phone'
             header={t('phone')}
@@ -239,11 +210,10 @@ const BookingHistory = () => {
             }
             sortable
             filter
-            filterPlaceholder={t('filter_by_phone')} // Use translation for filter placeholder
+            filterPlaceholder={t('filter_by_phone')}
             filterMatchMode='contains'
           />
 
-          {/* Status Column with Dropdown Filter */}
           <Column
             field='status'
             header={t('status')}
@@ -265,14 +235,13 @@ const BookingHistory = () => {
                   _filters['status'].value = e.value
                   setFilters(_filters)
                 }}
-                placeholder={t('filter_by_status')} // Use translation for dropdown placeholder
+                placeholder={t('filter_by_status')}
                 className='p-column-filter'
                 showClear
               />
             }
           />
 
-          {/* Booked At Column with Text Filter */}
           <Column
             field='createdAt'
             header={t('booked_at')}
@@ -281,60 +250,9 @@ const BookingHistory = () => {
             }
             sortable
             filter
-            filterPlaceholder={t('filter_by_date')} // Use translation for filter placeholder
+            filterPlaceholder={t('filter_by_date')}
             filterMatchMode='contains'
           />
-
-          {/* Actions Column */}
-          {/* Uncomment this if you need actions column */}
-          {/* <Column
-            header={t('actions')}
-            body={(rowData) => (
-              <div className='flex space-x-2'>
-                {rowData.meeting?.join_url ? (
-                  <>
-                    <div
-                      className='tooltip tooltip-left'
-                      data-tip={t('join_meeting')} // Use translation for tooltip text
-                    >
-                      <a
-                        href={rowData.meeting.join_url}
-                        target='_blank'
-                        rel='noopener noreferrer'
-                        className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                      >
-                        <IoSendOutline />
-                      </a>
-                    </div>
-
-                    <div
-                      className='tooltip tooltip-left'
-                      data-tip={t('cancel_meeting')} // Use translation for tooltip text
-                    >
-                      <button
-                        onClick={() => cancelMeeting(rowData._id)}
-                        className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                        disabled={loadingCancel[rowData._id]}
-                      >
-                        {loadingCancel[rowData._id] ? (
-                          <span
-                            className='spinner-border spinner-border-sm'
-                            role='status'
-                            aria-hidden='true'
-                          ></span>
-                        ) : (
-                          <MdOutlineCancelScheduleSend />
-                        )}
-                      </button>
-                    </div>
-                  </>
-                ) : (
-                  <span>{t('no_url')}</span> // Use translation for no URL text
-                )}
-              </div>
-            )}
-            sortable
-          ></Column> */}
         </DataTable>
       )}
     </>
