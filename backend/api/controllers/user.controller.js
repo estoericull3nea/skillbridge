@@ -142,3 +142,24 @@ export const createUser = async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' })
   }
 }
+
+export const searchUser = async (req, res) => {
+  const { q } = req.query
+
+  try {
+    const user = await User.findOne({
+      $or: [
+        { firstName: { $regex: q, $options: 'i' } },
+        { email: { $regex: q, $options: 'i' } },
+      ],
+    })
+
+    if (!user) {
+      return res.status(404).json([]) // Return empty array for no user found
+    }
+
+    return res.status(200).json([user]) // Return user in an array
+  } catch (error) {
+    return res.status(500).json({ message: error.message })
+  }
+}

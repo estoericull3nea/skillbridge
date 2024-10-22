@@ -9,8 +9,8 @@ import AdminDashboard from './AdminDashboard'
 import UserManagement from './UserManagement'
 import UserActivityLogs from './UserActivityLogs'
 import ViewBookings from './ViewBookings'
-import ApproveBookings from './ApproveBookings'
 import ManageFeedback from './ManageFeedback'
+import UserLoginActivity from './UserLoginActivity'
 
 const Admin = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -53,6 +53,7 @@ const Admin = () => {
             <Route path='/user-activity-logs' element={<UserActivityLogs />} />
             <Route path='/booking-management' element={<ViewBookings />} />
             <Route path='/feedback' element={<ManageFeedback />} />
+            <Route path='/login-activity' element={<UserLoginActivity />} />
           </Routes>
         </div>
       </div>

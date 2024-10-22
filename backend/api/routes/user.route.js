@@ -5,6 +5,7 @@ import {
   deleteUser,
   getUser,
   getUsers,
+  searchUser,
   updateUser,
 } from '../controllers/user.controller.js'
 import { upload } from '../middlewares/uploadMiddleware.js'
@@ -36,5 +37,7 @@ router.get('/deletion-requests/approved', getAllApprovedDeletionRequests)
 router.get('/deletion-requests/rejected', getAllRejectedDeletionRequests)
 router.patch('/deletion-requests/:requestId/approve', approveDeleteAccount)
 router.patch('/deletion-requests/:requestId/reject', rejectDeleteAccount)
+
+router.get('/user/search', searchUser)
 
 export default router
