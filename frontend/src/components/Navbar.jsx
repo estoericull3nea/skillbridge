@@ -333,9 +333,7 @@ const Navbar = () => {
                           className='py-0 btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal mt-2'
                         >
                           {t('GetStarted')}{' '}
-                          <span className='font-normal  md:block '>
-                            -- {t('itsFree')}
-                          </span>{' '}
+                          <span className='font-normal  md:block '></span>{' '}
                         </Link>
                       </li>
                     </ul>
@@ -581,9 +579,7 @@ const Navbar = () => {
               className='hidden sm:flex btn bg-transparent border-black hover:bg-slate-800 hover:text-white rounded-full font-normal mr-3'
             >
               {t('GetStarted')}{' '}
-              <span className='font-normal hidden md:block '>
-                -- {t('itsFree')}
-              </span>{' '}
+              <span className='font-normal hidden md:block '></span>{' '}
             </Link>
 
             <LanguageSelector />

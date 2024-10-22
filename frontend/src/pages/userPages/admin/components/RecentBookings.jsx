@@ -75,10 +75,22 @@ const RecentBookings = () => {
                     <td>{booking.status}</td>
                     <td>{booking.service}</td>
                     <td>
-                      {new Date(booking.meeting.start_time).toLocaleString(
+                      {new Date(booking.meeting.start_time).toLocaleDateString(
                         'en-US',
                         {
                           timeZone: booking.meeting.timezone,
+                          year: 'numeric',
+                          month: 'numeric',
+                          day: 'numeric',
+                        }
+                      )}{' '}
+                      {new Date(booking.meeting.start_time).toLocaleTimeString(
+                        'en-US',
+                        {
+                          timeZone: booking.meeting.timezone,
+                          hour: 'numeric',
+                          minute: 'numeric',
+                          hour12: false, // Use false for 24-hour format
                         }
                       )}
                     </td>
