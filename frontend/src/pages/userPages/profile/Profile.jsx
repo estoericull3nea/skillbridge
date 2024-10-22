@@ -24,7 +24,7 @@ const Profile = () => {
   const token = localStorage.getItem('token')
 
   useEffect(() => {
-    if (!isTokenValid(token)) {
+    if (!isTokenValid()) {
       localStorage.clear()
       toast.error('Please login again')
       navigate('/login')

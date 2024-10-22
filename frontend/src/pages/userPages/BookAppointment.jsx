@@ -146,6 +146,25 @@ const BookAppointment = () => {
     handleNextStep()
   }
 
+  useEffect(() => {
+    const savedBookingData = localStorage.getItem('bookingData')
+    if (savedBookingData) {
+      const { selectedService, specificService, selectedDate, selectedTime } =
+        JSON.parse(savedBookingData)
+
+      setSelectedService(selectedService)
+      setSpecificService(specificService)
+      setSelectedDate(new Date(selectedDate)) // Ensure date is restored as a Date object
+      setSelectedTime(selectedTime)
+
+      // Set step to 2 to resume from the date and time selection step
+      setStep(2)
+
+      // Clear the stored data after restoring
+      localStorage.removeItem('bookingData')
+    }
+  }, [])
+
   const handleTimeSelect = (time) => {
     setSelectedTime(time)
   }
@@ -169,8 +188,23 @@ const BookAppointment = () => {
 
     if (step === 2) {
       if (!isTokenValid()) {
-        toast.error(t('Please login first'))
-        navigate('/login') // Redirect to login page
+        // Save the current booking data to localStorage
+        localStorage.setItem(
+          'bookingData',
+          JSON.stringify({
+            selectedService,
+            specificService,
+            selectedDate,
+            selectedTime,
+          })
+        )
+
+        // Save the redirect path (URL including step)
+        const redirectUrl = encodeURIComponent('/book-appointment?step=2')
+        localStorage.setItem('redirectPath', redirectUrl)
+
+        toast.error(t('Please log in to proceed'))
+        navigate(`/login?redirect=${redirectUrl}`) // Pass redirect URL as a query parameter
         return
       }
     }
