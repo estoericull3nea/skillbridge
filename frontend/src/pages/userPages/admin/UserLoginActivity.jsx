@@ -10,6 +10,13 @@ const UserLoginActivity = () => {
   const [loginHistory, setLoginHistory] = useState([])
   const [loading, setLoading] = useState(false)
   const [userLoading, setUserLoading] = useState(false)
+  const [filteredLoginHistory, setFilteredLoginHistory] = useState([])
+  const [first, setFirst] = useState(0)
+  const [rows, setRows] = useState(10)
+
+  // State to manage sorting
+  const [sortField, setSortField] = useState(null)
+  const [sortOrder, setSortOrder] = useState(null)
 
   const handleSearch = async (e) => {
     const newSearchTerm = e.target.value
@@ -18,7 +25,9 @@ const UserLoginActivity = () => {
     // Clear login history when a new search is initiated
     if (newSearchTerm.length < 2) {
       setUser(null)
-      setLoginHistory([]) // Clear login history
+      setLoginHistory([])
+      setFilteredLoginHistory([])
+      setFirst(0)
       return
     }
 
@@ -30,10 +39,12 @@ const UserLoginActivity = () => {
         }users/user/search?q=${newSearchTerm}`
       )
       if (response.data.length > 0) {
-        setUser(response.data[0]) // Get only the first matched user
+        setUser(response.data[0])
       } else {
         setUser(null)
-        setLoginHistory([]) // Clear login history if no user found
+        setLoginHistory([])
+        setFilteredLoginHistory([])
+        setFirst(0)
       }
     } catch (error) {
       console.error('Error fetching user:', error)
@@ -50,6 +61,8 @@ const UserLoginActivity = () => {
           `${import.meta.env.VITE_DEV_BACKEND_URL}login-histories/${user._id}`
         )
         setLoginHistory(response.data)
+        setFilteredLoginHistory(response.data)
+        setFirst(0)
       } catch (error) {
         console.error('Error fetching login history:', error)
       } finally {
@@ -57,6 +70,19 @@ const UserLoginActivity = () => {
       }
     }
   }
+
+  const onPageChange = (event) => {
+    setFirst(event.first)
+    setRows(event.rows)
+  }
+
+  const onSort = (event) => {
+    setSortField(event.sortField)
+    setSortOrder(event.sortOrder)
+  }
+
+  // Calculate the total number of records for pagination
+  const totalRecords = filteredLoginHistory.length
 
   return (
     <div className='p-5'>
@@ -84,7 +110,7 @@ const UserLoginActivity = () => {
             <Column field='lastName' header='Last Name' />
             <Column field='email' header='Email' />
           </DataTable>
-          <button onClick={handleUserSelect} className='btn btn-primary mt-3'>
+          <button onClick={handleUserSelect} className='underline mt-3'>
             Load Login History
           </button>
         </div>
@@ -98,10 +124,19 @@ const UserLoginActivity = () => {
         </div>
       )}
 
-      {loginHistory.length > 0 && !loading && (
+      {filteredLoginHistory.length > 0 && !loading && (
         <div>
           <h3 className='text-xl font-semibold mt-5'>Login History</h3>
-          <DataTable value={loginHistory}>
+          <DataTable
+            value={filteredLoginHistory.slice(first, first + rows)}
+            paginator={true}
+            rows={rows}
+            first={first}
+            onPage={onPageChange}
+            sortField={sortField}
+            sortOrder={sortOrder}
+            onSort={onSort}
+          >
             <Column field='userAgent' header='User Agent' sortable />
             <Column field='ipAddress' header='IP Address' sortable />
             <Column
@@ -112,12 +147,6 @@ const UserLoginActivity = () => {
             />
           </DataTable>
         </div>
-      )}
-
-      {loginHistory.length === 0 && !loading && user && (
-        <p className='mt-4 text-gray-500'>
-          No login history found for this user.
-        </p>
       )}
     </div>
   )
