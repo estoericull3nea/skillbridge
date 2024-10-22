@@ -122,6 +122,7 @@ const BookAppointment = () => {
       setSelectedDate(null)
       setSelectedTime('')
       setSelectedService('')
+      setSpecificService('')
       setStep(1)
     },
     onError: (error) => {
