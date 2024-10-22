@@ -73,7 +73,7 @@ export const getRecentBookings = async (req, res) => {
       .sort({ createdAt: -1 })
       .limit(10)
       .populate('user', 'firstName lastName email')
-      .select('service date status meeting email')
+      .select('specificService date status meeting email')
       .populate(
         'meeting',
         'topic start_time duration timezone start_url join_url'

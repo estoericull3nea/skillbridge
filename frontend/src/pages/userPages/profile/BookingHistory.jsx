@@ -14,7 +14,7 @@ const BookingHistory = () => {
 
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: 'contains' },
-    service: { value: null, matchMode: 'equals' },
+    specificService: { value: null, matchMode: 'equals' },
     status: { value: null, matchMode: 'equals' },
     date: { value: null, matchMode: 'contains' },
     notes: { value: null, matchMode: 'contains' },
@@ -39,7 +39,7 @@ const BookingHistory = () => {
 
   const onServiceFilterChange = (e) => {
     let _filters = { ...filters }
-    _filters['service'].value = e.value
+    _filters['specificService'].value = e.value
     setFilters(_filters)
   }
 
@@ -102,7 +102,7 @@ const BookingHistory = () => {
           size='medium'
           removableSort
           filters={filters}
-          globalFilterFields={['service', 'status', 'notes', 'phone']}
+          globalFilterFields={['specificService', 'status', 'notes', 'phone']}
           header={
             <div className='table-header'>
               <span className='p-input-icon-left'>
@@ -124,19 +124,12 @@ const BookingHistory = () => {
         >
           <Column
             header={t('service')}
-            field='service'
-            body={(rowData) =>
-              rowData.service === 'virtual_assistance'
-                ? t('virtual_assistance')
-                : rowData.service === 'recruitment_services'
-                ? t('recruitment_services')
-                : t('other_service')
-            }
+            field='specificService'
             sortable
             filter
             filterElement={
               <Dropdown
-                value={filters.service.value}
+                value={filters.specificService.value}
                 options={serviceOptions}
                 onChange={onServiceFilterChange}
                 placeholder={t('filter_by_service')}

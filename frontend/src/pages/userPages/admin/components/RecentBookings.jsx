@@ -73,7 +73,7 @@ const RecentBookings = () => {
                     <td>{booking?.email}</td>
                     <td>{new Date(booking.date).toLocaleDateString()}</td>
                     <td>{booking.status}</td>
-                    <td>{booking.service}</td>
+                    <td>{booking.specificService}</td>
                     <td>
                       {new Date(booking.meeting.start_time).toLocaleDateString(
                         'en-US',

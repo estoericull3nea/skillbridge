@@ -79,6 +79,7 @@ export const book = async (req, res) => {
     phoneNumber,
     notes,
     startTimeZoom,
+    specificService,
   } = req.body
 
   const session = await mongoose.startSession()
@@ -188,6 +189,7 @@ export const book = async (req, res) => {
       month,
       meeting: newMeeting._id,
       user: userExists ? userExists._id : null,
+      specificService,
     })
 
     await newBooking.save({ session })
@@ -206,7 +208,7 @@ export const book = async (req, res) => {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: userExists ? userExists.email : email,
-      subject: `Your Zoom Meeting Booking: ${topic}`,
+      subject: `Your Zoom Meeting Booking: ${specificService} in ${topic}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
           <h2 style="color: #2D8CFF; text-align: center;">Your Zoom Meeting is Scheduled!</h2>
@@ -215,7 +217,7 @@ export const book = async (req, res) => {
           <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             <tr>
               <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic:</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${topic}</td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${specificService}</td>
             </tr>
             <tr>
               <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date & Time:</strong></td>

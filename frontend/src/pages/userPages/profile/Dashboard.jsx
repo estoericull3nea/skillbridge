@@ -435,16 +435,7 @@ const Dashboard = () => {
             className='bg-white shadow-xl rounded-xl p-6'
             size='medium'
           >
-            <Column
-              header={t('service')}
-              body={(rowData) =>
-                rowData.service === 'virtual_assistance'
-                  ? t('virtualAssistance')
-                  : rowData.service === 'recruitment_services'
-                  ? t('recruitmentServices')
-                  : t('otherService')
-              }
-            ></Column>
+            <Column header={t('service')} field='specificService'></Column>
 
             <Column
               field='date'

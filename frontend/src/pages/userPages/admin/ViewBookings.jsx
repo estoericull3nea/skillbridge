@@ -205,7 +205,7 @@ const ViewBookings = () => {
           sortable
         >
           <Column field='email' header='Email' sortable />
-          <Column field='service' header='Service' sortable />
+          <Column field='specificService' header='Service' sortable />
           <Column field='date' header='Date' sortable />
           <Column field='time' header='Time' sortable />
           <Column field='status' header='Status' sortable />

@@ -60,6 +60,7 @@ const BookAppointment = () => {
   const [selectedService, setSelectedService] = useState('')
   const [selectedDate, setSelectedDate] = useState(null)
   const [selectedTime, setSelectedTime] = useState('')
+  const [specificService, setSpecificService] = useState('')
   const [formData, setFormData] = useState({
     firstName: localStorage.getItem('firstName')
       ? localStorage.getItem('firstName')
@@ -77,6 +78,22 @@ const BookAppointment = () => {
     queryFn: fetchAvailableTimes,
     enabled: !!selectedDate,
   })
+
+  const services = {
+    virtual_assistance: [
+      'Customer Service',
+      'Writing and Editing',
+      'Social Media Management',
+      'Technical Skills',
+    ],
+    recruitment_services: [
+      'Talent Sourcing',
+      'Talent Screening',
+      'Interviewing and Assessment',
+      'Endorsement',
+      'Onboarding (Optional)',
+    ],
+  }
 
   const mutation = useMutation({
     mutationFn: submitBooking,
@@ -116,6 +133,10 @@ const BookAppointment = () => {
     },
   })
 
+  const handleSpecificServiceChange = (event) => {
+    setSpecificService(event.target.value)
+  }
+
   const handleServiceChange = (event) => {
     setSelectedService(event.target.value)
     handleNextStep()
@@ -131,6 +152,17 @@ const BookAppointment = () => {
   }
 
   const handleNextStep = () => {
+    if (step === 1) {
+      if (!selectedService) {
+        toast.error(t('Please select a service')) // Show error if no service selected
+        return
+      }
+      if (!specificService) {
+        toast.error(t('Please select a specific service')) // Show error if no specific service selected
+        return
+      }
+    }
+
     if (step === 3) {
       const formErrors = validateForm()
       if (Object.keys(formErrors).length > 0) {
@@ -154,6 +186,7 @@ const BookAppointment = () => {
 
     const bookingData = {
       service: selectedService,
+      specificService: specificService,
       date: selectedDate,
       time: selectedTime,
       startTimeZoom: startTime,
@@ -389,6 +422,24 @@ const BookAppointment = () => {
               </label>
             </div>
           </div>
+
+          {selectedService && (
+            <div className='mt-5'>
+              <h3 className='text-lg mb-2'>{t('SelectSpecificService')}</h3>
+              <select
+                className='select select-bordered w-full'
+                value={specificService}
+                onChange={handleSpecificServiceChange}
+              >
+                <option value=''>{t('SelectOption')}</option>
+                {services[selectedService].map((service) => (
+                  <option key={service} value={service}>
+                    {service}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
       )}
 
@@ -472,6 +523,9 @@ const BookAppointment = () => {
                 {selectedService === `recruitment_services`
                   ? `Recruitment Services`
                   : `Virtual Assistant`}
+              </li>
+              <li>
+                {t('SpecificService')}: {specificService}
               </li>
               <li>
                 {t('Date')}:{' '}
@@ -614,6 +668,9 @@ const BookAppointment = () => {
               {selectedService === `recruitment_services`
                 ? `Recruitment Services`
                 : `Virtual Assistant`}
+            </li>
+            <li>
+              {t('SpecificService')}: {specificService}
             </li>
             <li>
               {t('Date')}:{' '}
