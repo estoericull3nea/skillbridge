@@ -61,13 +61,13 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/feedback'>Manage Feedback</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/support-tickets'>Support Tickets</Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* System Settings */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>System Settings</span>
           </li>
@@ -80,10 +80,10 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/notifications-settings'>Notifications</Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* Revenue & Reports */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Revenue & Reports</span>
           </li>
@@ -93,26 +93,26 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/export-reports'>Export Reports</Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* Security & Permissions */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Security & Permissions</span>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/admin-management'>Manage Admins</Link>
-          </li>
+          </li> */}
           <li>
             <Link to='/admin/login-activity'>Login Activity</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to='/admin/security-settings'>Security Settings</Link>
-          </li>
+          </li> */}
         </ul>
 
         {/* Content Management */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Content Management</span>
           </li>
@@ -125,10 +125,10 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/content/banners'>Promotional Banners</Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* Notifications & Announcements */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Notifications & Announcements</span>
           </li>
@@ -141,20 +141,20 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/announcements'>System Announcements</Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* Audit Logs */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Audit Logs</span>
           </li>
           <li>
             <Link to='/admin/audit-logs'>View Logs</Link>
           </li>
-        </ul>
+        </ul> */}
 
         {/* System Health */}
-        <ul className='menu rounded-box'>
+        {/* <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>System Health</span>
           </li>
@@ -164,7 +164,7 @@ const AdminSidebar = () => {
           <li>
             <Link to='/admin/system-status'>Server Status</Link>
           </li>
-        </ul>
+        </ul> */}
       </aside>
     </div>
   )
