@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import axios from 'axios'
@@ -18,7 +18,7 @@ const dateFormatter = (dateString) => {
   }
 
   const date = new Date(dateString)
-  return date.toLocaleString(undefined, options) // returns a string in a human-readable format
+  return date.toLocaleString(undefined, options)
 }
 
 const UserManagement = () => {
@@ -114,6 +114,40 @@ const UserManagement = () => {
     }
   }
 
+  // Promote user to admin
+  const promoteToAdmin = async (userId) => {
+    try {
+      const { status, data } = await axios.patch(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}/promote`
+      )
+      if (status === 200) {
+        setUsers((prev) =>
+          prev.map((user) => (user._id === userId ? data : user))
+        )
+        toast.success('User promoted to admin successfully!')
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
+  // Demote user from admin
+  const demoteFromAdmin = async (userId) => {
+    try {
+      const { status, data } = await axios.patch(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}/demote`
+      )
+      if (status === 200) {
+        setUsers((prev) =>
+          prev.map((user) => (user._id === userId ? data : user))
+        )
+        toast.success('User demoted back to user successfully!')
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+
   // Open dialog for creating or updating user
   const openDialog = (user = null) => {
     if (user) {
@@ -122,7 +156,7 @@ const UserManagement = () => {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
-        password: '', // You may want to handle password differently
+        password: '', // Handle password differently if needed
         active: user.active,
         isVerified: user.isVerified,
       })
@@ -215,7 +249,7 @@ const UserManagement = () => {
           <Column
             header='Actions'
             body={(rowData) => (
-              <>
+              <div className='flex'>
                 <Button
                   icon={<FaEye />}
                   className='mr-2'
@@ -231,7 +265,20 @@ const UserManagement = () => {
                   severity='danger'
                   onClick={() => deleteUser(rowData._id)}
                 />
-              </>
+                {rowData.isAdmin ? (
+                  <Button
+                    label='Demote to User'
+                    className='ml-2'
+                    onClick={() => demoteFromAdmin(rowData._id)}
+                  />
+                ) : (
+                  <Button
+                    label='Promote to Admin'
+                    className='ml-2'
+                    onClick={() => promoteToAdmin(rowData._id)}
+                  />
+                )}
+              </div>
             )}
           />
         </DataTable>
@@ -360,7 +407,7 @@ const UserManagement = () => {
               <strong>Email:</strong> {selectedUser?.email}
             </p>
             <p>
-              <strong>Role:</strong> {selectedUser?.role}
+              <strong>Is Admin:</strong> {selectedUser?.isAdmin ? 'Yes' : 'No'}
             </p>
             <p>
               <strong>Pfp:</strong> {selectedUser?.picture}
@@ -373,7 +420,7 @@ const UserManagement = () => {
               {selectedUser?.isVerified ? 'Yes' : 'No'}
             </p>
             <p>
-              <strong>Registere At:</strong>{' '}
+              <strong>Registered At:</strong>{' '}
               {dateFormatter(selectedUser?.createdAt)}
             </p>
             <p>

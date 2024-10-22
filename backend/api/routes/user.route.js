@@ -3,8 +3,10 @@ import {
   clear,
   createUser,
   deleteUser,
+  demoteUserFromAdmin,
   getUser,
   getUsers,
+  promoteUserToAdmin,
   searchUser,
   updateUser,
 } from '../controllers/user.controller.js'
@@ -39,5 +41,7 @@ router.patch('/deletion-requests/:requestId/approve', approveDeleteAccount)
 router.patch('/deletion-requests/:requestId/reject', rejectDeleteAccount)
 
 router.get('/user/search', searchUser)
+router.patch('/:userId/promote', promoteUserToAdmin)
+router.patch('/:userId/demote', demoteUserFromAdmin)
 
 export default router
