@@ -9,6 +9,8 @@ import { toast } from 'react-hot-toast'
 import { formatDate } from '../../utils/formatDate'
 
 import { useTranslation } from 'react-i18next'
+import { isTokenValid } from '../../utils/isTokenValid'
+import { useNavigate } from 'react-router-dom'
 
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
@@ -54,6 +56,8 @@ const createMeeting = async ({ topic, startTime, duration, email }) => {
 // zoom
 
 const BookAppointment = () => {
+  const navigate = useNavigate()
+
   const { t } = useTranslation()
 
   const [step, setStep] = useState(1)
@@ -159,6 +163,14 @@ const BookAppointment = () => {
       }
       if (!specificService) {
         toast.error(t('Please select a specific service')) // Show error if no specific service selected
+        return
+      }
+    }
+
+    if (step === 2) {
+      if (!isTokenValid()) {
+        toast.error(t('Please login first'))
+        navigate('/login') // Redirect to login page
         return
       }
     }
