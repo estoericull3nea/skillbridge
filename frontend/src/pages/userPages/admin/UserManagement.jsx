@@ -5,7 +5,7 @@ import axios from 'axios'
 import { Button } from 'primereact/button'
 import { toast } from 'react-hot-toast'
 import { Dialog } from 'primereact/dialog'
-import { FaPlus, FaPencilAlt, FaTrash, FaEye } from 'react-icons/fa'
+import { FaPlus, FaPencilAlt, FaTrash, FaEye, FaPrint } from 'react-icons/fa'
 
 const dateFormatter = (dateString) => {
   const options = {
@@ -205,6 +205,53 @@ const UserManagement = () => {
     }
   }
 
+  // Print user table
+  const printTable = () => {
+    const printWindow = window.open('', '_blank')
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>User Table</title>
+          <style>
+            body { font-family: Arial, sans-serif; }
+            table { width: 100%; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; }
+            th { background-color: #f2f2f2; }
+          </style>
+        </head>
+        <body>
+          <h1>User Table</h1>
+          <table>
+            <tr>
+              <th>Full Name</th>
+              <th>Email</th>
+              <th>Active</th>
+              <th>Verified</th>
+              <th>Is Admin</th>
+              <th>Registered At</th>
+            </tr>
+            ${users
+              .map(
+                (user) => `
+              <tr>
+                <td>${user.firstName} ${user.lastName}</td>
+                <td>${user.email}</td>
+                <td>${user.active ? 'Yes' : 'No'}</td>
+                <td>${user.isVerified ? 'Yes' : 'No'}</td>
+                <td>${user.isVerified ? 'Yes' : 'No'}</td>
+                <td>${dateFormatter(user.createdAt)}</td>
+              </tr>
+            `
+              )
+              .join('')}
+          </table>
+        </body>
+      </html>
+    `)
+    printWindow.document.close()
+    printWindow.print()
+  }
+
   // Effect to fetch users on mount
   useEffect(() => {
     fetchUsers()
@@ -212,12 +259,15 @@ const UserManagement = () => {
 
   return (
     <>
-      <Button
-        label='Add User'
-        icon={<FaPlus />}
-        onClick={() => openDialog()}
-        className='mb-4'
-      />
+      <div className='flex justify-between mb-4'>
+        <Button
+          label='Add User'
+          icon={<FaPlus />}
+          onClick={() => openDialog()}
+        />
+        <Button label='Print Users' icon={<FaPrint />} onClick={printTable} />
+      </div>
+
       {isLoading ? (
         <div className='flex flex-col space-y-4'>
           {[...Array(5)].map((_, index) => (
@@ -244,6 +294,12 @@ const UserManagement = () => {
             field='isVerified'
             header='Verified'
             body={(rowData) => (rowData.isVerified ? 'Yes' : 'No')}
+            sortable
+          />
+          <Column
+            field='isAdmin'
+            header='Is Admin'
+            body={(rowData) => (rowData.isAdmin ? 'Yes' : 'No')}
             sortable
           />
           <Column
