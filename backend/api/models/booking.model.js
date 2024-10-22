@@ -12,6 +12,8 @@ const bookingSchema = new mongoose.Schema(
     date: { type: Date, required: true },
     month: { type: String, required: true },
 
+    // specificService: { type: String, required: false },
+
     time: {
       type: String,
       required: true,
