@@ -1,4 +1,3 @@
-// src/pages/userPages/profile/Sidebar.jsx
 import React from 'react'
 import { NavLink, useParams } from 'react-router-dom'
 import { MdOutlineMailOutline } from 'react-icons/md'
@@ -27,7 +26,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/dashboard`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('dashboard')}
             </NavLink>
@@ -36,7 +37,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/booking-history`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('bookingHistory')}
             </NavLink>
@@ -45,7 +48,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/all-contacts`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('contacts')}
             </NavLink>
@@ -54,7 +59,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/all-feedbacks`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('feedbacks')}
             </NavLink>
@@ -68,7 +75,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/user-info`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('userInfo')}
             </NavLink>
@@ -76,7 +85,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/notifications`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('notifications')}
             </NavLink>
@@ -84,7 +95,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/deletion`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('deleteAccount')}
             </NavLink>
@@ -98,7 +111,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/login-activity`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('loginActivity')}
             </NavLink>
@@ -106,7 +121,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/data-export`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('dataExport')}
             </NavLink>
@@ -120,7 +137,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/contact-support`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('contactSupport')}
             </NavLink>
@@ -128,7 +147,9 @@ const Sidebar = () => {
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/feedback`}
-              activeClassName='font-bold text-blue-500'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
             >
               {t('submitFeedback')}
             </NavLink>
