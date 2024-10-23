@@ -13,6 +13,17 @@ const bookingSchema = new mongoose.Schema(
     month: { type: String, required: true },
 
     specificService: { type: String, required: true },
+    // my list of specificService
+
+    //'Customer Service',
+    //'Writing and Editing',
+    //'Social Media Management',
+    //'Technical Skills',
+    // 'Talent Sourcing',
+    //'Talent Screening',
+    //'Interviewing and Assessment',
+    //'Endorsement',
+    //'Onboarding (Optional)',
 
     time: {
       type: String,
