@@ -120,6 +120,35 @@ const ViewBookings = () => {
     setSelectedBooking(null)
   }
 
+  const handlePrint = () => {
+    const doneBookings = filteredBookings.filter(
+      (booking) => booking.status === 'done'
+    )
+    const printWindow = window.open('', '', 'height=400,width=600')
+    printWindow.document.write('<html><head><title>Done Bookings</title>')
+    printWindow.document.write('</head><body>')
+    printWindow.document.write('<h1>Done Bookings List</h1>')
+    printWindow.document.write('<table border="1"><thead><tr>')
+    printWindow.document.write(
+      '<th>Email</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>'
+    )
+
+    doneBookings.forEach((booking) => {
+      printWindow.document.write('<tr>')
+      printWindow.document.write(`<td>${booking.email}</td>`)
+      printWindow.document.write(`<td>${booking.specificService}</td>`)
+      printWindow.document.write(`<td>${booking.date}</td>`)
+      printWindow.document.write(`<td>${booking.time}</td>`)
+      printWindow.document.write(`<td>${booking.status}</td>`)
+      printWindow.document.write('</tr>')
+    })
+
+    printWindow.document.write('</tbody></table>')
+    printWindow.document.write('</body></html>')
+    printWindow.document.close()
+    printWindow.print()
+  }
+
   if (loading) {
     return (
       <div className='p-5'>
@@ -198,6 +227,13 @@ const ViewBookings = () => {
           className='w-full'
         />
       </div>
+
+      <Button
+        label='Print Done Bookings'
+        icon='pi pi-print'
+        onClick={handlePrint}
+        className='p-button-help mb-4'
+      />
 
       {filteredBookings.length === 0 ? (
         <p>No bookings found.</p>
