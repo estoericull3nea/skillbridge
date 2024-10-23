@@ -15,6 +15,9 @@ import { useTranslation } from 'react-i18next'
 
 import './datatables.css'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const Dashboard = () => {
   const { t } = useTranslation()
 
@@ -101,6 +104,8 @@ const Dashboard = () => {
         await fetchAllCanceledBookings()
         await fetchAllPendingBookings()
         toast.success('Canceled')
+
+        socket.emit('meetingCanceled', bookingId)
       }
     } catch (error) {
       console.error('Error canceling meeting:', error.message)
@@ -185,6 +190,25 @@ const Dashboard = () => {
     }
   }
 
+  const fetchAllRejectedBookings = async () => {
+    setLoadingRejectedBookingsCount(true)
+    try {
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/users-book/bookings?email=${localStorage.getItem('email')}`
+      )
+      const filteredData = response.data.filter((item, index) => {
+        return item.status === 'rejected'
+      })
+      setTotalRejectedCount(filteredData.length || 0)
+    } catch (error) {
+      console.error('Error fetching pending bookings:', error.message)
+    } finally {
+      setLoadingRejectedBookingsCount(false)
+    }
+  }
+
   const fetchAllBookings = async () => {
     setLoadingTotalBookingsCount(true)
     try {
@@ -213,6 +237,7 @@ const Dashboard = () => {
     fetchAllCanceledBookings()
     fetchAllOngoingBookings()
     fetchUpcomingBookings()
+    fetchAllRejectedBookings()
   }, [
     totalBookingsCount,
     totalDoneCount,
@@ -220,6 +245,45 @@ const Dashboard = () => {
     totalPendingCount,
     totalRejectedCount,
   ])
+
+  useEffect(() => {
+    socket.on('newApproveBooking', (data) => {
+      fetchAllBookings()
+      fetchAllPendingBookings()
+      fetchAllDoneBookings()
+      fetchAllCanceledBookings()
+      fetchAllOngoingBookings()
+      fetchUpcomingBookings()
+      fetchAllRejectedBookings()
+    })
+
+    socket.on('newMarkAsDoneBooking', (data) => {
+      fetchAllBookings()
+      fetchAllPendingBookings()
+      fetchAllDoneBookings()
+      fetchAllCanceledBookings()
+      fetchAllOngoingBookings()
+      fetchUpcomingBookings()
+      fetchAllRejectedBookings()
+    })
+
+    socket.on('newMarkAsRejectBooking', (data) => {
+      fetchAllBookings()
+      fetchAllPendingBookings()
+      fetchAllDoneBookings()
+      fetchAllCanceledBookings()
+      fetchAllOngoingBookings()
+      fetchUpcomingBookings()
+      fetchAllRejectedBookings()
+    })
+
+    return () => {
+      socket.off('newApproveBooking')
+      socket.off('newMarkAsDoneBooking')
+      socket.off('newMarkAsRejectBooking')
+    }
+  }, [])
+
   return (
     <div className=''>
       <div className='bg-white shadow-xl rounded-xl p-6'>
@@ -393,6 +457,39 @@ const Dashboard = () => {
                   <MdOutlineScheduleSend /> {t('ongoingBookings')}
                 </div>
                 <div className='stat-value'>{totalOngoingCount}</div>
+                <div className='stat-desc'>Jan 1st - Feb 1st</div>
+              </div>
+            )}
+          </div>
+
+          <div className='stat bg-white shadow-xl rounded-xl p-6'>
+            <div className='stat-figure text-secondary'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                className='inline-block h-8 w-8 stroke-current'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  strokeWidth='2'
+                  d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                ></path>
+              </svg>
+            </div>
+            {loadingRejectedBookingsCount ? (
+              <div className='space-y-3'>
+                <div className='skeleton h-7 w-full'></div>
+                <div className='skeleton h-7 w-full'></div>
+                <div className='skeleton h-7 w-full'></div>
+              </div>
+            ) : (
+              <div>
+                <div className='stat-title flex items-center gap-3'>
+                  <MdOutlineScheduleSend /> Rejected Bookings
+                </div>
+                <div className='stat-value'>{totalRejectedCount}</div>
                 <div className='stat-desc'>Jan 1st - Feb 1st</div>
               </div>
             )}

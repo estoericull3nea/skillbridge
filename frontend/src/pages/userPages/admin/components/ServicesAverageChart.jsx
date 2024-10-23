@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Line } from 'react-chartjs-2'
 import 'daisyui/dist/full.css' // Import DaisyUI styles
 
-const ServicesAverageChart = () => {
+const ServicesAverageChart = ({ trigger }) => {
   const [chartData, setChartData] = useState({})
   const [selectedService, setSelectedService] = useState('Customer Service')
   const [timeframe, setTimeframe] = useState('monthly')
@@ -53,7 +53,7 @@ const ServicesAverageChart = () => {
 
   useEffect(() => {
     fetchServiceCount()
-  }, [timeframe, selectedService])
+  }, [timeframe, selectedService, trigger])
 
   return (
     <div>

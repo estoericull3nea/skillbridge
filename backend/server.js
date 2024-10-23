@@ -5,6 +5,9 @@ import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
+import { Server } from 'socket.io'
+import http from 'http'
+
 // Routes
 import bookRouter from './api/routes/booking.route.js'
 import authRouter from './api/routes/auth.route.js'
@@ -31,6 +34,71 @@ dotenv.config()
 
 const PORT = process.env.PORT || 5000
 const app = express()
+
+const server = http.createServer(app)
+const io = new Server(server, {
+  cors: {
+    origin: allowedOrigins,
+  },
+})
+
+io.on('connection', (socket) => {
+  console.log('A client connected:', socket.id)
+
+  // socket.on('feedbackSubmitted', (data) => {
+  //   console.log('Feedback received:', data)
+
+  //   const feedbackWithTimestamp = {
+  //     ...data,
+  //     createdAt: new Date().toISOString(),
+  //   }
+
+  //   io.emit('newFeedback', feedbackWithTimestamp)
+  // })
+
+  // socket.on('officeVisited', (data) => {
+  //   io.emit('newOfficeVisited', data)
+  // })
+
+  // socket.on('submitContact', (data) => {
+  //   const submitContactwithTimestamp = {
+  //     ...data,
+  //     createdAt: new Date().toISOString(),
+  //   }
+
+  //   io.emit('newContact', submitContactwithTimestamp)
+  // })
+
+  socket.on('meetingCanceled', (data) => {
+    console.log('meetingCanceled received:', data)
+
+    io.emit('newMeetingCanceled', data)
+  })
+
+  socket.on('bookService', (data) => {
+    console.log('bookService received: ', data)
+    io.emit('newBooking', data)
+  })
+
+  socket.on('approveBooking', (data) => {
+    console.log('approveBooking received: ', data)
+    io.emit('newApproveBooking', data)
+  })
+
+  socket.on('markAsDoneBooking', (data) => {
+    console.log('markAsDoneBooking received: ', data)
+    io.emit('newMarkAsDoneBooking', data)
+  })
+
+  socket.on('markAsRejectBooking', (data) => {
+    console.log('markAsRejectBooking received: ', data)
+    io.emit('newMarkAsRejectBooking', data)
+  })
+
+  socket.on('disconnect', () => {
+    console.log('Client disconnected:', socket.id)
+  })
+})
 
 // Serve static files (for serving the uploaded profile pictures)
 const __filename = fileURLToPath(import.meta.url)
@@ -77,7 +145,7 @@ app.use('/api/v1/logs', logRouter)
 // ================================== Connection to MongoDB ==================================
 connectDB()
   .then(() => {
-    app.listen(PORT, () =>
+    server.listen(PORT, () =>
       console.log(
         `Server is Running on http://localhost:${PORT}/ & Connected to Database`
       )

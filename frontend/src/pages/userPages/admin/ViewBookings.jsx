@@ -8,6 +8,9 @@ import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
 import ServicesAverageChart from './components/ServicesAverageChart'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const ViewBookings = () => {
   const [bookings, setBookings] = useState([])
   const [filteredBookings, setFilteredBookings] = useState([])
@@ -16,24 +19,25 @@ const ViewBookings = () => {
   const [selectedBooking, setSelectedBooking] = useState(null)
   const [displayDialog, setDisplayDialog] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
+  const [trigger, setTrigger] = useState(0)
 
   useEffect(() => {
-    const fetchBookings = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}book`
-        )
-        setBookings(response.data)
-        setFilteredBookings(response.data) // Initialize filteredBookings
-      } catch (err) {
-        setError(err.response?.data?.message || 'Error fetching bookings')
-      } finally {
-        setLoading(false)
-      }
-    }
-
     fetchBookings()
   }, [])
+
+  const fetchBookings = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}book`
+      )
+      setBookings(response.data)
+      setFilteredBookings(response.data) // Initialize filteredBookings
+    } catch (err) {
+      setError(err.response?.data?.message || 'Error fetching bookings')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
     const result = bookings.filter((booking) => {
@@ -63,6 +67,8 @@ const ViewBookings = () => {
             : booking
         )
       )
+
+      socket.emit('approveBooking', bookingId)
     } catch (err) {
       setError(err.response?.data?.message || 'Error approving booking')
     }
@@ -83,6 +89,8 @@ const ViewBookings = () => {
             : booking
         )
       )
+
+      socket.emit('markAsRejectBooking', bookingId)
     } catch (err) {
       setError(err.response?.data?.message || 'Error rejecting booking')
     }
@@ -103,6 +111,8 @@ const ViewBookings = () => {
             : booking
         )
       )
+
+      socket.emit('markAsDoneBooking', bookingId)
     } catch (err) {
       setError(err.response?.data?.message || 'Error marking booking as done')
     }
@@ -211,9 +221,14 @@ const ViewBookings = () => {
     return { hours, minutes }
   }
 
+  socket.on('newBooking', (data) => {
+    fetchBookings()
+    setTrigger((prev) => prev + 1)
+  })
+
   return (
     <div className='p-5'>
-      <ServicesAverageChart />
+      <ServicesAverageChart trigger={trigger} />
 
       <h1 className='text-2xl font-semibold mb-4'>View Bookings</h1>
 

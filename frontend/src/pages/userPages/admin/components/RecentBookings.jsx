@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios' // Assuming Axios for HTTP requests
 
-const RecentBookings = () => {
+const RecentBookings = ({ trigger }) => {
   const [isLoading, setIsLoading] = useState(true) // Loading state
   const [recentBookings, setRecentBookings] = useState([])
 
@@ -20,7 +20,7 @@ const RecentBookings = () => {
     }
 
     fetchRecentBookings()
-  }, [])
+  }, [trigger])
 
   const skeletonRows = Array(5).fill(0) // Creating 5 skeleton rows for loading
 

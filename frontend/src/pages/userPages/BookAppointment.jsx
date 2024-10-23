@@ -12,6 +12,9 @@ import { useTranslation } from 'react-i18next'
 import { isTokenValid } from '../../utils/isTokenValid'
 import { useNavigate } from 'react-router-dom'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
   if (!date) return { availableTimes: [] }
@@ -124,6 +127,8 @@ const BookAppointment = () => {
       setSelectedService('')
       setSpecificService('')
       setStep(1)
+
+      socket.emit('bookService', 'test')
     },
     onError: (error) => {
       if (

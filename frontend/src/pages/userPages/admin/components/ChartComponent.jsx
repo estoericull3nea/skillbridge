@@ -88,7 +88,7 @@ const ChartComponent = ({ endpoint, chartTitle }) => {
   )
 }
 
-const DashboardCharts = () => {
+const DashboardCharts = ({ trigger }) => {
   return (
     <div className='grid grid-cols-1 xl:grid-cols-2 w-full'>
       <ChartComponent
@@ -98,6 +98,7 @@ const DashboardCharts = () => {
       <ChartComponent
         endpoint='booking-trend'
         chartTitle='Bookings (Last 7 Days)'
+        trigger={trigger}
       />
     </div>
   )

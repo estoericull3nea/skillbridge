@@ -6,8 +6,13 @@ import RecentNewAndActiveUsers from './components/RecentNewAndActiveUsers'
 import RecentFeedback from './components/RecentFeedback'
 import DashboardCharts from './components/ChartComponent'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
+  const [trigger, setTrigger] = useState(0)
+
   const [stats, setStats] = useState({
     totalBookings: 0,
     pendingBookings: 0,
@@ -22,20 +27,20 @@ const AdminDashboard = () => {
     inActiveUsers: 0,
   })
 
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/stats`
-        )
-        setStats(data)
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching booking stats:', error)
-      }
+  const fetchStats = async () => {
+    try {
+      const { data } = await axios.get(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}admin/stats`
+      )
+      setStats(data)
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error fetching booking stats:', error)
     }
+  }
 
-    setTimeout(fetchStats, 2000)
+  useEffect(() => {
+    fetchStats()
   }, [])
 
   const statItems = [
@@ -51,6 +56,22 @@ const AdminDashboard = () => {
     { title: 'Active Users', value: stats.activeUsers },
     { title: 'Inactive Users', value: stats.inActiveUsers },
   ]
+
+  useEffect(() => {
+    socket.on('newMeetingCanceled', (data) => {
+      fetchStats()
+    })
+
+    socket.on('newBooking', (data) => {
+      fetchStats()
+      setTrigger((prev) => prev + 1)
+    })
+
+    return () => {
+      socket.off('newMeetingCanceled')
+      socket.off('newBooking')
+    }
+  }, [])
 
   return (
     <div>
@@ -105,10 +126,9 @@ const AdminDashboard = () => {
         ))}
       </div>
 
-      <RecentBookings />
       <RecentNewAndActiveUsers />
       <RecentFeedback />
-      <DashboardCharts />
+      <DashboardCharts trigger={trigger} />
     </div>
   )
 }
