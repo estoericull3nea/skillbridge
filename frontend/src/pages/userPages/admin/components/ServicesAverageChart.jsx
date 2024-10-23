@@ -9,6 +9,7 @@ const ServicesAverageChart = () => {
   const [selectedService, setSelectedService] = useState('Customer Service')
   const [timeframe, setTimeframe] = useState('monthly')
   const [loading, setLoading] = useState(true)
+  const [statusData, setStatusData] = useState([])
 
   const allServices = [
     'Customer Service',
@@ -44,11 +45,31 @@ const ServicesAverageChart = () => {
           },
         ],
       })
+
+      // Fetching the status data
+      const statusResponse = await axios.get(
+        `${
+          import.meta.env.VITE_DEV_BACKEND_URL
+        }book/status/${timeframe}/${selectedService}`
+      )
+      setStatusData(
+        statusResponse.data.filter((item) => item.status === 'done')
+      )
     } catch (error) {
       console.error('Error fetching service count:', error)
     } finally {
       setLoading(false)
     }
+  }
+
+  const handlePrint = () => {
+    const printContent = statusData
+      .map((item) => `${item.service}: ${item.status}`)
+      .join('\n')
+    const printWindow = window.open('', '_blank')
+    printWindow.document.write(`<pre>${printContent}</pre>`)
+    printWindow.document.close()
+    printWindow.print()
   }
 
   useEffect(() => {
@@ -83,6 +104,14 @@ const ServicesAverageChart = () => {
         <option value='monthly'>Monthly</option>
         <option value='yearly'>Yearly</option>
       </select>
+
+      <button
+        onClick={handlePrint}
+        className='btn btn-primary mb-4'
+        disabled={loading || statusData.length === 0}
+      >
+        Print Status
+      </button>
 
       {loading ? (
         <div className='animate-pulse'>
