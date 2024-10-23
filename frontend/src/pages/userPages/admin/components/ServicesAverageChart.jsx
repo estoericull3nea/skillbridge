@@ -22,13 +22,13 @@ const ServicesAverageChart = () => {
     'Onboarding (Optional)',
   ]
 
-  const fetchServiceAverage = async () => {
+  const fetchServiceCount = async () => {
     setLoading(true)
     try {
       const response = await axios.get(
         `${
           import.meta.env.VITE_DEV_BACKEND_URL
-        }book/average/${timeframe}/${selectedService}`
+        }book/count/${timeframe}/${selectedService}`
       )
       const data = response.data
 
@@ -36,7 +36,7 @@ const ServicesAverageChart = () => {
         labels: [selectedService],
         datasets: [
           {
-            label: 'Average Bookings',
+            label: 'Total Bookings',
             data: [data[selectedService] || 0], // Default to 0 if no bookings
             backgroundColor: 'rgba(75, 192, 192, 0.6)',
             borderColor: 'rgba(75, 192, 192, 1)',
@@ -45,19 +45,19 @@ const ServicesAverageChart = () => {
         ],
       })
     } catch (error) {
-      console.error('Error fetching service average:', error)
+      console.error('Error fetching service count:', error)
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    fetchServiceAverage()
+    fetchServiceCount()
   }, [timeframe, selectedService])
 
   return (
     <div>
-      <h2 className='text-xl font-bold mb-4'>Admin Panel - Service Average</h2>
+      <h2 className='text-xl font-bold mb-4'>Admin Panel - Service Count</h2>
 
       <label className='block mb-2'>Select Service:</label>
       <select

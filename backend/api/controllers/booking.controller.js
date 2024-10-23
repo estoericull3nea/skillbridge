@@ -665,8 +665,8 @@ export const cancelMeeting = async (req, res) => {
   }
 }
 
-export const getAverageSpecificServices = async (req, res) => {
-  const { timeframe, selectedService } = req.params
+export const getTotalSpecificServices = async (req, res) => {
+  const { timeframe, service } = req.params
 
   const startDate = new Date()
   let endDate = new Date()
@@ -690,26 +690,21 @@ export const getAverageSpecificServices = async (req, res) => {
 
   try {
     const bookings = await Booking.find({
-      date: { $gte: startDate, $lte: endDate },
       status: 'done', // Filter by status
     })
 
-    const serviceCounts = bookings.reduce((acc, booking) => {
-      if (booking.specificService === selectedService) {
-        acc[booking.specificService] = (acc[booking.specificService] || 0) + 1
-      }
-      return acc
-    }, {})
+    const totalCount = bookings.reduce((acc, booking) => {
+      return booking.specificService === service ? acc + 1 : acc
+    }, 0)
 
-    console.log(serviceCounts)
-
-    // Ensure we return 0 if there are no bookings
     const result = {
-      [selectedService]: serviceCounts[selectedService] || 0,
+      [service]: totalCount, // Total count of bookings
     }
+
+    console.log(result)
 
     res.status(200).json(result)
   } catch (error) {
-    res.status(500).json({ message: 'Error fetching averages', error })
+    res.status(500).json({ message: 'Error fetching counts', error })
   }
 }
