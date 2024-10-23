@@ -8,6 +8,7 @@ import { Skeleton } from 'primereact/skeleton'
 import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 import { InputText } from 'primereact/inputtext'
+import ServicesAverageChart from './components/ServicesAverageChart'
 
 const ViewBookings = () => {
   const [bookings, setBookings] = useState([])
@@ -185,6 +186,8 @@ const ViewBookings = () => {
 
   return (
     <div className='p-5'>
+      <ServicesAverageChart />
+
       <h1 className='text-2xl font-semibold mb-4'>View Bookings</h1>
 
       <div className='mb-4'>

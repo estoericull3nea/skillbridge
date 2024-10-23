@@ -13,6 +13,7 @@ import {
   getThreeUpcomingPendingBookingsByUser,
   deleteBookingById,
   cancelMeeting,
+  getAverageSpecificServices,
 } from '../controllers/booking.controller.js'
 
 const router = express.Router()
@@ -33,5 +34,7 @@ router.get(
 )
 router.patch('/:bookingId/soft-delete', deleteBookingById)
 router.patch('/:bookingId/cancel-meeting', cancelMeeting)
+
+router.get('/average/:timeframe/:service', getAverageSpecificServices)
 
 export default router

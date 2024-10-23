@@ -1,6 +1,6 @@
 // src/pages/userPages/profile/Sidebar.jsx
 import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { NavLink, useParams } from 'react-router-dom'
 import { MdOutlineMailOutline } from 'react-icons/md'
 import { useTranslation } from 'react-i18next'
 
@@ -12,59 +12,82 @@ const Sidebar = () => {
     <div>
       <aside className='min-w-[300px] shadow-xl rounded-xl bg-white sticky top-0'>
         <div className='pl-5 pt-5'>
-          <h1 className=' text-2xl font-semibold'>
+          <h1 className='text-2xl font-semibold'>
             {firstName} {localStorage.getItem('lastName')}
           </h1>
           <h3 className='flex items-center text-sm gap-1 text-gray-500'>
             <MdOutlineMailOutline /> {localStorage.getItem('email')}
           </h3>
         </div>
+
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>{t('mainMenu')}</span>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/dashboard`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/dashboard`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('dashboard')}
-            </Link>
+            </NavLink>
           </li>
 
           <li>
-            <Link to={`/profile/${userId}/${firstName}/booking-history`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/booking-history`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('bookingHistory')}
-            </Link>
+            </NavLink>
           </li>
 
           <li>
-            <Link to={`/profile/${userId}/${firstName}/all-contacts`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/all-contacts`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('contacts')}
-            </Link>
+            </NavLink>
           </li>
 
           <li>
-            <Link to={`/profile/${userId}/${firstName}/all-feedbacks`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/all-feedbacks`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('feedbacks')}
-            </Link>
+            </NavLink>
           </li>
         </ul>
+
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>{t('accountSettings')}</span>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/user-info`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/user-info`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('userInfo')}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/notifications`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/notifications`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('notifications')}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/deletion`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/deletion`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('deleteAccount')}
-            </Link>
+            </NavLink>
           </li>
         </ul>
 
@@ -73,29 +96,42 @@ const Sidebar = () => {
             <span>{t('securityAndPrivacy')}</span>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/login-activity`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/login-activity`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('loginActivity')}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/data-export`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/data-export`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('dataExport')}
-            </Link>
+            </NavLink>
           </li>
         </ul>
+
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>{t('supportAndFeedback')}</span>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/contact-support`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/contact-support`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('contactSupport')}
-            </Link>
+            </NavLink>
           </li>
           <li>
-            <Link to={`/profile/${userId}/${firstName}/feedback`}>
+            <NavLink
+              to={`/profile/${userId}/${firstName}/feedback`}
+              activeClassName='font-bold text-blue-500'
+            >
               {t('submitFeedback')}
-            </Link>
+            </NavLink>
           </li>
         </ul>
       </aside>

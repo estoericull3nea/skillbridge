@@ -664,3 +664,52 @@ export const cancelMeeting = async (req, res) => {
     return res.status(500).json({ message: error.message })
   }
 }
+
+export const getAverageSpecificServices = async (req, res) => {
+  const { timeframe, selectedService } = req.params
+
+  const startDate = new Date()
+  let endDate = new Date()
+
+  switch (timeframe) {
+    case 'daily':
+      startDate.setDate(startDate.getDate() - 1)
+      break
+    case 'weekly':
+      startDate.setDate(startDate.getDate() - 7)
+      break
+    case 'monthly':
+      startDate.setMonth(startDate.getMonth() - 1)
+      break
+    case 'yearly':
+      startDate.setFullYear(startDate.getFullYear() - 1)
+      break
+    default:
+      return res.status(400).json({ message: 'Invalid timeframe' })
+  }
+
+  try {
+    const bookings = await Booking.find({
+      date: { $gte: startDate, $lte: endDate },
+      status: 'done', // Filter by status
+    })
+
+    const serviceCounts = bookings.reduce((acc, booking) => {
+      if (booking.specificService === selectedService) {
+        acc[booking.specificService] = (acc[booking.specificService] || 0) + 1
+      }
+      return acc
+    }, {})
+
+    console.log(serviceCounts)
+
+    // Ensure we return 0 if there are no bookings
+    const result = {
+      [selectedService]: serviceCounts[selectedService] || 0,
+    }
+
+    res.status(200).json(result)
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching averages', error })
+  }
+}
