@@ -4,6 +4,9 @@ import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const ContactUsForm = () => {
   const { t } = useTranslation() // Initialize the translation function
   const [fullName, setFullName] = useState('')
@@ -56,6 +59,8 @@ const ContactUsForm = () => {
         toast.success(t('message_sent')) // Show success message
         setSubject('')
         setMessage('')
+
+        socket.emit('ContactAdmin', 'contact admin')
       } else {
         console.error('Failed to send message')
       }

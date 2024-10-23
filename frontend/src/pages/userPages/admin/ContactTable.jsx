@@ -3,24 +3,28 @@ import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const ContactTable = () => {
   const [contacts, setContacts] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}contacts`
-        )
-        setContacts(response.data)
-      } catch (error) {
-        console.error('Error fetching contacts:', error)
-      } finally {
-        setLoading(false)
-      }
+  const fetchContacts = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_DEV_BACKEND_URL}contacts`
+      )
+      setContacts(response.data)
+    } catch (error) {
+      console.error('Error fetching contacts:', error)
+    } finally {
+      setLoading(false)
     }
+  }
+
+  useEffect(() => {
     fetchContacts()
   }, [])
 
@@ -36,6 +40,16 @@ const ContactTable = () => {
       <div className='skeleton h-4 w-full'></div>
     </div>
   )
+
+  useEffect(() => {
+    socket.on('newContactAdmin', (data) => {
+      fetchContacts()
+    })
+
+    return () => {
+      socket.off('newContactAdmin')
+    }
+  }, [])
 
   return (
     <div>

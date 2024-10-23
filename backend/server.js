@@ -100,6 +100,16 @@ io.on('connection', (socket) => {
     io.emit('newRequestDeletion', data)
   })
 
+  socket.on('submitFeedback', (data) => {
+    console.log('submitFeedback received: ', data)
+    io.emit('newSubmitFeedback', data)
+  })
+
+  socket.on('ContactAdmin', (data) => {
+    console.log('ContactAdmin received: ', data)
+    io.emit('newContactAdmin', data)
+  })
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id)
   })

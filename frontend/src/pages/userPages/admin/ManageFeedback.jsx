@@ -5,6 +5,9 @@ import { Column } from 'primereact/column'
 import { Button } from 'primereact/button'
 import { FiTrash } from 'react-icons/fi' // Importing trash icon from react-icons
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const ManageFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([])
   const [loading, setLoading] = useState(true)
@@ -76,6 +79,16 @@ const ManageFeedback = () => {
       console.error('Error deleting feedback:', error)
     }
   }
+
+  useEffect(() => {
+    socket.on('newSubmitFeedback', (data) => {
+      fetchFeedbacks()
+    })
+
+    return () => {
+      socket.off('newSubmitFeedback')
+    }
+  }, [])
 
   return (
     <div className='p-5'>

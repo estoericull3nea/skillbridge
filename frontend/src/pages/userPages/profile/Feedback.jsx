@@ -3,6 +3,10 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
+
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const Feedback = () => {
   const { t } = useTranslation() // Initialize the translation function
   const [fullName, setFullName] = useState('')
@@ -52,6 +56,9 @@ const Feedback = () => {
       setOverallSatisfaction('')
       setFeedbackType('General Feedback')
       setSuggestions('')
+
+      socket.emit('submitFeedback', 'feedback submition')
+
     } catch (error) {
       console.error('Error submitting feedback:', error)
     } finally {
