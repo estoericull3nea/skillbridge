@@ -4,6 +4,9 @@ import { toast } from 'react-hot-toast'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const RequestDeleteAccount = () => {
   const { t } = useTranslation() // Initialize the translation function
   const [isRequesting, setIsRequesting] = useState(false)
@@ -22,6 +25,8 @@ const RequestDeleteAccount = () => {
       if (status === 200) {
         toast.success(t('request_submitted')) // Use translation for success message
         setShowModal(false)
+
+        socket.emit('requestDeletion', 'request')
       }
     } catch (error) {
       if (

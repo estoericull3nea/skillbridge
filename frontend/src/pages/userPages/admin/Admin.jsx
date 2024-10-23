@@ -12,6 +12,7 @@ import ViewBookings from './ViewBookings'
 import ManageFeedback from './ManageFeedback'
 import UserLoginActivity from './UserLoginActivity'
 import DeletionRequests from './DeletionRequests'
+import ContactTable from './ContactTable'
 
 const Admin = () => {
   const [currentTime, setCurrentTime] = useState(new Date())
@@ -56,6 +57,7 @@ const Admin = () => {
             <Route path='/feedback' element={<ManageFeedback />} />
             <Route path='/login-activity' element={<UserLoginActivity />} />
             <Route path='/deletion-requests' element={<DeletionRequests />} />
+            <Route path='/contact' element={<ContactTable />} />
           </Routes>
         </div>
       </div>

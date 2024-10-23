@@ -86,6 +86,17 @@ const AdminSidebar = () => {
               Manage Feedback
             </NavLink>
           </li>
+
+          <li>
+            <NavLink
+              to='/admin/contact'
+              className={({ isActive }) =>
+                isActive ? 'font-bold text-blue-500' : ''
+              }
+            >
+              Manage Contact
+            </NavLink>
+          </li>
         </ul>
 
         {/* Security & Permissions */}

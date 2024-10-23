@@ -4,6 +4,9 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { toast } from 'react-hot-toast'
 
+import { io } from 'socket.io-client'
+const socket = io('http://localhost:5000')
+
 const DeletionRequests = () => {
   const [requests, setRequests] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,6 +28,13 @@ const DeletionRequests = () => {
 
   useEffect(() => {
     fetchRequests()
+    socket.on('newRequestDeletion', (data) => {
+      fetchRequests()
+    })
+
+    return () => {
+      socket.off('newRequestDeletion')
+    }
   }, [])
 
   const handleApprove = async (requestId) => {

@@ -95,6 +95,11 @@ io.on('connection', (socket) => {
     io.emit('newMarkAsRejectBooking', data)
   })
 
+  socket.on('requestDeletion', (data) => {
+    console.log('requestDeletion received: ', data)
+    io.emit('newRequestDeletion', data)
+  })
+
   socket.on('disconnect', () => {
     console.log('Client disconnected:', socket.id)
   })
