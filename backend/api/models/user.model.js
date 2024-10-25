@@ -31,14 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '',
     },
-    // lastLoginDate: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'LoginHistory',
-    //   },
-    // ],
 
-    // Email Verification
     isVerified: { type: Boolean, default: false },
     verificationToken: String,
     verificationTokenExpires: Date,
@@ -47,7 +40,6 @@ const userSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    // Email Verification
     failedLoginAttempts: { type: Number, default: 0 },
     lockUntil: { type: Date },
     resetPasswordToken: { type: String },
@@ -60,8 +52,8 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ['admin', 'user', 'guest'],
-      default: 'user', // Default role for new users
+      enum: ['admin', 'user'],
+      default: 'user',
     },
 
     active: {

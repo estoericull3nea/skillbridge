@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSearchParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode'
 
 const GoogleCallback = () => {
   const [searchParams] = useSearchParams()
@@ -28,8 +29,15 @@ const GoogleCallback = () => {
               localStorage.setItem('toast_shown', 'true')
             }
 
+            const { role } = jwtDecode(token)
+
             localStorage.setItem('token', token)
-            navigate('/')
+
+            if (role === 'admin') {
+              return navigate(`/admin/dashboard`)
+            } else {
+              return navigate('/')
+            }
           } else {
             throw new Error('No token received from server')
           }

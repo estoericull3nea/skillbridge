@@ -170,7 +170,7 @@ export const promoteUserToAdmin = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       userId,
-      { isAdmin: true },
+      { isAdmin: true, role: 'admin' },
       { new: true }
     )
 
@@ -190,7 +190,7 @@ export const demoteUserFromAdmin = async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
       userId,
-      { isAdmin: false },
+      { isAdmin: false, role: 'user' },
       { new: true }
     )
 

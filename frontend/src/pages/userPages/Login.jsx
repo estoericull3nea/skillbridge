@@ -4,6 +4,7 @@ import { FcGoogle } from 'react-icons/fc'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import { jwtDecode } from 'jwt-decode'
 
 import axios from 'axios'
 import 'daisyui'
@@ -28,6 +29,12 @@ const Login = () => {
     onSuccess: (data) => {
       toast.success(data.message)
       localStorage.setItem('token', data.token)
+
+      const { role } = jwtDecode(data.token)
+
+      if (role === 'admin') {
+        return navigate(`/admin/dashboard`)
+      }
 
       const queryParams = new URLSearchParams(window.location.search)
       const redirectUrl = queryParams.get('redirect') || '/'
