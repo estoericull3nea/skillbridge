@@ -58,6 +58,12 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
 
+    role: {
+      type: String,
+      enum: ['admin', 'user', 'guest'],
+      default: 'user', // Default role for new users
+    },
+
     active: {
       type: Boolean,
       default: true,
