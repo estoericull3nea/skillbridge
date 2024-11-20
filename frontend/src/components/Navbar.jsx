@@ -607,7 +607,7 @@ const Navbar = () => {
                     </span>
                     <ul
                       tabIndex={0}
-                      className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[174px] translate-x-[-20px] lg:translate-x-0'
+                      className='dropdown-content menu bg-base-100 rounded-box z-[10] min-w-max p-2 shadow mt-[174px] translate-x-[-50px] lg:translate-x-0'
                     >
                       <li>
                         <Link
