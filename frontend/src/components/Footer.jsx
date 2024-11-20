@@ -26,10 +26,10 @@ const Footer = () => {
               <h6 className='footer-title'>{t('QuickLinks')}</h6>
               <a className='link link-hover'>{t('Home')}</a>
               <a className='link link-hover'>{t('Services')}</a>
-              <Link to='/about' className='link link-hover'>
+              {/* <Link to='/about' className='link link-hover'>
                 {t('About')}
-              </Link>
-              <a className='link link-hover'>{t('Contact')}</a>
+              </Link> */}
+              {/* <a className='link link-hover'>{t('Contact')}</a> */}
             </nav>
             <nav>
               <h6 className='footer-title'>{t('SocialLinks')}</h6>

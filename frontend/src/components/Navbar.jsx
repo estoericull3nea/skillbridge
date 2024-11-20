@@ -85,7 +85,7 @@ const Navbar = () => {
 
   return (
     <div className='shadow'>
-      <div className='container'>
+      <div className='lg:container'>
         <div className='navbar bg-base-100'>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>
@@ -311,12 +311,12 @@ const Navbar = () => {
                     </li>
 
                     <ul>
-                      <li>
+                      {/* <li>
                         <Link to='/about'> {t('About')}</Link>
-                      </li>
-                      <li>
+                      </li> */}
+                      {/* <li>
                         <Link to='/contact'> {t('Contact')}</Link>
-                      </li>
+                      </li> */}
                       {!token && (
                         <div>
                           <li>
@@ -529,12 +529,12 @@ const Navbar = () => {
 
                       <li>
                         <ul>
-                          <li>
+                          {/* <li>
                             <Link to='/about'>{t('About')}</Link>
-                          </li>
-                          <li>
+                          </li> */}
+                          {/* <li>
                             <Link to='/contact'>{t('Contact')}</Link>
-                          </li>
+                          </li> */}
                           <li>
                             <Link to='/privacy-policy'>
                               {t('PrivacyPolicy')}
@@ -552,9 +552,9 @@ const Navbar = () => {
                   </ul>
                 </div>
               </li>
-              <li>
+              {/* <li>
                 <Link to='/about'>{t('About')}</Link>
-              </li>
+              </li> */}
               {/* here */}
             </ul>
           </div>

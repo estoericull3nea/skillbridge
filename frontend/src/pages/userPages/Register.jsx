@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next'
 
 const Register = () => {
   const { t } = useTranslation() // Use the translation hook
+  const navigate = useNavigate()
 
   useEffect(() => {
     document.title = t('Register') // Set the page title
@@ -46,7 +47,8 @@ const Register = () => {
         newUser
       ),
     onSuccess: (response) => {
-      toast.success(response.data.message)
+      // toast.success(response.data.message)
+      toast.success('Registered Successfully')
       setFormData({
         firstName: '',
         lastName: '',
@@ -55,6 +57,8 @@ const Register = () => {
         confirmPassword: '',
         terms: false,
       })
+      // here
+      navigate('/login')
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || t('RegistrationFailed'))
@@ -218,12 +222,12 @@ const Register = () => {
                       className='font-light text-gray-500 cursor-pointer'
                     >
                       {t('IAcceptTheTerms')}
-                      <a
+                      <Link
                         className='font-medium text-black hover:underline'
-                        href='#'
+                        to='/terms'
                       >
                         {t('TermsAndConditions')}
-                      </a>
+                      </Link>
                     </label>
                   </div>
                 </div>

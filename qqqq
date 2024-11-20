@@ -1,0 +1,156 @@
+[33mc59f7d4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msurvey_branch[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m updated
+[33m6222da2[m rbac integrated
+[33m87d568d[m integraing rbac
+[33m4e9eaf9[m updated
+[33mbf88d50[m implementing displaying of notif
+[33mdeb0a7f[m deletion io
+[33mc0554b0[m displaying contact us form
+[33m3370290[m integrating socket io
+[33mf7ca51f[m print done booking
+[33m9aa0816[m implementing print button
+[33m90b51dc[m chart js implemented in view booking
+[33mc1bfa10[m put some active indicator in sidebar
+[33m424da39[m integrating chart js
+[33m0f03164[m updated
+[33mf7e0946[m updated
+[33m18e3a8e[m user rquired to login first before book
+[33m23e0595[m if no acc in booking redirect to login
+[33mcdeda81[m add specific service
+[33m7f17c30[m implementing specific service
+[33m3319337[m app to appwrapper for the dynamic navbar and footer
+[33m17520f6[m updated
+[33m8512147[m users promote or demote
+[33m44bae84[m integrating user promotion to admin
+[33mf64801f[m user login activity admin
+[33mdc6053b[m remove something in sidebar"
+[33m43b9595[m manage feedback but error exist
+[33mf1858cb[m view bookings
+[33mf6d0fb6[m integrating start and endtime
+[33mc24c7a8[m view bookings
+[33m38de83b[m user logs
+[33ma40ff04[m integrating logs
+[33mfc115d1[m admin user management
+[33m7895c20[m users (create, read, delete)
+[33m56c118e[m automatically check for the missed bookings
+[33m5dcaa5e[m overview
+[33me64c1ce[m recent feedbacks
+[33m9c227b4[m recent and active users
+[33m47d58ca[m recent bookings
+[33m95be5fb[m with users
+[33m8176e71[m bookings overview
+[33m62e50aa[m admin sidebar
+[33m61e4ae5[m implementing admin ui
+[33m737f6a4[m testing
+[33m8dfac11[m client contact supp  translation
+[33mb06fb5c[m client login act translation
+[33mea7ce59[m client delete account translation
+[33m096095d[m client user info  translation
+[33mea0de04[m client get feedbacks translation
+[33m164372d[m client submit feedbacks translation
+[33mb2b727e[m client contacts translation
+[33m7c31923[m client booking history translation
+[33m3ff1963[m client sidebar translation
+[33ma3ca81c[m client dashboard translation
+[33mbf40639[m terms translation
+[33m822d943[m cookie policy translation
+[33m8dac368[m privacy policy  translation
+[33m67690af[m booking  translation
+[33m59bf4ad[m reset password translation
+[33m76fbc5f[m forgot pass  page ui text translation
+[33mafbffa6[m register page ui text translation
+[33mdf723e5[m change the login ui text
+[33m2edcba0[m navbar change
+[33m713ba8e[m landing page translation
+[33ma5b493a[m integrating language translation
+[33m8afc046[m updated
+[33mfcbc9de[m getting feedbacks
+[33m94565b6[m user can provide feedback
+[33m910b42f[m submit feedback ui
+[33md3fa001[m getting all contacts
+[33m68e5146[m implementing feedbacks
+[33m2fae8a6[m updated
+[33m1eb5132[m bug in mongodb connection error
+[33ma584b54[m user can submit a contact
+[33mfd3ad57[m integrating contact us support in profile
+[33m40a9f43[m user can export is data
+[33mc46fead[m integrating data export
+[33m20e0742[m bug fixed
+[33ma23109b[m log in activity
+[33m96f13f6[m login history saving to database
+[33m51af9e7[m implementing login history
+[33m3727b43[m deletion
+[33m56ee719[m deletion of acc (client
+[33m52d826f[m get deletion by id
+[33m27ce23c[m get all deletion requests
+[33m4db26ba[m user can ask for deletion of his/her acc
+[33m5862e95[m implementing deletion of account
+[33mea28453[m dynamic breadcrumb issue fixed
+[33mbd283e0[m fix the ui url in navbar profile
+[33mfa8af9a[m implemented
+[33m9b30115[m user upload profile picture
+[33mbd587c9[m handling user upload profile
+[33mbb33a8a[m booking history
+[33m4f8a7c8[m implementing filter on booking history
+[33m0afc877[m added middleware to check the token is valid
+[33m51b9774[m cancel booking
+[33m0bd0d3a[m display missed if the booked is exceed
+[33m400f1c5[m dashboard user profile upcomming bookings ui
+[33m4e5c2f5[m upcomming bookings profile page
+[33m1dc51e6[m bug fixed in creating meeting
+[33m7753126[m change the route of meeting
+[33m231f51f[m user info
+[33m97cf7ee[m fix endpoint of frontend
+[33m4241dc0[m fixing date and time on profile page
+[33m425d102[m dynamic breadcrumbs
+[33maab5f8c[m date and notif ui
+[33m3d5b009[m sidebar
+[33m9abb6c0[m integration profile page
+[33m7099b83[m automatically email to a user who book a sched
+[33m9539c7b[m zoom access token
+[33mffcb362[m creation of meeting
+[33m8a1e32c[m created meeting model
+[33ma6b1920[m bug fixed
+[33m6fb5800[m bug in fetching available times
+[33m164a966[m testing create meeting again
+[33m761f1f1[m create meeting (REST)
+[33m83a7de1[m implementing zoom api (REST)
+[33m7d02ab3[m new landing page ui
+[33m8044939[m integrating zoom
+[33m4bf7075[m protected routes
+[33m2882c4d[m fixed
+[33m058e315[m user auth bug fixed
+[33m8dc8bd4[m google auth integrated
+[33m8d95e6c[m navbar profile
+[33mc388f13[m integrating google login
+[33mf896dd9[m register with google
+[33m32685d9[m google auth integrated but need to configure
+[33m7e6ee07[m Access blocked: This app’s request is invalid
+[33m0019516[m bug
+[33m6260186[m integrating google auth
+[33m9573bdb[m auth done but not Oauth
+[33mc0e58d2[m resend verification
+[33mced6e8d[m jwt auth
+[33m4bb2c38[m login
+[33mb021b3d[m booking part
+[33m03cb874[m put some services on booking
+[33m2dba066[m get holidays based on users country
+[33ma5b8466[m displaying holiday in mobile view
+[33m73b9e58[m displaying holidays based on the country
+[33mb31ced5[m register page
+[33m06fad32[m service ui created
+[33m7f0375e[m booking (API) done
+[33mde4d945[m user auth (API)
+[33m0bce2c8[m verify email (API)
+[33madec115[m users crud (API)
+[33m0e8933c[m blacklist model
+[33md63c64c[m user model and login history model
+[33m20a58c4[m cookie, privacy, terms UI
+[33m01d87e3[m privacy policy
+[33m8749ad6[m fix UI
+[33mf6d598f[m login, register, reset, forgot UI
+[33mecfdfee[m landing page
+[33ma6fa93e[m implementing services (landing page)
+[33mb34d91c[m footer
+[33m878d08f[m ui of services in landing page
+[33m48d4ab6[m Hero
+[33m7a9f720[m User (Navbar)

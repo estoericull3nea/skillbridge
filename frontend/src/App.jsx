@@ -88,14 +88,7 @@ const App = () => {
         />
         {/* <Route exact path='/admin/*' element={<Admin />} /> */}
 
-        <Route
-          path='/about'
-          element={
-            <ProtectRoute>
-              <About />
-            </ProtectRoute>
-          }
-        />
+        <Route path='/about' element={<About />} />
 
         <Route path='*' element={<NotFound />} />
       </Routes>
