@@ -1,8 +1,14 @@
 import React from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { MdOutlineMailOutline } from 'react-icons/md'
 
 const AdminSidebar = () => {
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    localStorage.clear()
+    navigate('/login')
+  }
   return (
     <div>
       <aside className='min-w-[300px] shadow-xl rounded-xl bg-white sticky top-0'>
@@ -130,6 +136,15 @@ const AdminSidebar = () => {
             >
               View Deletion Requests
             </NavLink>
+          </li>
+        </ul>
+
+        <ul className='menu rounded-box'>
+          <li className='menu-title'>
+            <span>Settings</span>
+          </li>
+          <li>
+            <button onClick={handleLogout}>Logout</button>
           </li>
         </ul>
       </aside>
