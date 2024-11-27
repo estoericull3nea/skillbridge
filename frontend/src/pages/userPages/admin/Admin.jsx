@@ -41,11 +41,11 @@ const Admin = () => {
                 </div>
               </div>
 
-              <div className=' text-end flex justify-end'>
+              {/* <div className=' text-end flex justify-end'>
                 <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full '>
                   <IoMdNotificationsOutline />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
