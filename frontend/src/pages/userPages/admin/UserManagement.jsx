@@ -280,7 +280,7 @@ const UserManagement = () => {
           ))}
         </div>
       ) : (
-        <DataTable value={users} paginator rows={5} className='mt-2'>
+        <DataTable value={users} paginator rows={15} className='mt-2'>
           <Column field='firstName' header='First Name' sortable />
           <Column field='lastName' header='Last Name' sortable />
           <Column field='email' header='Email' sortable />
