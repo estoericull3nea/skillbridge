@@ -141,29 +141,44 @@ export const login = async (req, res) => {
   try {
     const thisUser = await User.findOne({ email })
 
+    console.log(thisUser)
+
     if (thisUser) {
-      const token = jwt.sign(
-        {
-          id: thisUser._id,
-          email: thisUser.email,
-          firstName: thisUser.firstName,
-          lastName: thisUser.lastName,
-          role: thisUser.role,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
+      // Compare the provided password with the stored hashed password
+      const isPasswordCorrect = await bcrypt.compare(
+        password,
+        thisUser.password
       )
 
-      await Logger.create({
-        user: thisUser._id,
-        action: 'User Logged In',
-        details: { email: thisUser.email },
-      })
+      if (isPasswordCorrect) {
+        const token = jwt.sign(
+          {
+            id: thisUser._id,
+            email: thisUser.email,
+            firstName: thisUser.firstName,
+            lastName: thisUser.lastName,
+            role: thisUser.role,
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+        )
 
-      return res.status(200).json({
-        message: 'Login Successful',
-        token,
-      })
+        // Log the login action
+        await Logger.create({
+          user: thisUser._id,
+          action: 'User Logged In',
+          details: { email: thisUser.email },
+        })
+
+        return res.status(200).json({
+          message: 'Login Successful',
+          token,
+        })
+      } else {
+        return res.status(401).json({
+          message: 'Incorrect password',
+        })
+      }
     } else {
       if (!thisUser) {
         await Logger.create({
