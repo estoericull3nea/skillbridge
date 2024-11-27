@@ -65,7 +65,7 @@ export const register = async (req, res) => {
     })
     // logging
 
-    const verificationUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}verify?token=${verificationToken}`
+    const verificationUrl = `${process.env.FRONTEND_URL_PRODUCTION}verify?token=${verificationToken}`
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: newUser.email,
@@ -75,7 +75,7 @@ export const register = async (req, res) => {
       <p>Thank you for registering with us. To complete the registration process, please click on the link below to confirm your email address:</p>
       <p><a href="${verificationUrl}">Confirm Email</a></p>
       <p>This link will expire in 15 minutes. If you do not verify your email within this time, you will need to request a new confirmation link.</p>
-      <p>If you have any questions or need further assistance, please do not hesitate to contact us <a href="${process.env.FRONTEND_URL_DEVELOPMENT}contact-us">here</a>.</p>
+      <p>If you have any questions or need further assistance, please do not hesitate to contact us <a href="${process.env.FRONTEND_URL_PRODUCTION}contact-us">here</a>.</p>
       <p>Best regards,<br>Skill Bridge Virtual Careers</p>
         `,
     })
@@ -312,7 +312,7 @@ export const resendVerificationEmail = async (req, res) => {
     await user.save()
 
     // Send the verification email
-    const verificationUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}/verify?token=${verificationToken}`
+    const verificationUrl = `${process.env.FRONTEND_URL_PRODUCTION}/verify?token=${verificationToken}`
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: user.email,
@@ -367,7 +367,7 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = resetTokenExpires
     await user.save()
 
-    const resetUrl = `${process.env.FRONTEND_URL_DEVELOPMENT}reset/${resetToken}`
+    const resetUrl = `${process.env.FRONTEND_URL_PRODUCTION}reset/${resetToken}`
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
@@ -443,7 +443,7 @@ export const resetPassword = async (req, res) => {
           <li>Consider using a passphrase or a combination of random words.</li>
           <li>Update your password regularly to ensure the safety of your account.</li>
         </ul>
-        <p>If you have any questions or need further assistance, feel free to reach out to us <a href="${process.env.FRONTEND_URL_DEVELOPMENT}contact">here</a>.</p>
+        <p>If you have any questions or need further assistance, feel free to reach out to us <a href="${process.env.FRONTEND_URL_PRODUCTION}contact">here</a>.</p>
         <p>Best regards,<br>Skill Bridge Virtual Careers</p>
       `,
     })
@@ -480,7 +480,7 @@ export const googleSignup = async (req, res) => {
         code,
         client_id: process.env.GOOGLE_CLIENT_ID,
         client_secret: process.env.GOOGLE_CLIENT_SECRET,
-        redirect_uri: `${process.env.FRONTEND_URL_DEVELOPMENT}google-callback`,
+        redirect_uri: `${process.env.FRONTEND_URL_PRODUCTION}google-callback`,
         grant_type: 'authorization_code',
       }
     )
