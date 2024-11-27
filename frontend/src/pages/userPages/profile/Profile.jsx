@@ -60,7 +60,7 @@ const Profile = () => {
                 </div>
               </div>
 
-              <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full flex items-center justify-center '>
+              {/* <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full flex items-center justify-center '>
                 <div className='dropdown dropdown-hover dropdown-end'>
                   <IoMdNotificationsOutline tabIndex={0} role='button' />
 
@@ -76,7 +76,7 @@ const Profile = () => {
                     </li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 
