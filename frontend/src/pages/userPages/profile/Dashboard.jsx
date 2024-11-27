@@ -67,7 +67,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/get/upcomming-three-bookings?email=${localStorage.getItem(
           'email'
         )}`
@@ -95,7 +95,7 @@ const Dashboard = () => {
     try {
       const { status } = await axios.patch(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/update-status/${bookingId}`,
         { status: 'canceled' }
       )
@@ -119,7 +119,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -138,7 +138,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -157,7 +157,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -176,7 +176,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -195,7 +195,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -214,7 +214,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_PROD_BACKEND_URL
+          import.meta.env.VITE_DEV_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       setTotalBookingsCount(response.data.length || 0)
@@ -620,48 +620,21 @@ const Dashboard = () => {
               header={t('actions')}
               body={(rowData) => (
                 <div className='flex space-x-2'>
-                  {rowData.meeting?.join_url ? (
-                    <>
-                      {/* Join Zoom Button */}
-                      <div
-                        className='tooltip tooltip-left'
-                        data-tip={t('joinZoomMeeting')}
-                      >
-                        <a
-                          href={rowData.meeting.join_url}
-                          target='_blank'
-                          rel='noopener noreferrer'
-                          className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                        >
-                          <IoSendOutline />
-                        </a>
-                      </div>
-
-                      {/* Cancel Meeting Button */}
-                      <div
-                        className='tooltip tooltip-left'
-                        data-tip={t('cancelMeeting')}
-                      >
-                        <button
-                          onClick={() => cancelMeeting(rowData._id)}
-                          className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                          disabled={loadingCancel[rowData._id]} // Disable while loading
-                        >
-                          {loadingCancel[rowData._id] ? (
-                            <span
-                              className='spinner-border spinner-border-sm'
-                              role='status'
-                              aria-hidden='true'
-                            ></span>
-                          ) : (
-                            <MdOutlineCancelScheduleSend />
-                          )}
-                        </button>
-                      </div>
-                    </>
-                  ) : (
-                    <span>{t('noURL')}</span>
-                  )}
+                  <button
+                    onClick={() => cancelMeeting(rowData._id)}
+                    className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
+                    disabled={loadingCancel[rowData._id]} // Disable while loading
+                  >
+                    {loadingCancel[rowData._id] ? (
+                      <span
+                        className='spinner-border spinner-border-sm'
+                        role='status'
+                        aria-hidden='true'
+                      ></span>
+                    ) : (
+                      <MdOutlineCancelScheduleSend />
+                    )}
+                  </button>
                 </div>
               )}
             ></Column>

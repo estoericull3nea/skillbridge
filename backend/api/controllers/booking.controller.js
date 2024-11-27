@@ -130,51 +130,55 @@ export const book = async (req, res) => {
 
     const accessToken = await getAccessToken()
 
-    const response = await axios.post(
-      `https://api.zoom.us/v2/users/me/meetings`,
-      {
-        topic: service,
-        type: 2,
-        start_time: isoStartTime,
-        duration: 60,
-        timezone: 'Asia/Shanghai',
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
+    console.log('test b4')
 
-    const {
-      host_id,
-      host_email,
-      topic,
-      status,
-      start_time,
-      duration,
-      timezone,
-      start_url,
-      join_url,
-    } = response.data
+    // const response = await axios.post(
+    //   `https://api.zoom.us/v2/users/me/meetings`,
+    //   {
+    //     topic: service,
+    //     type: 2,
+    //     start_time: isoStartTime,
+    //     duration: 60,
+    //     timezone: 'Asia/Shanghai',
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${accessToken}`,
+    //       'Content-Type': 'application/json',
+    //     },
+    //   }
+    // )
+
+    console.log('test afte')
+
+    // const {
+    //   host_id,
+    //   host_email,
+    //   topic,
+    //   status,
+    //   start_time,
+    //   duration,
+    //   timezone,
+    //   start_url,
+    //   join_url,
+    // } = response.data
 
     let userExists = await User.findOne({ email })
 
-    const newMeeting = new Meeting({
-      user: userExists ? userExists._id : null,
-      host_id,
-      host_email,
-      topic,
-      status,
-      start_time,
-      duration,
-      timezone,
-      start_url,
-      join_url,
-    })
+    // const newMeeting = new Meeting({
+    //   user: userExists ? userExists._id : null,
+    //   host_id,
+    //   host_email,
+    //   topic,
+    //   status,
+    //   start_time,
+    //   duration,
+    //   timezone,
+    //   start_url,
+    //   join_url,
+    // })
 
-    await newMeeting.save()
+    // await newMeeting.save()
 
     const newBooking = new Booking({
       service,
@@ -186,31 +190,29 @@ export const book = async (req, res) => {
       phoneNumber,
       notes,
       month,
-      meeting: newMeeting._id,
+      meeting: 1,
       user: userExists ? userExists._id : null,
       specificService,
     })
 
     await newBooking.save({ session })
 
-    const formattedDate = new Date(start_time).toLocaleString('en-US', {
-      timeZone: timezone,
+    const formattedDate = new Date(date).toLocaleString('en-US', {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false,
     })
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: userExists ? userExists.email : email,
-      subject: `Your Zoom Meeting Booking: ${specificService} in ${topic}`,
+      subject: `Meeting Details`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-          <h2 style="color: #2D8CFF; text-align: center;">Your Zoom Meeting is Scheduled!</h2>
+          <h2 style="color: #2D8CFF; text-align: center;">Wait for google meet code</h2>
           <p>Dear ${firstName},</p>
           <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
           <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
@@ -219,19 +221,10 @@ export const book = async (req, res) => {
               <td style="padding: 10px; border: 1px solid #ddd;">${specificService}</td>
             </tr>
             <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date & Time:</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Duration:</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${duration} minutes</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Time Zone:</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${timezone}</td>
+              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date and Time:</strong></td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate} ${time}</td>
             </tr>
           </table>
-          <a href="${join_url}" style="background-color: #2D8CFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Join Zoom Meeting</a>
         </div>
       `,
     }
@@ -251,9 +244,9 @@ export const book = async (req, res) => {
 export const getAllBookings = async (req, res) => {
   try {
     // Find bookings where isDeleted is false and populate the 'user' field
-    const bookings = await Booking.find({ isDeleted: { $ne: true } })
-      .populate('user')
-      .populate('meeting')
+    const bookings = await Booking.find({ isDeleted: { $ne: true } }).populate(
+      'user'
+    )
 
     if (!bookings.length) {
       return res.status(404).json({ message: 'No Bookings Found' })
@@ -412,9 +405,7 @@ export const getBookingsByUser = async (req, res) => {
     const bookings = await Booking.find({
       email,
       isDeleted: { $ne: true },
-    })
-      .populate('user')
-      .populate('meeting')
+    }).populate('user')
 
     if (!bookings.length) {
       return res
@@ -474,7 +465,7 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
       status: 'pending',
       isDeleted: false,
     })
-      .populate('meeting')
+
       .sort({ date: 1 })
       .limit(3)
 
@@ -648,7 +639,7 @@ export const cancelMeeting = async (req, res) => {
       { _id: bookingId, isDeleted: false, status: { $ne: 'canceled' } },
       { status: 'canceled' },
       { new: true }
-    ).populate('meeting')
+    )
 
     if (!booking) {
       return res
