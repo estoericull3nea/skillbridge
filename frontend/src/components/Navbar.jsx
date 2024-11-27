@@ -174,7 +174,7 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <Link to='$'>{t('TalentSourcing')}</Link>
+                                  <Link to='#'>{t('TalentSourcing')}</Link>
                                 </li>
                                 <li>
                                   <Link to='#'>{t('TalentScreening')}</Link>
@@ -376,7 +376,7 @@ const Navbar = () => {
                         <a>{t('RecruitmentServices')}</a>
                         <ul>
                           <li>
-                            <Link to='$'>{t('TalentSourcing')}</Link>
+                            <Link to='#'>{t('TalentSourcing')}</Link>
                           </li>
                           <li>
                             <Link to='#'>{t('TalentScreening')}</Link>
