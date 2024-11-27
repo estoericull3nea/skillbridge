@@ -145,30 +145,24 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <Link to='/service/administrative-support'>
+                                  <Link to='#'>
                                     {t('AdministrativeSupport')}
                                   </Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/customer-service'>
-                                    {t('CustomerService')}
-                                  </Link>
+                                  <Link to='#'>{t('CustomerService')}</Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/writing-and-editing'>
-                                    {t('WritingandEditing')}
-                                  </Link>
+                                  <Link to='#'>{t('WritingandEditing')}</Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/social-media-management'>
+                                  <Link to='#'>
                                     {' '}
                                     {t('SocialMediaManagement')}
                                   </Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/technical-skill'>
-                                    {t('TechnicalSkills')}
-                                  </Link>
+                                  <Link to='#'>{t('TechnicalSkills')}</Link>
                                 </li>
                               </ul>
                             </details>
@@ -180,29 +174,21 @@ const Navbar = () => {
                               </summary>
                               <ul>
                                 <li>
-                                  <Link to='/service/talent-sourcing'>
-                                    {t('TalentSourcing')}
-                                  </Link>
+                                  <Link to='$'>{t('TalentSourcing')}</Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/talent-screening'>
-                                    {t('TalentScreening')}
-                                  </Link>
+                                  <Link to='#'>{t('TalentScreening')}</Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/interviewing-and-assessment'>
+                                  <Link to='#'>
                                     {t('InterviewingandAssessment')}
                                   </Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/endorsement'>
-                                    {t('Endorsement')}
-                                  </Link>
+                                  <Link to='#'>{t('Endorsement')}</Link>
                                 </li>
                                 <li>
-                                  <Link to='/service/onboarding'>
-                                    {t('OnboardingOptional')}
-                                  </Link>
+                                  <Link to='#'>{t('OnboardingOptional')}</Link>
                                 </li>
                               </ul>
                             </details>
@@ -217,17 +203,17 @@ const Navbar = () => {
                                   <a>{t('WebsiteDesign')}</a>
                                   <ul className='text-xs'>
                                     <li>
-                                      <Link to='/service/custom-layout-design'>
+                                      <Link to='#'>
                                         {t('CustomLayoutDesign')}
                                       </Link>
                                     </li>
                                     <li>
-                                      <Link to='/service/landing-page-design'>
+                                      <Link to='#'>
                                         {t('LandingPageDesign')}
                                       </Link>
                                     </li>
                                     <li>
-                                      <Link to='/service/responsive-web-design<'>
+                                      <Link to='#'>
                                         {t('ResponsiveWebDesign')}
                                       </Link>
                                     </li>
@@ -237,17 +223,17 @@ const Navbar = () => {
                                   <a>{t('CustomDevelopment')}</a>
                                   <ul className='text-xs'>
                                     <li>
-                                      <Link to='/service/full-stack-development'>
+                                      <Link to='#'>
                                         {t('FullStackDevelopment')}
                                       </Link>
                                     </li>
                                     <li>
-                                      <Link to='/service/back-end-development'>
+                                      <Link to='#'>
                                         {t('BackEndDevelopment')}
                                       </Link>
                                     </li>
                                     <li>
-                                      <Link to='/service/front-end-development'>
+                                      <Link to='#'>
                                         {t('FrontEndDevelopment')}
                                       </Link>
                                     </li>
@@ -257,7 +243,7 @@ const Navbar = () => {
                                   <a>CMS</a>
                                   <ul className='text-xs'>
                                     <li>
-                                      <Link to='/service/wordPress-development'>
+                                      <Link to='#'>
                                         {t('WordPressDevelopment')}
                                       </Link>
                                     </li>
@@ -267,22 +253,18 @@ const Navbar = () => {
                                   <a>{t('SEOOptimization')}</a>
                                   <ul className='text-xs'>
                                     <li>
-                                      <a className='/service/keyword-research'>
+                                      <a className='#'>
                                         {t('KeywordResearch')}
                                       </a>
                                     </li>
                                     <li>
-                                      <a className='/service/on-page-seo'>
-                                        {t('OnPageSEO')}
-                                      </a>
+                                      <a className='#'>{t('OnPageSEO')}</a>
                                     </li>
                                     <li>
-                                      <a className='/service/off-page-seo'>
-                                        {t('OffPageSEO')}
-                                      </a>
+                                      <a className='#'>{t('OffPageSEO')}</a>
                                     </li>
                                     <li>
-                                      <a className='/service/wordpress-seo-optimization'>
+                                      <a className='#'>
                                         {t('WordPressSEOOptimization')}
                                       </a>
                                     </li>
@@ -292,12 +274,12 @@ const Navbar = () => {
                                   <a>{t('APIIntegration')}</a>
                                   <ul className='text-xs'>
                                     <li>
-                                      <Link to='/service/third-party-api-integration'>
+                                      <Link to='#'>
                                         {t('ThirdPartyAPIIntegration')}
                                       </Link>
                                     </li>
                                     <li>
-                                      <Link to='/service/custom-api-development'>
+                                      <Link to='#'>
                                         {t('CustomAPIDevelopment')}
                                       </Link>
                                     </li>
@@ -374,30 +356,19 @@ const Navbar = () => {
                         <a>{t('VirtualAssistance')}</a>
                         <ul>
                           <li>
-                            <Link to='/service/administrative-support'>
-                              {t('AdministrativeSupport')}
-                            </Link>
+                            <Link to='#'>{t('AdministrativeSupport')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/customer-service'>
-                              {t('CustomerService')}
-                            </Link>
+                            <Link to='#'>{t('CustomerService')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/writing-and-editing'>
-                              {t('WritingandEditing')}
-                            </Link>
+                            <Link to='#'>{t('WritingandEditing')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/social-media-management'>
-                              {' '}
-                              {t('SocialMediaManagement')}
-                            </Link>
+                            <Link to='#'> {t('SocialMediaManagement')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/technical-skill'>
-                              {t('TechnicalSkills')}
-                            </Link>
+                            <Link to='#'>{t('TechnicalSkills')}</Link>
                           </li>
                         </ul>
                       </li>
@@ -405,29 +376,19 @@ const Navbar = () => {
                         <a>{t('RecruitmentServices')}</a>
                         <ul>
                           <li>
-                            <Link to='/service/talent-sourcing'>
-                              {t('TalentSourcing')}
-                            </Link>
+                            <Link to='$'>{t('TalentSourcing')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/talent-screening'>
-                              {t('TalentScreening')}
-                            </Link>
+                            <Link to='#'>{t('TalentScreening')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/interviewing-and-assessment'>
-                              {t('InterviewingandAssessment')}
-                            </Link>
+                            <Link to='#'>{t('InterviewingandAssessment')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/endorsement'>
-                              {t('Endorsement')}
-                            </Link>
+                            <Link to='#'>{t('Endorsement')}</Link>
                           </li>
                           <li>
-                            <Link to='/service/onboarding'>
-                              {t('OnboardingOptional')}
-                            </Link>
+                            <Link to='#'>{t('OnboardingOptional')}</Link>
                           </li>
                         </ul>
                       </li>
@@ -438,19 +399,13 @@ const Navbar = () => {
                             <a>{t('WebsiteDesign')}</a>
                             <ul className='text-xs'>
                               <li>
-                                <Link to='/service/custom-layout-design'>
-                                  Custom Layout Design
-                                </Link>
+                                <Link to='#'>Custom Layout Design</Link>
                               </li>
                               <li>
-                                <Link to='/service/landing-page-design'>
-                                  Landing Page Design
-                                </Link>
+                                <Link to='#'>Landing Page Design</Link>
                               </li>
                               <li>
-                                <Link to='/service/responsive-web-design<'>
-                                  {t('ResponsiveWebDesign')}
-                                </Link>
+                                <Link to='#'>{t('ResponsiveWebDesign')}</Link>
                               </li>
                             </ul>
                           </li>
@@ -458,19 +413,13 @@ const Navbar = () => {
                             <a>{t('CustomDevelopment')}</a>
                             <ul className='text-xs'>
                               <li>
-                                <Link to='/service/full-stack-development'>
-                                  {t('FullStackDevelopment')}
-                                </Link>
+                                <Link to='#'>{t('FullStackDevelopment')}</Link>
                               </li>
                               <li>
-                                <Link to='/service/back-end-development'>
-                                  {t('BackEndDevelopment')}
-                                </Link>
+                                <Link to='#'>{t('BackEndDevelopment')}</Link>
                               </li>
                               <li>
-                                <Link to='/service/front-end-development'>
-                                  {t('FrontEndDevelopment')}
-                                </Link>
+                                <Link to='#'>{t('FrontEndDevelopment')}</Link>
                               </li>
                             </ul>
                           </li>
@@ -478,9 +427,7 @@ const Navbar = () => {
                             <a>CMS</a>
                             <ul className='text-xs'>
                               <li>
-                                <Link to='/service/wordPress-development'>
-                                  {t('WordPressDevelopment')}
-                                </Link>
+                                <Link to='#'>{t('WordPressDevelopment')}</Link>
                               </li>
                             </ul>
                           </li>
@@ -488,22 +435,16 @@ const Navbar = () => {
                             <a>{t('SEOOptimization')}</a>
                             <ul className='text-xs'>
                               <li>
-                                <a className='/service/keyword-research'>
-                                  {t('KeywordResearch')}
-                                </a>
+                                <a className='#'>{t('KeywordResearch')}</a>
                               </li>
                               <li>
-                                <a className='/service/on-page-seo'>
-                                  {t('OnPageSEO')}
-                                </a>
+                                <a className='#'>{t('OnPageSEO')}</a>
                               </li>
                               <li>
-                                <a className='/service/off-page-seo'>
-                                  {t('OffPageSEO')}
-                                </a>
+                                <a className='#'>{t('OffPageSEO')}</a>
                               </li>
                               <li>
-                                <a className='/service/wordpress-seo-optimization'>
+                                <a className='#'>
                                   {t('WordPressSEOOptimization')}
                                 </a>
                               </li>
@@ -513,14 +454,12 @@ const Navbar = () => {
                             <a>{t('APIIntegration')}</a>
                             <ul className='text-xs'>
                               <li>
-                                <Link to='/service/third-party-api-integration'>
+                                <Link to='#'>
                                   {t('ThirdPartyAPIIntegration')}
                                 </Link>
                               </li>
                               <li>
-                                <Link to='/service/custom-api-development'>
-                                  {t('CustomAPIDevelopment')}
-                                </Link>
+                                <Link to='#'>{t('CustomAPIDevelopment')}</Link>
                               </li>
                             </ul>
                           </li>
