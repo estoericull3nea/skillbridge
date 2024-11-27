@@ -110,14 +110,14 @@ const Register = () => {
                 {t('CreateAnAccount')}
               </h1>
 
-              <button
+              {/* <button
                 className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
                 onClick={handleGoogleSignup}
               >
                 <FcGoogle className='text-xl' /> {t('ContinueWithGoogle')}
               </button>
 
-              <div className='divider'>{t('or')}</div>
+              <div className='divider'>{t('or')}</div> */}
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-x-3'>
                   <div>
