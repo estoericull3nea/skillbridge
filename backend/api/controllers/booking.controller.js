@@ -224,7 +224,6 @@ export const book = async (req, res) => {
               <td style="padding: 10px; border: 1px solid #ddd;"><strong>Phone Number</strong></td>
               <td style="padding: 10px; border: 1px solid #ddd;">${phoneNumber}</td>
             </tr>
-             </tr>
               <td style="padding: 10px; border: 1px solid #ddd;"><strong>Notes</strong></td>
               <td style="padding: 10px; border: 1px solid #ddd;">${notes}</td>
             </tr>
