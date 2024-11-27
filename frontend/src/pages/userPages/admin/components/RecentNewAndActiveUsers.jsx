@@ -81,14 +81,13 @@ const RecentNewAndActiveUsers = () => {
         </div>
 
         {/* Active Users Section */}
-        <div className='overflow-x-auto'>
+        <div className='overflow-x-auto ml-5'>
           <h2 className='text-2xl font-semibold mb-4'>Active Users</h2>
           <table className='table table-zebra w-full'>
             <thead>
               <tr>
                 <th>Full Name</th>
                 <th>Email</th>
-                <th>Last Login</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +111,6 @@ const RecentNewAndActiveUsers = () => {
                         {user.firstName} {user.lastName}
                       </td>
                       <td>{user.email}</td>
-                      <td>{new Date(user.lastLogin).toLocaleDateString()}</td>
                     </tr>
                   ))}
             </tbody>

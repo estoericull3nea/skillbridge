@@ -214,12 +214,19 @@ export const book = async (req, res) => {
           <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
           <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
             <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic:</strong></td>
+              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic</strong></td>
               <td style="padding: 10px; border: 1px solid #ddd;">${specificService}</td>
             </tr>
             <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date and Time:</strong></td>
+              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date and Time</strong></td>
               <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate} ${time}</td>
+            </tr>
+              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Phone Number</strong></td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${phoneNumber}</td>
+            </tr>
+             </tr>
+              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Notes</strong></td>
+              <td style="padding: 10px; border: 1px solid #ddd;">${notes}</td>
             </tr>
           </table>
         </div>
