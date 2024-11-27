@@ -138,151 +138,240 @@ export const verifyEmail = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body
 
-  try {
-    const thisUser = await User.findOne({ email })
+  // try {
+  //   const thisUser = await User.findOne({ email })
 
-    if (thisUser) {
-      // Compare the provided password with the stored hashed password
-      const isPasswordCorrect = await bcrypt.compare(
-        password,
-        thisUser.password
-      )
+  //   if (thisUser) {
+  //     // Compare the provided password with the stored hashed password
+  //     const isPasswordCorrect = await bcrypt.compare(
+  //       password,
+  //       thisUser.password
+  //     )
 
-      if (isPasswordCorrect) {
-        const token = jwt.sign(
-          {
-            id: thisUser._id,
-            email: thisUser.email,
-            firstName: thisUser.firstName,
-            lastName: thisUser.lastName,
-            role: thisUser.role,
-          },
-          process.env.JWT_SECRET,
-          { expiresIn: '1h' }
-        )
+  //     if (isPasswordCorrect) {
+  //       const token = jwt.sign(
+  //         {
+  //           id: thisUser._id,
+  //           email: thisUser.email,
+  //           firstName: thisUser.firstName,
+  //           lastName: thisUser.lastName,
+  //           role: thisUser.role,
+  //         },
+  //         process.env.JWT_SECRET,
+  //         { expiresIn: '1h' }
+  //       )
 
-        if (!thisUser.isVerified) {
-          await Logger.create({
-            action: 'Failed Login Attempt',
-            details: { email, reason: 'User not verified' },
-          })
+  //       if (!thisUser.isVerified) {
+  //         await Logger.create({
+  //           action: 'Failed Login Attempt',
+  //           details: { email, reason: 'User not verified' },
+  //         })
 
-          return res
-            .status(403)
-            .json({ message: 'Please verify your account before logging in.' })
-        }
+  //         return res
+  //           .status(403)
+  //           .json({ message: 'Please verify your account before logging in.' })
+  //       }
 
-        // Log the login action
-        await Logger.create({
-          user: thisUser._id,
-          action: 'User Logged In',
-          details: { email: thisUser.email },
-        })
+  //       // Log the login action
+  //       await Logger.create({
+  //         user: thisUser._id,
+  //         action: 'User Logged In',
+  //         details: { email: thisUser.email },
+  //       })
 
-        return res.status(200).json({
-          message: 'Login Successful',
-          token,
-        })
-      } else {
-        return res.status(401).json({
-          message: 'Incorrect password',
-        })
-      }
-    } else {
-      if (!thisUser) {
-        await Logger.create({
-          action: 'Failed Login Attempt',
-          details: { email, reason: 'User not found' },
-        })
+  //       return res.status(200).json({
+  //         message: 'Login Successful',
+  //         token,
+  //       })
+  //     } else {
+  //       return res.status(401).json({
+  //         message: 'Incorrect password',
+  //       })
+  //     }
+  //   } else {
+  //     if (!thisUser) {
+  //       await Logger.create({
+  //         action: 'Failed Login Attempt',
+  //         details: { email, reason: 'User not found' },
+  //       })
 
-        return res
-          .status(404)
-          .json({ message: 'User not found with this email' })
-      }
+  //       return res
+  //         .status(404)
+  //         .json({ message: 'User not found with this email' })
+  //     }
 
-      if (!thisUser.isVerified) {
-        await Logger.create({
-          action: 'Failed Login Attempt',
-          details: { email, reason: 'User not verified' },
-        })
+  //     if (!thisUser.isVerified) {
+  //       await Logger.create({
+  //         action: 'Failed Login Attempt',
+  //         details: { email, reason: 'User not verified' },
+  //       })
 
-        return res
-          .status(403)
-          .json({ message: 'Please verify your account before logging in.' })
-      }
+  //       return res
+  //         .status(403)
+  //         .json({ message: 'Please verify your account before logging in.' })
+  //     }
 
-      const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
+  //     const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
 
-      if (isLocked) {
-        const lockDuration = Math.ceil(
-          (thisUser.lockUntil - Date.now()) / 1000 / 60
-        )
+  //     if (isLocked) {
+  //       const lockDuration = Math.ceil(
+  //         (thisUser.lockUntil - Date.now()) / 1000 / 60
+  //       )
 
-        await Logger.create({
-          action: 'Failed Login Attempt',
-          details: { email, reason: 'Account is locked', lockDuration },
-        })
+  //       await Logger.create({
+  //         action: 'Failed Login Attempt',
+  //         details: { email, reason: 'Account is locked', lockDuration },
+  //       })
 
-        return res.status(403).json({
-          message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
-        })
-      }
+  //       return res.status(403).json({
+  //         message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
+  //       })
+  //     }
 
-      const isPasswordCorrect = await bcrypt.compare(
-        password,
-        thisUser.password
-      )
+  //     const isPasswordCorrect = await bcrypt.compare(
+  //       password,
+  //       thisUser.password
+  //     )
 
-      if (!isPasswordCorrect) {
-        thisUser.failedLoginAttempts += 1
+  //     if (!isPasswordCorrect) {
+  //       thisUser.failedLoginAttempts += 1
 
-        if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
-          thisUser.lockUntil = Date.now() + LOCK_TIME
-        }
+  //       if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
+  //         thisUser.lockUntil = Date.now() + LOCK_TIME
+  //       }
 
-        await Logger.create({
-          action: 'Failed Login Attempt',
-          details: { email, reason: 'Incorrect password' },
-        })
-        await thisUser.save()
+  //       await Logger.create({
+  //         action: 'Failed Login Attempt',
+  //         details: { email, reason: 'Incorrect password' },
+  //       })
+  //       await thisUser.save()
 
-        return res.status(401).json({
-          message:
-            thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
-              ? `Too many login attempts. Try again after 15 minutes.`
-              : 'Incorrect email or password.',
-        })
-      }
+  //       return res.status(401).json({
+  //         message:
+  //           thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
+  //             ? `Too many login attempts. Try again after 15 minutes.`
+  //             : 'Incorrect email or password.',
+  //       })
+  //     }
 
-      thisUser.failedLoginAttempts = 0
-      thisUser.lockUntil = undefined
-      await thisUser.save()
+  //     thisUser.failedLoginAttempts = 0
+  //     thisUser.lockUntil = undefined
+  //     await thisUser.save()
 
-      const token = jwt.sign(
-        {
-          id: thisUser._id,
-          email: thisUser.email,
-          firstName: thisUser.firstName,
-          lastName: thisUser.lastName,
-          role: thisUser.role,
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: '1h' }
-      )
+  //     const token = jwt.sign(
+  //       {
+  //         id: thisUser._id,
+  //         email: thisUser.email,
+  //         firstName: thisUser.firstName,
+  //         lastName: thisUser.lastName,
+  //         role: thisUser.role,
+  //       },
+  //       process.env.JWT_SECRET,
+  //       { expiresIn: '1h' }
+  //     )
 
-      await Logger.create({
-        user: thisUser._id,
-        action: 'User Logged In',
-        details: { email: thisUser.email },
-      })
+  //     await Logger.create({
+  //       user: thisUser._id,
+  //       action: 'User Logged In',
+  //       details: { email: thisUser.email },
+  //     })
 
-      return res.status(200).json({
-        message: 'Login Successful',
-        token,
-      })
+  //     return res.status(200).json({
+  //       message: 'Login Successful',
+  //       token,
+  //     })
+  //   }
+  // } catch (error) {
+  //   return res.status(500).json({ message: error.message })
+  // }
+
+  const thisUser = await User.findOne({ email })
+
+  if (!thisUser) {
+    await Logger.create({
+      action: 'Failed Login Attempt',
+      details: { email, reason: 'User not found' },
+    })
+
+    return res.status(404).json({ message: 'User not found with this email' })
+  }
+
+  if (!thisUser.isVerified) {
+    await Logger.create({
+      action: 'Failed Login Attempt',
+      details: { email, reason: 'User not verified' },
+    })
+
+    return res
+      .status(403)
+      .json({ message: 'Please verify your account before logging in.' })
+  }
+
+  const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
+
+  if (isLocked) {
+    const lockDuration = Math.ceil(
+      (thisUser.lockUntil - Date.now()) / 1000 / 60
+    )
+
+    await Logger.create({
+      action: 'Failed Login Attempt',
+      details: { email, reason: 'Account is locked', lockDuration },
+    })
+
+    return res.status(403).json({
+      message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
+    })
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, thisUser.password)
+
+  if (!isPasswordCorrect) {
+    thisUser.failedLoginAttempts += 1
+
+    if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
+      thisUser.lockUntil = Date.now() + LOCK_TIME
     }
-  } catch (error) {
-    return res.status(500).json({ message: error.message })
+
+    await Logger.create({
+      action: 'Failed Login Attempt',
+      details: { email, reason: 'Incorrect password' },
+    })
+    await thisUser.save()
+
+    return res.status(401).json({
+      message:
+        thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
+          ? `Too many login attempts. Try again after 15 minutes.`
+          : 'Incorrect email or password.',
+    })
+
+    thisUser.failedLoginAttempts = 0
+    thisUser.lockUntil = undefined
+    await thisUser.save()
+
+    const token = jwt.sign(
+      {
+        id: thisUser._id,
+        email: thisUser.email,
+        firstName: thisUser.firstName,
+        lastName: thisUser.lastName,
+        role: thisUser.role,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    )
+
+    await Logger.create({
+      user: thisUser._id,
+      action: 'User Logged In',
+      details: { email: thisUser.email },
+    })
+
+    return res.status(200).json({
+      message: 'Login Successful',
+      token,
+    })
   }
 }
 
