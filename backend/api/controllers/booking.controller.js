@@ -64,7 +64,6 @@ export const getAccessToken = async () => {
       throw new Error('Failed to refresh access token.')
     }
   }
-
   return tokenRecord.accessToken
 }
 
