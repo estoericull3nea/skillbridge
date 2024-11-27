@@ -208,27 +208,30 @@ export const book = async (req, res) => {
       to: userExists ? userExists.email : email,
       subject: `Meeting Details`,
       html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
-          <h2 style="color: #2D8CFF; text-align: center;">Wait for google meet code</h2>
-          <p>Dear ${firstName},</p>
-          <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
-          <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${specificService}</td>
-            </tr>
-            <tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date and Time</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate} ${time}</td>
-            </tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Phone Number</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${phoneNumber}</td>
-            </tr>
-              <td style="padding: 10px; border: 1px solid #ddd;"><strong>Notes</strong></td>
-              <td style="padding: 10px; border: 1px solid #ddd;">${notes}</td>
-            </tr>
-          </table>
-        </div>
+       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
+  <h2 style="color: #2D8CFF; text-align: center;">Wait for google meet code</h2>
+  <p>Dear ${firstName},</p>
+  <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
+  <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic</strong></td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${specificService}</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;"><strong>Date and Time</strong></td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${formattedDate} ${time}</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;"><strong>Phone Number</strong></td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${phoneNumber}</td>
+    </tr>
+    <tr>
+      <td style="padding: 10px; border: 1px solid #ddd;"><strong>Notes</strong></td>
+      <td style="padding: 10px; border: 1px solid #ddd;">${notes}</td>
+    </tr>
+  </table>
+</div>
+
       `,
     }
 
