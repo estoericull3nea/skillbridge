@@ -287,6 +287,7 @@ export const login = async (req, res) => {
 
   const thisUser = await User.findOne({ email })
 
+
   if (!thisUser) {
     await Logger.create({
       action: 'Failed Login Attempt',
@@ -345,34 +346,34 @@ export const login = async (req, res) => {
           ? `Too many login attempts. Try again after 15 minutes.`
           : 'Incorrect email or password.',
     })
-
-    thisUser.failedLoginAttempts = 0
-    thisUser.lockUntil = undefined
-    await thisUser.save()
-
-    const token = jwt.sign(
-      {
-        id: thisUser._id,
-        email: thisUser.email,
-        firstName: thisUser.firstName,
-        lastName: thisUser.lastName,
-        role: thisUser.role,
-      },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
-    )
-
-    await Logger.create({
-      user: thisUser._id,
-      action: 'User Logged In',
-      details: { email: thisUser.email },
-    })
-
-    return res.status(200).json({
-      message: 'Login Successful',
-      token,
-    })
   }
+
+  thisUser.failedLoginAttempts = 0
+  thisUser.lockUntil = undefined
+  await thisUser.save()
+
+  const token = jwt.sign(
+    {
+      id: thisUser._id,
+      email: thisUser.email,
+      firstName: thisUser.firstName,
+      lastName: thisUser.lastName,
+      role: thisUser.role,
+    },
+    process.env.JWT_SECRET,
+    { expiresIn: '1h' }
+  )
+
+  await Logger.create({
+    user: thisUser._id,
+    action: 'User Logged In',
+    details: { email: thisUser.email },
+  })
+
+  return res.status(200).json({
+    message: 'Login Successful',
+    token,
+  })
 }
 
 export const resendVerificationEmail = async (req, res) => {
