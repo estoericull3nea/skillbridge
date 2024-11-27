@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
@@ -8,7 +8,6 @@ import { useTranslation } from 'react-i18next'
 
 const Register = () => {
   const { t } = useTranslation() // Use the translation hook
-  const navigate = useNavigate()
 
   useEffect(() => {
     document.title = t('Register') // Set the page title
@@ -43,12 +42,11 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: (newUser) =>
       axios.post(
-        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/register`,
+        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/register`,
         newUser
       ),
     onSuccess: (response) => {
-      // toast.success(response.data.message)
-      toast.success('Registered Successfully')
+      toast.success(response.data.message)
       setFormData({
         firstName: '',
         lastName: '',
@@ -57,8 +55,6 @@ const Register = () => {
         confirmPassword: '',
         terms: false,
       })
-      // here
-      navigate('/login')
     },
     onError: (error) => {
       toast.error(error.response?.data?.message || t('RegistrationFailed'))
@@ -110,14 +106,14 @@ const Register = () => {
                 {t('CreateAnAccount')}
               </h1>
 
-              {/* <button
+              <button
                 className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
                 onClick={handleGoogleSignup}
               >
                 <FcGoogle className='text-xl' /> {t('ContinueWithGoogle')}
               </button>
 
-              <div className='divider'>{t('or')}</div> */}
+              <div className='divider'>{t('or')}</div>
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-x-3'>
                   <div>
@@ -222,12 +218,12 @@ const Register = () => {
                       className='font-light text-gray-500 cursor-pointer'
                     >
                       {t('IAcceptTheTerms')}
-                      <Link
+                      <a
                         className='font-medium text-black hover:underline'
-                        to='/terms'
+                        href='#'
                       >
                         {t('TermsAndConditions')}
-                      </Link>
+                      </a>
                     </label>
                   </div>
                 </div>

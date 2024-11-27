@@ -128,7 +128,7 @@ export const oAuthCallback = async (req, res) => {
     )
 
     // res.send('Zoom OAuth successful! Access token stored.')
-    res.redirect('http://localhost:5173/book-appointment')
+    res.redirect('https://skillbridge-kappa.vercel.app/book-appointment')
   } catch (error) {
     console.error(
       'Error during OAuth callback:',

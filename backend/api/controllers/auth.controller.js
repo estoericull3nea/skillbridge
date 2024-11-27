@@ -48,7 +48,7 @@ export const register = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      isVerified: true,
+      isVerified: false,
       verificationToken,
       verificationTokenExpires: Date.now() + 15 * 60 * 1000, // expires in 15 minutes
       lastVerificationRequest: Date.now(),
