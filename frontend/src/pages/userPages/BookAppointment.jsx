@@ -27,12 +27,12 @@ const fetchAvailableTimes = async ({ queryKey }) => {
   return response.data
 }
 
-// const fetchHolidays = async () => {
-//   const response = await axios.get(
-//     `${import.meta.env.VITE_PROD_BACKEND_URL}book/get/holidays`
-//   )
-//   return response.data
-// }
+const fetchHolidays = async () => {
+  const response = await axios.get(
+    `${import.meta.env.VITE_PROD_BACKEND_URL}book/get/holidays`
+  )
+  return response.data
+}
 
 const submitBooking = async (bookingData) => {
   const response = await axios.post(
@@ -282,17 +282,17 @@ const BookAppointment = () => {
     return formErrors
   }
 
-  // const {
-  //   data: holidays,
-  //   error,
-  //   isLoading: loadingHolidays,
-  // } = useQuery({
-  //   queryKey: ['holidays'],
-  //   queryFn: fetchHolidays,
-  // })
+  const {
+    data: holidays,
+    error,
+    isLoading: loadingHolidays,
+  } = useQuery({
+    queryKey: ['holidays'],
+    queryFn: fetchHolidays,
+  })
 
-  // if (loadingHolidays) return <div>Loading Holidays</div>
-  // if (error) return <div>Error fetching holidays</div>
+  if (loadingHolidays) return <div>Loading Holidays</div>
+  if (error) return <div>Error fetching holidays</div>
 
   return (
     <div className='lg:my-20 max-w-[1300px] mx-auto  px-3 my-10  '>
@@ -501,36 +501,36 @@ const BookAppointment = () => {
             <h2 className='text-xl mb-3'>{t('SelectADate')}</h2>
 
             <Calendar
-              // tileContent={({ date }) => {
-              //   const holiday = holidays.find(
-              //     (h) =>
-              //       new Date(h.date.iso).toDateString() === date.toDateString()
-              //   )
+              tileContent={({ date }) => {
+                const holiday = holidays.find(
+                  (h) =>
+                    new Date(h.date.iso).toDateString() === date.toDateString()
+                )
 
-              //   if (holiday) {
-              //     return (
-              //       <div className='relative'>
-              //         <div className='md:hidden text-red-500 text-xs'>•</div>
+                if (holiday) {
+                  return (
+                    <div className='relative'>
+                      <div className='md:hidden text-red-500 text-xs'>•</div>
 
-              //         <div className='hidden md:block text-red-500 font-medium text-xs'>
-              //           {holiday.name}
-              //         </div>
+                      <div className='hidden md:block text-red-500 font-medium text-xs'>
+                        {holiday.name}
+                      </div>
 
-              //         <div
-              //           className='absolute inset-0 flex justify-center items-center'
-              //           onClick={() =>
-              //             toast(`${holiday.name}`, {
-              //               duration: 3000,
-              //             })
-              //           }
-              //         >
-              //           <div className='md:hidden text-red-500 text-xs cursor-pointer'></div>
-              //         </div>
-              //       </div>
-              //     )
-              //   }
-              //   return null
-              // }}
+                      <div
+                        className='absolute inset-0 flex justify-center items-center'
+                        onClick={() =>
+                          toast(`${holiday.name}`, {
+                            duration: 3000,
+                          })
+                        }
+                      >
+                        <div className='md:hidden text-red-500 text-xs cursor-pointer'></div>
+                      </div>
+                    </div>
+                  )
+                }
+                return null
+              }}
               onChange={setSelectedDate}
               value={selectedDate}
               tileDisabled={({ date }) => {
