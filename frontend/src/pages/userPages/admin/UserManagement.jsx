@@ -42,7 +42,7 @@ const UserManagement = () => {
     setIsLoading(true)
     try {
       const { status, data } = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users`
       )
       if (status === 200) {
         setUsers(data)
@@ -64,7 +64,7 @@ const UserManagement = () => {
   const createUser = async () => {
     try {
       const { status, data } = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users`,
         userForm
       )
       if (status === 201) {
@@ -83,7 +83,7 @@ const UserManagement = () => {
   const updateUser = async (userId) => {
     try {
       const { status, data } = await axios.patch(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`,
         userForm
       )
       if (status === 200) {
@@ -103,7 +103,7 @@ const UserManagement = () => {
   const deleteUser = async (userId) => {
     try {
       const { status } = await axios.delete(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`
       )
       if (status === 200) {
         setUsers((prev) => prev.filter((user) => user._id !== userId))
@@ -118,7 +118,7 @@ const UserManagement = () => {
   const promoteToAdmin = async (userId) => {
     try {
       const { status, data } = await axios.patch(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}/promote`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}/promote`
       )
       if (status === 200) {
         setUsers((prev) =>
@@ -135,7 +135,7 @@ const UserManagement = () => {
   const demoteFromAdmin = async (userId) => {
     try {
       const { status, data } = await axios.patch(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}/demote`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}/demote`
       )
       if (status === 200) {
         setUsers((prev) =>
@@ -171,7 +171,7 @@ const UserManagement = () => {
     setLoadingUser(true)
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`
       )
       setSelectedUser(data)
       setViewDialog(true)

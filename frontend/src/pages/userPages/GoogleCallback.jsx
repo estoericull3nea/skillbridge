@@ -16,7 +16,7 @@ const GoogleCallback = () => {
       const exchangeCodeForToken = async () => {
         try {
           const response = await axios.post(
-            `${import.meta.env.VITE_DEV_BACKEND_URL}auth/google-signup`,
+            `${import.meta.env.VITE_PROD_BACKEND_URL}auth/google-signup`,
             {
               code,
             }

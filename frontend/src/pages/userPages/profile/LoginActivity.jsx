@@ -27,7 +27,7 @@ const LoginActivity = () => {
     setIsLoadingAllLoginHistory(true)
     try {
       const { status, data } = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}login-histories/${userId}`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}login-histories/${userId}`
       )
       if (status === 200) {
         setAllLoginHistory(data)

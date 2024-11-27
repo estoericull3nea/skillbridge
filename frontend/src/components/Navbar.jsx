@@ -29,7 +29,7 @@ const Navbar = () => {
   //     } else {
   //       localStorage.setItem(
   //         'picture',
-  //         `http://localhost:5000/${decoded.picture}`
+  //         `https://skillbridge-p5g5.onrender.com/${decoded.picture}`
   //       )
   //     }
   //   }
@@ -53,7 +53,7 @@ const Navbar = () => {
     setIsLoadingUser(true)
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`
       )
       setUser(response.data)
       localStorage.setItem('firstName', response.data.firstName)
@@ -61,7 +61,7 @@ const Navbar = () => {
       localStorage.setItem('email', response.data.email)
       localStorage.setItem(
         'picture',
-        `http://localhost:5000/${response.data.picture}`
+        `https://skillbridge-p5g5.onrender.com/${response.data.picture}`
       )
     } catch (error) {
       console.log(error.response.data.message)
@@ -596,7 +596,7 @@ const Navbar = () => {
                       {user?.picture ? (
                         <img
                           // src={localStorage.getItem('picture')}
-                          // src={`http://localhost:5000/${user?.picture}`}
+                          // src={`https://skillbridge-p5g5.onrender.com/${user?.picture}`}
                           src={localStorage.getItem('picture')}
                           alt=''
                           className='w-full'

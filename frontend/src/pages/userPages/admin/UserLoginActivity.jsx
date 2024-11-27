@@ -35,7 +35,7 @@ const UserLoginActivity = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }users/user/search?q=${newSearchTerm}`
       )
       if (response.data.length > 0) {
@@ -58,7 +58,7 @@ const UserLoginActivity = () => {
       setLoading(true)
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}login-histories/${user._id}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}login-histories/${user._id}`
         )
         setLoginHistory(response.data)
         setFilteredLoginHistory(response.data)

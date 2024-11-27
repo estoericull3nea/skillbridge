@@ -10,7 +10,7 @@ const RecentBookings = ({ trigger }) => {
     const fetchRecentBookings = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/recent-bookings`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}admin/recent-bookings`
         )
         setRecentBookings(data) // Set the fetched data
         setIsLoading(false) // Stop loading after data is fetched

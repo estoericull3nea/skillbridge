@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const RequestDeleteAccount = () => {
   const { t } = useTranslation() // Initialize the translation function
@@ -18,7 +18,7 @@ const RequestDeleteAccount = () => {
     try {
       const { status } = await axios.delete(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }users/${userId}/request-deletion`
       )
 

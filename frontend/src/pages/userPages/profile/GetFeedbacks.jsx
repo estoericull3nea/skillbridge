@@ -16,7 +16,7 @@ const GetFeedbacks = () => {
       try {
         setLoading(true)
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}feedbacks/${email}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks/${email}`
         )
         setFeedbacks(response.data)
       } catch (err) {

@@ -36,7 +36,7 @@ const UserInfo = () => {
       setLoading(true)
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`
         )
         const data = response.data
 
@@ -96,14 +96,14 @@ const UserInfo = () => {
 
     try {
       const response = await axios.patch(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`,
         formDataToSend,
         { headers: { 'Content-Type': 'multipart/form-data' } }
       )
 
       localStorage.setItem(
         'picture',
-        `http://localhost:5000/${response.data.updatedUser.picture}`
+        `https://skillbridge-p5g5.onrender.com/${response.data.updatedUser.picture}`
       )
       setFormData({
         ...formData,

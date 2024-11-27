@@ -10,7 +10,7 @@ const RecentFeedback = () => {
     const fetchRecentFeedback = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/recent-feedback`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}admin/recent-feedback`
         )
         setFeedback(data)
         setIsLoading(false) // Stop loading after data is fetched

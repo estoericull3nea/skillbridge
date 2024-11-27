@@ -11,7 +11,7 @@ const RecentNewAndActiveUsers = () => {
     const fetchNewUsers = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/new-users`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}admin/new-users`
         )
         setNewUsers(data)
         setIsLoadingNewUsers(false)
@@ -23,7 +23,7 @@ const RecentNewAndActiveUsers = () => {
     const fetchActiveUsers = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/active-users`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}admin/active-users`
         )
         setActiveUsers(data)
         setIsLoadingActiveUsers(false)

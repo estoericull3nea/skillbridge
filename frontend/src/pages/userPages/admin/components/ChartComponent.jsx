@@ -31,7 +31,7 @@ const ChartComponent = ({ endpoint, chartTitle }) => {
     const fetchChartData = async () => {
       try {
         const { data } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}admin/${endpoint}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}admin/${endpoint}`
         )
         const labels = data.map((item) => item._id)
         const counts = data.map((item) => item.count)

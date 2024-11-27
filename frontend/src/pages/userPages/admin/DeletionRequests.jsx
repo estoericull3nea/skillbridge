@@ -5,7 +5,7 @@ import { Column } from 'primereact/column'
 import { toast } from 'react-hot-toast'
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const DeletionRequests = () => {
   const [requests, setRequests] = useState([])
@@ -15,7 +15,7 @@ const DeletionRequests = () => {
     setLoading(true)
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}users/deletion/requests`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}users/deletion/requests`
       )
       setRequests(response.data)
     } catch (error) {
@@ -41,7 +41,7 @@ const DeletionRequests = () => {
     try {
       await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }users/deletion-requests/${requestId}/approve`
       )
       toast.success('Deletion request approved successfully!')
@@ -56,7 +56,7 @@ const DeletionRequests = () => {
     try {
       await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }users/deletion-requests/${requestId}/reject`
       )
       toast.success('Deletion request rejected successfully!')

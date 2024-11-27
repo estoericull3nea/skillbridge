@@ -12,7 +12,7 @@ const UserActivityLogs = () => {
     const fetchLogs = async () => {
       try {
         const { data: logs } = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}logs`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}logs`
         )
 
         setUserActivityLogs(logs)
@@ -25,7 +25,7 @@ const UserActivityLogs = () => {
         // Fetch users in parallel
         const userResponses = await Promise.all(
           userIds.map((userId) =>
-            axios.get(`${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`)
+            axios.get(`${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`)
           )
         )
 

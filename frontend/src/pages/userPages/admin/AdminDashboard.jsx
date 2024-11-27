@@ -7,7 +7,7 @@ import RecentFeedback from './components/RecentFeedback'
 import DashboardCharts from './components/ChartComponent'
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const AdminDashboard = () => {
   const [isLoading, setIsLoading] = useState(true)
@@ -30,7 +30,7 @@ const AdminDashboard = () => {
   const fetchStats = async () => {
     try {
       const { data } = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}admin/stats`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}admin/stats`
       )
       setStats(data)
       setIsLoading(false)

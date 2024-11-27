@@ -16,7 +16,7 @@ const GetContacts = () => {
       try {
         setLoading(true)
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}contacts/${email}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}contacts/${email}`
         )
         setContacts(response.data)
       } catch (err) {

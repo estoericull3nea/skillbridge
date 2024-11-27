@@ -48,7 +48,7 @@ const BookingHistory = () => {
     try {
       const { status, data } = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       if (status === 200) {

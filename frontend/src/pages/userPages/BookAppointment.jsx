@@ -13,7 +13,7 @@ import { isTokenValid } from '../../utils/isTokenValid'
 import { useNavigate } from 'react-router-dom'
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const fetchAvailableTimes = async ({ queryKey }) => {
   const date = queryKey[1]
@@ -21,7 +21,7 @@ const fetchAvailableTimes = async ({ queryKey }) => {
   const formattedDate = date.toLocaleDateString('en-US')
   const response = await axios.get(
     `${
-      import.meta.env.VITE_DEV_BACKEND_URL
+      import.meta.env.VITE_PROD_BACKEND_URL
     }book/get-available-time-by-date/time?date=${formattedDate}`
   )
   return response.data
@@ -29,14 +29,14 @@ const fetchAvailableTimes = async ({ queryKey }) => {
 
 // const fetchHolidays = async () => {
 //   const response = await axios.get(
-//     `${import.meta.env.VITE_DEV_BACKEND_URL}book/get/holidays`
+//     `${import.meta.env.VITE_PROD_BACKEND_URL}book/get/holidays`
 //   )
 //   return response.data
 // }
 
 const submitBooking = async (bookingData) => {
   const response = await axios.post(
-    `${import.meta.env.VITE_DEV_BACKEND_URL}book`,
+    `${import.meta.env.VITE_PROD_BACKEND_URL}book`,
     bookingData
   )
 
@@ -46,7 +46,7 @@ const submitBooking = async (bookingData) => {
 // zoom
 const createMeeting = async ({ topic, startTime, duration, email }) => {
   const response = await axios.post(
-    `${import.meta.env.VITE_DEV_BACKEND_URL}meetings/create-meeting`,
+    `${import.meta.env.VITE_PROD_BACKEND_URL}meetings/create-meeting`,
     {
       topic,
       start_time: startTime,

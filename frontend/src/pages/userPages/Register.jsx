@@ -43,7 +43,7 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: (newUser) =>
       axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/register`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/register`,
         newUser
       ),
     onSuccess: (response) => {

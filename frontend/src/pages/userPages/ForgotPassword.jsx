@@ -17,7 +17,7 @@ const ForgotPassword = () => {
   const forgotPasswordMutation = useMutation({
     mutationFn: async (email) => {
       const response = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/forgot-password`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/forgot-password`,
         { email }
       )
       return response.data
@@ -42,7 +42,7 @@ const ForgotPassword = () => {
     mutationFn: async () => {
       setLoadingResend(true)
       const response = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/resend-verification`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/resend-verification`,
         { email }
       )
       setLoadingResend(false)

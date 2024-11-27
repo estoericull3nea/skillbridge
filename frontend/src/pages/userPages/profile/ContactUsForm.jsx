@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const ContactUsForm = () => {
   const { t } = useTranslation() // Initialize the translation function
@@ -22,7 +22,7 @@ const ContactUsForm = () => {
       setLoading(true)
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}users/${userId}`
+          `${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`
         )
         const { firstName, lastName, email } = response.data
         setFullName(`${firstName} ${lastName}`)
@@ -46,7 +46,7 @@ const ContactUsForm = () => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}contacts/create`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}contacts/create`,
         formData,
         {
           headers: {

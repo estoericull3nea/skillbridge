@@ -6,7 +6,7 @@ import { Button } from 'primereact/button'
 import { FiTrash } from 'react-icons/fi' // Importing trash icon from react-icons
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const ManageFeedback = () => {
   const [feedbacks, setFeedbacks] = useState([])
@@ -29,7 +29,7 @@ const ManageFeedback = () => {
     setLoading(true)
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}feedbacks`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks`
       ) // Adjust the endpoint as necessary
       setFeedbacks(response.data)
     } catch (error) {
@@ -51,7 +51,7 @@ const ManageFeedback = () => {
     e.preventDefault()
     try {
       await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}/feedbacks`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}/feedbacks`,
         formData
       ) // Adjust the endpoint as necessary
       fetchFeedbacks() // Refresh the feedback list
@@ -72,7 +72,7 @@ const ManageFeedback = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}feedbacks/${id}`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks/${id}`
       ) // Adjust the endpoint as necessary
       fetchFeedbacks() // Refresh the feedback list
     } catch (error) {

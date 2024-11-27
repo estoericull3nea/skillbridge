@@ -3,9 +3,8 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useTranslation } from 'react-i18next' // Import the useTranslation hook
 
-
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const Feedback = () => {
   const { t } = useTranslation() // Initialize the translation function
@@ -44,7 +43,7 @@ const Feedback = () => {
 
       // Sending feedback data to the backend
       await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}feedbacks`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks`,
         feedbackData
       )
 
@@ -58,7 +57,6 @@ const Feedback = () => {
       setSuggestions('')
 
       socket.emit('submitFeedback', 'feedback submition')
-
     } catch (error) {
       console.error('Error submitting feedback:', error)
     } finally {

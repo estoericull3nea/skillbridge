@@ -4,7 +4,7 @@ import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const ContactTable = () => {
   const [contacts, setContacts] = useState([])
@@ -14,7 +14,7 @@ const ContactTable = () => {
   const fetchContacts = async () => {
     try {
       const response = await axios.get(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}contacts`
+        `${import.meta.env.VITE_PROD_BACKEND_URL}contacts`
       )
       setContacts(response.data)
     } catch (error) {

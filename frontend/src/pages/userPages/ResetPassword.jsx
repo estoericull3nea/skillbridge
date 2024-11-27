@@ -16,7 +16,7 @@ const ResetPassword = () => {
     mutationFn: async ({ password }) => {
       const response = await axios.post(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }auth/reset-password/${resetToken}`,
         { password }
       )

@@ -21,7 +21,7 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: async (loginData) => {
       const response = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/login`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/login`,
         loginData
       )
       return response.data
@@ -56,7 +56,7 @@ const Login = () => {
     mutationFn: async () => {
       setLoadingResend(true)
       const response = await axios.post(
-        `${import.meta.env.VITE_DEV_BACKEND_URL}auth/resend-verification`,
+        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/resend-verification`,
         { email }
       )
       setLoadingResend(false)

@@ -17,7 +17,7 @@ const ApproveBookings = () => {
     const fetchPendingBookings = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_DEV_BACKEND_URL}book/status/pending` // Adjust your API endpoint as needed
+          `${import.meta.env.VITE_PROD_BACKEND_URL}book/status/pending` // Adjust your API endpoint as needed
         )
         setBookings(response.data)
       } catch (err) {
@@ -34,7 +34,7 @@ const ApproveBookings = () => {
     try {
       await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
         { status: 'ongoing' } // Update with the appropriate status
       )
@@ -59,7 +59,7 @@ const ApproveBookings = () => {
     try {
       await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
         { status: 'rejected' } // Update with the appropriate status
       )

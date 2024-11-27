@@ -16,7 +16,7 @@ import { useTranslation } from 'react-i18next'
 import './datatables.css'
 
 import { io } from 'socket.io-client'
-const socket = io('http://localhost:5000')
+const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const Dashboard = () => {
   const { t } = useTranslation()
@@ -67,7 +67,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/get/upcomming-three-bookings?email=${localStorage.getItem(
           'email'
         )}`
@@ -95,7 +95,7 @@ const Dashboard = () => {
     try {
       const { status } = await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
         { status: 'canceled' }
       )
@@ -119,7 +119,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -138,7 +138,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -157,7 +157,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -176,7 +176,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -195,7 +195,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -214,7 +214,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       setTotalBookingsCount(response.data.length || 0)

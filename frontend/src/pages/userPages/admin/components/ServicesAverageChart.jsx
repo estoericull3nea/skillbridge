@@ -27,7 +27,7 @@ const ServicesAverageChart = ({ trigger }) => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/count/${timeframe}/${selectedService}`
       )
       const data = response.data
