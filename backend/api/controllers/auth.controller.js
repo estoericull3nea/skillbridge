@@ -141,8 +141,6 @@ export const login = async (req, res) => {
   try {
     const thisUser = await User.findOne({ email })
 
-    console.log(thisUser)
-
     if (thisUser) {
       // Compare the provided password with the stored hashed password
       const isPasswordCorrect = await bcrypt.compare(
@@ -162,6 +160,17 @@ export const login = async (req, res) => {
           process.env.JWT_SECRET,
           { expiresIn: '1h' }
         )
+
+        if (!thisUser.isVerified) {
+          await Logger.create({
+            action: 'Failed Login Attempt',
+            details: { email, reason: 'User not verified' },
+          })
+
+          return res
+            .status(403)
+            .json({ message: 'Please verify your account before logging in.' })
+        }
 
         // Log the login action
         await Logger.create({
