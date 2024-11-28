@@ -42,7 +42,7 @@ const Register = () => {
   const mutation = useMutation({
     mutationFn: (newUser) =>
       axios.post(
-        `https://skillbridge-p5g5.onrender.com/api/v1auth/register`,
+        `https://skillbridge-p5g5.onrender.com/api/v1/auth/register`,
         newUser
       ),
     onSuccess: (response) => {
