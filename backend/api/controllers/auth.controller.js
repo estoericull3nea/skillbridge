@@ -287,7 +287,6 @@ export const login = async (req, res) => {
 
   const thisUser = await User.findOne({ email })
 
-
   if (!thisUser) {
     await Logger.create({
       action: 'Failed Login Attempt',
@@ -351,6 +350,15 @@ export const login = async (req, res) => {
   thisUser.failedLoginAttempts = 0
   thisUser.lockUntil = undefined
   await thisUser.save()
+
+  const ipAddress = req.ip || req.connection.remoteAddress
+  const userAgent = req.get('User-Agent')
+
+  await LogLogin.create({
+    user: thisUser._id,
+    ipAddress,
+    userAgent,
+  })
 
   const token = jwt.sign(
     {
