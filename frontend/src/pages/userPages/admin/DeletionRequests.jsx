@@ -97,7 +97,7 @@ const DeletionRequests = () => {
           <div className='skeleton h-4 w-full'></div>
         </div>
       ) : (
-        <DataTable value={requests} paginator rows={10}>
+        <DataTable value={requests} paginator rows={20}>
           <Column field='user.email' header='User Email' sortable />
           <Column field='status' header='Status' sortable />
           <Column body={actionTemplate} header='Actions' />

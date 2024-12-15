@@ -61,7 +61,7 @@ const UserActivityLogs = () => {
           ))}
         </div>
       ) : (
-        <DataTable value={userActivityLogs} paginator rows={10}>
+        <DataTable value={userActivityLogs} paginator rows={30}>
           {/* <Column
             field='user'
             header='User ID'

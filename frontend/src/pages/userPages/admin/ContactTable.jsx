@@ -66,7 +66,7 @@ const ContactTable = () => {
         <DataTable
           value={filteredContacts}
           paginator
-          rows={10}
+          rows={20}
           sortMode='multiple'
         >
           <Column field='fullName' header='Full Name' sortable />

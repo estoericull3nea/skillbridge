@@ -22,7 +22,9 @@ export const createContact = async (req, res) => {
 
 export const getAllContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find().populate('user')
+    const contacts = await Contact.find()
+      .populate('user')
+      .sort({ createdAt: -1 })
 
     if (contacts.length === 0) {
       return res.status(404).json({ message: 'No contacts found' })

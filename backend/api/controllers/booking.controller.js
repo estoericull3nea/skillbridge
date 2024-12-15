@@ -211,7 +211,7 @@ export const book = async (req, res) => {
        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px;">
   <h2 style="color: #2D8CFF; text-align: center;">Wait for google meet code</h2>
   <p>Dear ${firstName},</p>
-  <p>Your Zoom meeting has been successfully scheduled. Here are the details:</p>
+  <p>Your meeting has been successfully scheduled. Please expect a subsequent Google Meet invitation, which will be sent to your email shortly</p>
   <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
     <tr>
       <td style="padding: 10px; border: 1px solid #ddd;"><strong>Topic</strong></td>
@@ -250,9 +250,9 @@ export const book = async (req, res) => {
 export const getAllBookings = async (req, res) => {
   try {
     // Find bookings where isDeleted is false and populate the 'user' field
-    const bookings = await Booking.find({ isDeleted: { $ne: true } }).populate(
-      'user'
-    )
+    const bookings = await Booking.find({ isDeleted: { $ne: true } })
+      .populate('user')
+      .sort({ createdAt: -1 })
 
     if (!bookings.length) {
       return res.status(404).json({ message: 'No Bookings Found' })
@@ -405,7 +405,7 @@ export const getSingleBooking = async (req, res) => {
 }
 
 export const getBookingsByUser = async (req, res) => {
-  const { email } = req.query;
+  const { email } = req.query
 
   try {
     const bookings = await Booking.find({
@@ -413,20 +413,19 @@ export const getBookingsByUser = async (req, res) => {
       isDeleted: { $ne: true },
     })
       .populate('user')
-      .sort({ createdAt: -1 }); // Sort by createdAt in descending order
+      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
 
     if (!bookings.length) {
       return res
         .status(404)
-        .json({ message: 'No bookings found for this user.' });
+        .json({ message: 'No bookings found for this user.' })
     }
 
-    return res.status(200).json(bookings);
+    return res.status(200).json(bookings)
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message })
   }
-};
-
+}
 
 export const getHolidaysBasedOnUserIp = async (req, res) => {
   const API_KEY = 'f6r5NJwnrInzrVOpP0dUBGx63zNMl4AJ'

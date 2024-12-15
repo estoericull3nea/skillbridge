@@ -75,7 +75,6 @@ export const register = async (req, res) => {
       <p>Thank you for registering with us. To complete the registration process, please click on the link below to confirm your email address:</p>
       <p><a href="${verificationUrl}">Confirm Email</a></p>
       <p>This link will expire in 15 minutes. If you do not verify your email within this time, you will need to request a new confirmation link.</p>
-      <p>If you have any questions or need further assistance, please do not hesitate to contact us <a href="${process.env.FRONTEND_URL_PRODUCTION}contact-us">here</a>.</p>
       <p>Best regards,<br>Skill Bridge Virtual Careers</p>
         `,
     })

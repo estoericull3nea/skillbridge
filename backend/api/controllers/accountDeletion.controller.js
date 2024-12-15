@@ -124,7 +124,9 @@ export const getAllPendingDeletionRequests = async (req, res) => {
   try {
     const pendingRequests = await DeleteAccount.find({
       status: 'pending',
-    }).populate('user')
+    })
+      .populate('user')
+      .sort({ createdAt: -1 })
 
     if (!pendingRequests || pendingRequests.length === 0) {
       return res

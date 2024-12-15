@@ -35,7 +35,7 @@ export const submitFeedback = async (req, res) => {
 
 export const getAllFeedbacks = async (req, res) => {
   try {
-    const feedbacks = await Feedback.find()
+    const feedbacks = await Feedback.find().sort({ createdAt: -1 })
     return res.status(200).json(feedbacks)
   } catch (error) {
     console.error('Error fetching feedbacks:', error)

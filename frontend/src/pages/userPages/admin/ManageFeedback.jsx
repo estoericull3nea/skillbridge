@@ -105,7 +105,7 @@ const ManageFeedback = () => {
           value={feedbacks}
           className='p-datatable-striped'
           paginator
-          rows={10}
+          rows={20}
           loading={loading}
         >
           <Column field='name' header='Name' />
