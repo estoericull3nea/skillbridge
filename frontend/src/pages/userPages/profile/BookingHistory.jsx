@@ -95,7 +95,7 @@ const BookingHistory = () => {
         <DataTable
           value={allBookings}
           paginator
-          rows={5}
+          rows={30}
           showGridlines
           stripedRows
           className='bg-white shadow-xl rounded-xl p-6'

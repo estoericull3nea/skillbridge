@@ -405,25 +405,28 @@ export const getSingleBooking = async (req, res) => {
 }
 
 export const getBookingsByUser = async (req, res) => {
-  const { email } = req.query
+  const { email } = req.query;
 
   try {
     const bookings = await Booking.find({
       email,
       isDeleted: { $ne: true },
-    }).populate('user')
+    })
+      .populate('user')
+      .sort({ createdAt: -1 }); // Sort by createdAt in descending order
 
     if (!bookings.length) {
       return res
         .status(404)
-        .json({ message: 'No bookings found for this user.' })
+        .json({ message: 'No bookings found for this user.' });
     }
 
-    return res.status(200).json(bookings)
+    return res.status(200).json(bookings);
   } catch (error) {
-    return res.status(500).json({ message: error.message })
+    return res.status(500).json({ message: error.message });
   }
-}
+};
+
 
 export const getHolidaysBasedOnUserIp = async (req, res) => {
   const API_KEY = 'f6r5NJwnrInzrVOpP0dUBGx63zNMl4AJ'
