@@ -67,7 +67,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/get/upcomming-three-bookings?email=${localStorage.getItem(
           'email'
         )}`
@@ -77,14 +77,28 @@ const Dashboard = () => {
       )
       setUpcommingBookings(filteredData || 0)
     } catch (error) {
-      if (error.response.data.message === 'No Bookings Found') {
-        setUpcommingBookings([])
-      }
-
-      console.error(
-        'Error fetching pending bookings:',
+      // Check if the error response exists before accessing its data
+      if (
+        error.response &&
+        error.response.data &&
         error.response.data.message
-      )
+      ) {
+        // This is the case when the error has a response and message
+        const errorMessage = error.response.data.message
+
+        // Example logic (you can customize this depending on your use case)
+        if (errorMessage === 'No Bookings Found') {
+          setUpcommingBookings([]) // Clear or update bookings accordingly
+        }
+
+        console.error('Error fetching pending bookings:', errorMessage)
+      } else {
+        // If the error doesn't have the expected structure, log a general message
+        console.error(
+          'An error occurred while fetching pending bookings:',
+          error.message || error
+        )
+      }
     } finally {
       setLoadingUpcommingBookings(false)
     }
@@ -95,7 +109,7 @@ const Dashboard = () => {
     try {
       const { status } = await axios.patch(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
         { status: 'canceled' }
       )
@@ -119,7 +133,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -138,7 +152,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -157,7 +171,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -176,7 +190,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -195,7 +209,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       const filteredData = response.data.filter((item, index) => {
@@ -214,7 +228,7 @@ const Dashboard = () => {
     try {
       const response = await axios.get(
         `${
-          import.meta.env.VITE_DEV_BACKEND_URL
+          import.meta.env.VITE_PROD_BACKEND_URL
         }book/users-book/bookings?email=${localStorage.getItem('email')}`
       )
       setTotalBookingsCount(response.data.length || 0)

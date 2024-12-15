@@ -9,9 +9,7 @@ export const exportUsersData = async (req, res) => {
   const { format } = req.query
   try {
     const user = await User.findById({ _id: userId })
-    const bookingHistory = await Booking.find({ user: user._id }).populate(
-      'meeting'
-    )
+    const bookingHistory = await Booking.find({ user: user._id })
 
     const loginHistory = await LoginHistory.find({ user: user._id })
 

@@ -241,7 +241,7 @@ export const createMeeting = async (req, res) => {
             <div style="text-align: center; margin: 20px 0;">
               <a href="${join_url}" style="background-color: #2D8CFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Join Zoom Meeting</a>
             </div>
-            <p>If you have any questions or need further assistance, please do not hesitate to <a href="${process.env.FRONTEND_URL_DEVELOPMENT}contact-us" style="color: #2D8CFF;">contact us</a>.</p>
+            <p>If you have any questions or need further assistance, please do not hesitate to <a href="${process.env.FRONTEND_URL_PRODUCTION}contact-us" style="color: #2D8CFF;">contact us</a>.</p>
             <p style="text-align: center; font-size: 12px; color: #888;">We look forward to your participation.<br>Best regards,<br>Skill Bridge Virtual Careers</p>
           </div>
         `,
