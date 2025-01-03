@@ -13,7 +13,6 @@ const bookingSchema = new mongoose.Schema(
     month: { type: String, required: true },
 
     specificService: { type: String, required: true },
-    // my list of specificService
 
     //'Customer Service',
     //'Writing and Editing',
@@ -48,19 +47,15 @@ const bookingSchema = new mongoose.Schema(
       enum: ['pending', 'ongoing', 'canceled', 'rejected', 'done', 'missed'],
       default: 'pending',
     },
-    // meeting: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'Meeting',
-    //   required: true,
-    // },
+
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
     },
 
-    startTime: { type: String }, // New field
-    endTime: { type: String }, // New field
-    duration: { type: Number }, // Duration in minutes
+    startTime: { type: String },
+    endTime: { type: String },
+    duration: { type: Number },
 
     isDeleted: { type: Boolean, default: false },
   },

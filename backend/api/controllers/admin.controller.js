@@ -8,38 +8,30 @@ export const getBookingStats = async (req, res) => {
 
     const pendingBookings = await Booking.countDocuments({
       status: 'pending',
-      //   isDeleted: false,
     })
 
     const canceledBookings = await Booking.countDocuments({
       status: 'canceled',
-      //   isDeleted: false,
     })
 
     const ongoingBookings = await Booking.countDocuments({
       status: 'ongoing',
-      //   isDeleted: false,
     })
 
     const doneBookings = await Booking.countDocuments({
       status: 'done',
-      //   isDeleted: false,
     })
 
     const rejectedBookings = await Booking.countDocuments({
       status: 'rejected',
-      //   isDeleted: false,
     })
 
     const missedBookings = await Booking.countDocuments({
       status: 'missed',
-      //   isDeleted: false,
     })
 
     const upcomingBookings = await Booking.countDocuments({
-      //   date: { $gte: new Date() },
       status: 'pending',
-      //   isDeleted: false,
     })
 
     const totalUsers = await User.countDocuments()

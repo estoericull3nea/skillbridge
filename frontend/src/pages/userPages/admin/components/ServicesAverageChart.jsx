@@ -32,37 +32,48 @@ const ServicesAverageChart = ({ trigger }) => {
       )
       const data = response.data
 
-      // Change to handle daily data (assuming backend returns { dates: [], counts: [] })
-      if (timeframe === 'daily') {
+      // Existing logic
+      if (timeframe === 'daily' && data.dates?.length > 0) {
         setChartData({
-          labels: data.dates || [], // Use daily dates returned by the backend
+          labels: data.dates, // Display dates directly on the x-axis
           datasets: [
             {
               label: `Daily Bookings for ${selectedService}`,
-              data: data.counts || [], // Array of counts per day
-              backgroundColor: 'black',
-              borderColor: 'black',
+              data: data.counts,
+              backgroundColor: 'rgba(75, 192, 192, 0.6)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 2,
+              fill: true,
+              tension: 0.4,
+            },
+          ],
+        })
+      } else if (Object.keys(data).length > 0) {
+        setChartData({
+          labels: [selectedService], // Use service name if not daily
+          datasets: [
+            {
+              label: `Total Bookings for ${selectedService}`,
+              data: [data[selectedService] || 0],
+              backgroundColor: 'rgba(153, 102, 255, 0.6)',
+              borderColor: 'rgba(153, 102, 255, 1)',
               borderWidth: 2,
             },
           ],
         })
       } else {
-        // Existing logic for non-daily timeframes
+        // Handle no data
         setChartData({
-          labels: [selectedService],
-          datasets: [
-            {
-              label: 'Total Bookings',
-              data: [data[selectedService] || 0],
-              backgroundColor: 'black',
-              borderColor: 'black',
-              borderWidth: 2,
-            },
-          ],
+          labels: [],
+          datasets: [],
         })
       }
     } catch (error) {
       console.error('Error fetching service count:', error)
+      setChartData({
+        labels: [],
+        datasets: [],
+      })
     } finally {
       setLoading(false)
     }
@@ -95,7 +106,9 @@ const ServicesAverageChart = ({ trigger }) => {
         value={timeframe}
         className='mb-4 select select-bordered'
       >
-        <option value='daily'>Daily</option>
+        <option value='daily' selected>
+          Daily
+        </option>
         <option value='weekly'>Weekly</option>
         <option value='monthly'>Monthly</option>
         <option value='yearly'>Yearly</option>
@@ -109,6 +122,10 @@ const ServicesAverageChart = ({ trigger }) => {
         </div>
       ) : (
         <Line data={chartData} />
+      )}
+
+      {!loading && chartData.labels.length === 0 && (
+        <div className='text-center text-gray-500 mt-4'>No data available</div>
       )}
     </div>
   )

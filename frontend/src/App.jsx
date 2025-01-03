@@ -36,7 +36,7 @@ const App = () => {
   const isAdminRoute = location.pathname.startsWith('/admin')
 
   return (
-    <>
+    <div className='overflow-x-hidden'>
       <Toaster
         position='top-center'
         reverseOrder={false}
@@ -93,7 +93,7 @@ const App = () => {
         <Route path='*' element={<NotFound />} />
       </Routes>
       {!isAdminRoute && <Footer />}
-    </>
+    </div>
   )
 }
 

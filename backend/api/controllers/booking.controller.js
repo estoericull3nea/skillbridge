@@ -669,19 +669,19 @@ export const getTotalSpecificServices = async (req, res) => {
   const startDate = new Date()
   let endDate = new Date()
 
-  // Set the start date based on timeframe
   switch (timeframe) {
     case 'daily':
-      startDate.setHours(0, 0, 0, 0) // Start of the current day
-      endDate.setHours(23, 59, 59, 999) // End of the current day
+      startDate.setHours(0, 0, 0, 0)
+      endDate.setHours(23, 59, 59, 999)
       break
     case 'weekly':
-      startDate.setDate(startDate.getDate() - 7)
-      startDate.setHours(0, 0, 0, 0)
+      const day = startDate.getDay()
+      const diff = startDate.getDate() - day + (day === 0 ? -6 : 1)
+      startDate.setDate(diff)
+
       break
     case 'monthly':
-      startDate.setMonth(startDate.getMonth() - 1)
-      startDate.setHours(0, 0, 0, 0)
+      startDate.setDate(1) // First day of the current month
       break
     case 'yearly':
       startDate.setFullYear(startDate.getFullYear() - 1)
@@ -695,13 +695,12 @@ export const getTotalSpecificServices = async (req, res) => {
     let result
 
     if (timeframe === 'daily') {
-      // Aggregate bookings for the current day grouped by hour (optional for detailed breakdown)
       result = await Booking.aggregate([
         {
           $match: {
             status: 'done',
             specificService: service,
-            createdAt: { $gte: startDate, $lte: endDate }, // Only today's data
+            date: { $gte: startDate, $lte: endDate },
           },
         },
         {
@@ -712,24 +711,50 @@ export const getTotalSpecificServices = async (req, res) => {
             count: { $sum: 1 },
           },
         },
-        { $sort: { _id: 1 } }, // Sort by date
+        { $sort: { _id: 1 } },
       ])
 
       const dates = result.map((entry) => entry._id)
       const counts = result.map((entry) => entry.count)
 
-      res.status(200).json({ dates, counts }) // Return dates and counts for daily
+      res.status(200).json({ dates, counts })
     } else {
-      // For weekly, monthly, yearly - just count total bookings
       const totalCount = await Booking.countDocuments({
         status: 'done',
         specificService: service,
-        createdAt: { $gte: startDate, $lte: endDate },
+        date: { $gte: startDate, $lte: endDate },
       })
 
-      result = {
-        [service]: totalCount,
-      }
+      result = await Booking.aggregate([
+        {
+          $match: {
+            status: 'done',
+            specificService: service,
+            date: { $gte: startDate, $lte: endDate },
+          },
+        },
+        {
+          $group: {
+            _id: {
+              $switch: {
+                branches: [
+                  {
+                    case: { $eq: [timeframe, 'weekly'] },
+                    then: { $dateToString: { format: '%Y-%U', date: '$date' } },
+                  },
+                  {
+                    case: { $eq: [timeframe, 'monthly'] },
+                    then: { $dateToString: { format: '%Y-%m', date: '$date' } },
+                  },
+                ],
+                default: 'yearly',
+              },
+            },
+            count: { $sum: 1 },
+          },
+        },
+        { $sort: { _id: 1 } },
+      ])
 
       res.status(200).json(result)
     }
