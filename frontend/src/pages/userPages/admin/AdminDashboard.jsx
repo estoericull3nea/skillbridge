@@ -74,32 +74,19 @@ const AdminDashboard = () => {
   }, [])
 
   return (
-    <div>
-      <div className='grid grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-3 mt-1'>
+    <div className=' min-h-screen'>
+      <div className='grid grid-cols-1 xl:grid-cols-3 2xl:grid-cols-4 gap-6 mt-6'>
         {statItems.map((stat, index) => (
           <div
             key={index}
-            className='stat bg-white shadow-xl rounded-xl p-6 mb-4'
+            className='stat bg-gradient-to-r from-red-50 to-red-100 shadow-lg rounded-2xl p-8 transition transform hover:-translate-y-2 hover:shadow-2xl border border-red-200'
           >
-            <div className='stat-figure text-secondary'>
-              {/* <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                className='inline-block h-8 w-8 stroke-current'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  strokeWidth='2'
-                  d='M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
-                ></path>
-              </svg> */}
+            <div className='stat-figure text-red-500 text-4xl'>
+              <GrSchedules />
             </div>
 
-            <div>
-              <div className='stat-title flex items-center gap-3'>
-                <GrSchedules />
+            <div className='text-center'>
+              <div className='stat-title font-medium text-lg mb-2'>
                 {isLoading ? (
                   <div className='h-4 w-32 bg-gray-200 rounded animate-pulse'></div>
                 ) : (
@@ -107,28 +94,23 @@ const AdminDashboard = () => {
                 )}
               </div>
 
-              <div className='stat-value'>
+              <div className='stat-value text-3xl font-semibold'>
                 {isLoading ? (
                   <div className='h-6 w-16 bg-gray-200 rounded animate-pulse'></div>
                 ) : (
                   stat.value
                 )}
               </div>
-              {/* <div className='stat-desc'>
-                {isLoading ? (
-                  <div className='h-4 w-32 bg-gray-200 rounded animate-pulse'></div>
-                ) : (
-                  'Jan 1st - Feb 1st'
-                )}
-              </div> */}
             </div>
           </div>
         ))}
       </div>
 
-      <RecentNewAndActiveUsers />
-      <RecentFeedback />
-      <DashboardCharts trigger={trigger} />
+      <div className='mt-10'>
+        <RecentNewAndActiveUsers />
+        <RecentFeedback />
+        <DashboardCharts trigger={trigger} />
+      </div>
     </div>
   )
 }

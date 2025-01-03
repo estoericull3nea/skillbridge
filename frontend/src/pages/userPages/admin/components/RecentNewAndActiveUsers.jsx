@@ -39,41 +39,43 @@ const RecentNewAndActiveUsers = () => {
   const skeletonRows = Array(5).fill(0)
 
   return (
-    <div className='mt-3'>
-      {/* New Users Section */}
-      <div className='grid grid-cols-1 xl:grid-cols-2'>
-        <div className='overflow-x-auto mb-8'>
-          <h2 className='text-2xl font-semibold mb-4'>New Users</h2>
-          <table className='table table-zebra w-full'>
+    <div className='mt-6 p-6 bg-white rounded-lg shadow-md'>
+      <div className='grid grid-cols-1 xl:grid-cols-2 gap-6'>
+        {/* New Users Section */}
+        <div className='overflow-x-auto'>
+          <h2 className='text-2xl font-bold mb-6 text-gray-700'>New Users</h2>
+          <table className='w-full text-left border-collapse'>
             <thead>
-              <tr>
-                <th>Full Name</th>
-                <th>Email</th>
-                <th>Registration Date</th>
+              <tr className='bg-gray-100'>
+                <th className='p-4 border-b'>Full Name</th>
+                <th className='p-4 border-b'>Email</th>
+                <th className='p-4 border-b'>Registration Date</th>
               </tr>
             </thead>
             <tbody>
               {isLoadingNewUsers
                 ? skeletonRows.map((_, index) => (
                     <tr key={index} className='animate-pulse'>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      <td className='p-4'>
+                        <div className='h-4 bg-gray-300 rounded w-32'></div>
                       </td>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-48'></div>
+                      <td className='p-4'>
+                        <div className='h-4 bg-gray-300 rounded w-48'></div>
                       </td>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      <td className='p-4'>
+                        <div className='h-4 bg-gray-300 rounded w-32'></div>
                       </td>
                     </tr>
                   ))
                 : newUsers.map((user) => (
-                    <tr key={user._id}>
-                      <td>
+                    <tr key={user._id} className='hover:bg-gray-50'>
+                      <td className='p-4 border-b'>
                         {user.firstName} {user.lastName}
                       </td>
-                      <td>{user.email}</td>
-                      <td>{new Date(user.createdAt).toLocaleDateString()}</td>
+                      <td className='p-4 border-b'>{user.email}</td>
+                      <td className='p-4 border-b'>
+                        {new Date(user.createdAt).toLocaleDateString()}
+                      </td>
                     </tr>
                   ))}
             </tbody>
@@ -81,36 +83,35 @@ const RecentNewAndActiveUsers = () => {
         </div>
 
         {/* Active Users Section */}
-        <div className='overflow-x-auto ml-5'>
-          <h2 className='text-2xl font-semibold mb-4'>Active Users</h2>
-          <table className='table table-zebra w-full'>
+        <div className='overflow-x-auto'>
+          <h2 className='text-2xl font-bold mb-6 text-gray-700'>
+            Active Users
+          </h2>
+          <table className='w-full text-left border-collapse'>
             <thead>
-              <tr>
-                <th>Full Name</th>
-                <th>Email</th>
+              <tr className='bg-gray-100'>
+                <th className='p-4 border-b'>Full Name</th>
+                <th className='p-4 border-b'>Email</th>
               </tr>
             </thead>
             <tbody>
               {isLoadingActiveUsers
                 ? skeletonRows.map((_, index) => (
                     <tr key={index} className='animate-pulse'>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      <td className='p-4'>
+                        <div className='h-4 bg-gray-300 rounded w-32'></div>
                       </td>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-48'></div>
-                      </td>
-                      <td>
-                        <div className='h-4 bg-gray-200 rounded w-32'></div>
+                      <td className='p-4'>
+                        <div className='h-4 bg-gray-300 rounded w-48'></div>
                       </td>
                     </tr>
                   ))
                 : activeUsers.map((user) => (
-                    <tr key={user._id}>
-                      <td>
+                    <tr key={user._id} className='hover:bg-gray-50'>
+                      <td className='p-4 border-b'>
                         {user.firstName} {user.lastName}
                       </td>
-                      <td>{user.email}</td>
+                      <td className='p-4 border-b'>{user.email}</td>
                     </tr>
                   ))}
             </tbody>

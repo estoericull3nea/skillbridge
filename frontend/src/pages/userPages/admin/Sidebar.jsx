@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
 import { MdOutlineMailOutline } from 'react-icons/md'
+import SBLogo from '../../../assets/icons/sb_logo.png'
 
 const AdminSidebar = () => {
   const navigate = useNavigate()
@@ -12,7 +13,8 @@ const AdminSidebar = () => {
   return (
     <div>
       <aside className='min-w-[300px] shadow-xl rounded-xl bg-white sticky top-0'>
-        <div className='pl-5 pt-5'>
+        <div className='pl-5 pt-5 flex items-center gap-2'>
+          <img src={SBLogo} alt='' width={70} height={70} />
           <h1 className='text-2xl font-semibold'>Admin Panel</h1>
         </div>
 

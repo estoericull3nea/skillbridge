@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios' // Assuming Axios for HTTP requests
+import axios from 'axios'
 
 const RecentFeedback = () => {
-  const [isLoading, setIsLoading] = useState(true) // Loading state
+  const [isLoading, setIsLoading] = useState(true)
   const [feedback, setFeedback] = useState([])
 
   useEffect(() => {
-    // Fetch recent feedback from the backend
     const fetchRecentFeedback = async () => {
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_PROD_BACKEND_URL}admin/recent-feedback`
         )
         setFeedback(data)
-        setIsLoading(false) // Stop loading after data is fetched
+        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching recent feedback:', error)
       }
@@ -22,60 +21,64 @@ const RecentFeedback = () => {
     fetchRecentFeedback()
   }, [])
 
-  const skeletonRows = Array(5).fill(0) // For creating 5 skeleton rows
+  const skeletonRows = Array(5).fill(0)
 
   return (
-    <div>
-      <h2 className='text-2xl font-semibold mb-4'>Recent User Feedbacks</h2>
-      <div className='overflow-x-auto mb-8'>
-        <table className='table table-zebra w-full'>
+    <div className='mt-6 p-6 bg-white rounded-lg shadow-md'>
+      <h2 className='text-3xl font-bold mb-6 text-gray-700'>
+        Recent User Feedbacks
+      </h2>
+      <div className='overflow-x-auto'>
+        <table className='w-full text-left border-collapse'>
           <thead>
-            <tr>
-              <th>User Name</th>
-              <th>Date Submitted</th>
-              <th>Feedback Category</th>
-              <th>Booking Experience</th>
-              <th>Service Quality</th>
-              <th>Suggestions</th>
-              <th>Status</th>
+            <tr className='bg-gray-100'>
+              <th className='p-4 border-b'>User Name</th>
+              <th className='p-4 border-b'>Date Submitted</th>
+              <th className='p-4 border-b'>Feedback Category</th>
+              <th className='p-4 border-b'>Booking Experience</th>
+              <th className='p-4 border-b'>Service Quality</th>
+              <th className='p-4 border-b'>Suggestions</th>
+              <th className='p-4 border-b'>Status</th>
             </tr>
           </thead>
           <tbody>
             {isLoading
               ? skeletonRows.map((_, index) => (
                   <tr key={index} className='animate-pulse'>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-32'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-32'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-28'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-28'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-28'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-28'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-28'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-28'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-24'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-24'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-24'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-24'></div>
                     </td>
-                    <td>
-                      <div className='h-4 bg-gray-200 rounded w-20'></div>
+                    <td className='p-4'>
+                      <div className='h-4 bg-gray-300 rounded w-20'></div>
                     </td>
                   </tr>
                 ))
               : feedback.map((item) => (
-                  <tr key={item._id}>
-                    <td>{item.name}</td>
-                    <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-                    <td>{item.feedbackType}</td>
-                    <td>{item.bookingExperience}</td>
-                    <td>{item.serviceQuality}</td>
-                    <td>{item.suggestions}</td>
-                    <td>{item.overallSatisfaction}</td>
+                  <tr key={item._id} className='hover:bg-gray-50'>
+                    <td className='p-4 border-b'>{item.name}</td>
+                    <td className='p-4 border-b'>
+                      {new Date(item.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className='p-4 border-b'>{item.feedbackType}</td>
+                    <td className='p-4 border-b'>{item.bookingExperience}</td>
+                    <td className='p-4 border-b'>{item.serviceQuality}</td>
+                    <td className='p-4 border-b'>{item.suggestions}</td>
+                    <td className='p-4 border-b'>{item.overallSatisfaction}</td>
                   </tr>
                 ))}
           </tbody>
