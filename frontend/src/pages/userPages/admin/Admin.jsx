@@ -3,7 +3,6 @@ import Sidebar from './Sidebar'
 import { convertDateToWords } from '../../../utils/convertDaysToWords'
 import Breadcrumbs from '../../../components/Breadcrumbs'
 import { CiCalendar } from 'react-icons/ci'
-import { IoMdNotificationsOutline } from 'react-icons/io'
 import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import AdminDashboard from './AdminDashboard'
 import UserManagement from './UserManagement'
@@ -40,12 +39,6 @@ const Admin = () => {
                   </p>
                 </div>
               </div>
-
-              {/* <div className=' text-end flex justify-end'>
-                <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full '>
-                  <IoMdNotificationsOutline />
-                </div>
-              </div> */}
             </div>
           </div>
 

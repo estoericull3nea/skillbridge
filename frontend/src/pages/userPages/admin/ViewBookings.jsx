@@ -44,6 +44,9 @@ const ViewBookings = () => {
       return (
         booking.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        booking.specificService
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) || // Add this line
         booking.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.status.toLowerCase().includes(searchTerm.toLowerCase())
@@ -259,13 +262,16 @@ const ViewBookings = () => {
 
       <h1 className='text-2xl font-semibold mb-4'>View Bookings</h1>
 
-      <div className='mb-4'>
-        <InputText
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder='Search by email, service, date, time, or status...'
-          className='w-full'
-        />
+      <div className='relative mb-4'>
+        <span className='p-input-icon-left w-full'>
+          <i className='pi pi-search' />
+          <InputText
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder='Search by email, service, date, time, or status...'
+            className='w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none'
+          />
+        </span>
       </div>
 
       <Button
@@ -281,6 +287,11 @@ const ViewBookings = () => {
         <DataTable
           value={filteredBookings}
           className='p-datatable-striped'
+          paginator
+          rows={10}
+          rowsPerPageOptions={[10, 20, 50]}
+          currentPageReportTemplate='Showing {first} to {last} of {totalRecords} entries'
+          paginatorTemplate='FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown'
           sortable
         >
           <Column field='email' header='Email' sortable />
