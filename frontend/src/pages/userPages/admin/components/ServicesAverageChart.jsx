@@ -32,18 +32,35 @@ const ServicesAverageChart = ({ trigger }) => {
       )
       const data = response.data
 
-      setChartData({
-        labels: [selectedService],
-        datasets: [
-          {
-            label: 'Total Bookings',
-            data: [data[selectedService] || 0], // Default to 0 if no bookings
-            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 2,
-          },
-        ],
-      })
+      // Change to handle daily data (assuming backend returns { dates: [], counts: [] })
+      if (timeframe === 'daily') {
+        setChartData({
+          labels: data.dates || [], // Use daily dates returned by the backend
+          datasets: [
+            {
+              label: `Daily Bookings for ${selectedService}`,
+              data: data.counts || [], // Array of counts per day
+              backgroundColor: 'black',
+              borderColor: 'black',
+              borderWidth: 2,
+            },
+          ],
+        })
+      } else {
+        // Existing logic for non-daily timeframes
+        setChartData({
+          labels: [selectedService],
+          datasets: [
+            {
+              label: 'Total Bookings',
+              data: [data[selectedService] || 0],
+              backgroundColor: 'black',
+              borderColor: 'black',
+              borderWidth: 2,
+            },
+          ],
+        })
+      }
     } catch (error) {
       console.error('Error fetching service count:', error)
     } finally {
