@@ -8,7 +8,7 @@ const Services = () => {
   const { t } = useTranslation()
 
   return (
-    <div>
+    <div className='container mx-auto'>
       <h1 className='font-medium'>{t('OurServices')}</h1>
 
       <div className='grid grid-cols-1 lg:grid-cols-2 gap-x-3  my-10'>

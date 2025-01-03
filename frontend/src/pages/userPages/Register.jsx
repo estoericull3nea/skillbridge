@@ -5,10 +5,10 @@ import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 import { useTranslation } from 'react-i18next'
+import SBLogo from '../../assets/icons/sb_logo.png'
 
 const Register = () => {
-  const { t } = useTranslation() // Use the translation hook
-
+  const { t } = useTranslation()
   useEffect(() => {
     document.title = t('Register') // Set the page title
   }, [t])
@@ -102,18 +102,10 @@ const Register = () => {
         <div className='flex flex-col items-center justify-center px-6 lg:py-8 mx-auto lg:h-screen'>
           <div className='w-full bg-white rounded-lg shadow md:mt-0 sm:max-w-md xl:p-0'>
             <div className='p-6 space-y-4 md:space-y-6 sm:p-8'>
-              <h1 className='text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl'>
+              <h2 className='my-6 mt-0 text-center text-3xl font-extrabold text-gray-900 flex items-center justify-center gap-2'>
+                <img src={SBLogo} alt='' width={80} height={80} />
                 {t('CreateAnAccount')}
-              </h1>
-
-              {/* <button
-                className='w-full border py-3 flex justify-center items-center gap-x-2 font-medium'
-                onClick={handleGoogleSignup}
-              >
-                <FcGoogle className='text-xl' /> {t('ContinueWithGoogle')}
-              </button> */}
-
-              <div className='divider'>{t('or')}</div>
+              </h2>
               <form className='space-y-4 md:space-y-6' onSubmit={handleSubmit}>
                 <div className='grid grid-cols-1 md:grid-cols-2 gap-x-3'>
                   <div>
@@ -219,7 +211,7 @@ const Register = () => {
                     >
                       {t('IAcceptTheTerms')}
                       <a
-                        className='font-medium text-black hover:underline'
+                        className='font-medium text-blue-500 hover:underline'
                         href='#'
                       >
                         {t('TermsAndConditions')}
@@ -242,7 +234,7 @@ const Register = () => {
                   {t('AlreadyHaveAnAccount')}{' '}
                   <Link
                     to='/login'
-                    className='font-medium text-black hover:underline'
+                    className='font-medium text-blue-500 hover:underline'
                   >
                     {t('LoginHere')}
                   </Link>
