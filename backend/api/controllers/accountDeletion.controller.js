@@ -1,12 +1,11 @@
 import DeleteAccount from '../models/deletionRequest.model.js'
 import User from '../models/user.model.js'
 import Booking from '../models/booking.model.js'
-// Handle user deletion request
+
 export const requestAccountDeletion = async (req, res) => {
   const { userId } = req.params
 
   try {
-    // Check if there's an existing pending request
     const existingRequest = await DeleteAccount.findOne({
       user: userId,
       status: 'pending',
@@ -17,7 +16,6 @@ export const requestAccountDeletion = async (req, res) => {
         .json({ message: 'A pending deletion request already exists.' })
     }
 
-    // Create a new deletion request
     const newRequest = new DeleteAccount({ user: userId })
     await newRequest.save()
     res
@@ -28,7 +26,6 @@ export const requestAccountDeletion = async (req, res) => {
   }
 }
 
-// Admin fetches all deletion requests
 export const getDeleteAccounts = async (req, res) => {
   try {
     const requests = await DeleteAccount.find({ status: 'pending' }).populate(
@@ -40,12 +37,10 @@ export const getDeleteAccounts = async (req, res) => {
   }
 }
 
-// Admin approves the deletion request and deletes the user
 export const approveDeleteAccount = async (req, res) => {
-  const { requestId } = req.params // Get the deletion request ID from the parameters
+  const { requestId } = req.params
 
   try {
-    // Find the deletion request by ID and populate the associated user details
     const request = await DeleteAccount.findById(requestId).populate('user')
 
     if (!request || request.status !== 'pending') {
@@ -54,22 +49,15 @@ export const approveDeleteAccount = async (req, res) => {
         .json({ message: 'Invalid or already processed request.' })
     }
 
-    // Get the user ID from the deletion request
     const userId = request.user._id
 
-    // Delete all bookings associated with this user
-    await Booking.deleteMany({ user: userId })
-
-    // Delete the user
     await User.findByIdAndDelete(userId)
 
-    // Mark the deletion request as approved
     request.status = 'approved'
     await request.save()
 
-    // Send a success response
     res.status(200).json({
-      message: 'Account and all associated bookings deleted successfully.',
+      message: 'Account deleted successfully.',
     })
   } catch (error) {
     console.error('Error approving deletion request:', error)
@@ -77,7 +65,6 @@ export const approveDeleteAccount = async (req, res) => {
   }
 }
 
-// Admin rejects the deletion request
 export const rejectDeleteAccount = async (req, res) => {
   const { requestId } = req.params
 
@@ -89,7 +76,6 @@ export const rejectDeleteAccount = async (req, res) => {
         .json({ message: 'Invalid or already processed request.' })
     }
 
-    // Mark the request as rejected
     request.status = 'rejected'
     await request.save()
 
@@ -101,10 +87,9 @@ export const rejectDeleteAccount = async (req, res) => {
 }
 
 export const getDeletionRequestsByUserId = async (req, res) => {
-  const { userId } = req.params // Get the userId from the request parameters
+  const { userId } = req.params
 
   try {
-    // Fetch all deletion requests for the specific userId
     const requests = await DeleteAccount.find({ user: userId }).populate('user')
 
     if (!requests || requests.length === 0) {

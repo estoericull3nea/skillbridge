@@ -211,6 +211,33 @@ const ViewBookings = () => {
     )
   }
 
+  const statusBodyTemplate = (rowData) => {
+    const getStatusColor = (status) => {
+      switch (status) {
+        case 'pending':
+          return 'bg-yellow-200 text-yellow-800'
+        case 'ongoing':
+          return 'bg-blue-200 text-blue-800'
+        case 'done':
+          return 'bg-green-200 text-green-800'
+        case 'canceled':
+          return 'bg-gray-200 text-gray-800'
+        case 'rejected':
+          return 'bg-red-200 text-red-800'
+        case 'missed':
+          return 'bg-purple-200 text-purple-800'
+        default:
+          return 'bg-gray-100 text-gray-800'
+      }
+    }
+
+    return (
+      <span className={`p-2 rounded-md ${getStatusColor(rowData.status)}`}>
+        {rowData.status}
+      </span>
+    )
+  }
+
   const calculateDuration = (startTime, endTime) => {
     const start = new Date(startTime)
     const end = new Date(endTime)
@@ -260,7 +287,13 @@ const ViewBookings = () => {
           <Column field='specificService' header='Service' sortable />
           <Column field='date' header='Date' sortable />
           <Column field='time' header='Time' sortable />
-          <Column field='status' header='Status' sortable />
+          <Column
+            field='status'
+            header='Status'
+            body={statusBodyTemplate}
+            sortable
+          />
+
           <Column header='Actions' body={actionBodyTemplate} />
         </DataTable>
       )}
