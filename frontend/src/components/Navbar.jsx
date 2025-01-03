@@ -19,22 +19,6 @@ const Navbar = () => {
   const token = localStorage.getItem('token')
   const decoded = token ? jwtDecode(token) : ''
 
-  // if (!decoded?.picture) {
-  //   localStorage.setItem('picture', decoded.picture)
-  // } else {
-  //   if (token && decoded?.picture) {
-  //     // localStorage.setItem('testPicture', decoded.picture)
-  //     if (decoded.picture.startsWith('https://lh3.googleusercontent.com')) {
-  //       localStorage.setItem('picture', decoded.picture)
-  //     } else {
-  //       localStorage.setItem(
-  //         'picture',
-  //         `https://skillbridge-p5g5.onrender.com/${decoded.picture}`
-  //       )
-  //     }
-  //   }
-  // }
-
   const navigate = useNavigate()
 
   const userId = decoded?.id
@@ -85,8 +69,8 @@ const Navbar = () => {
 
   return (
     <div className='shadow'>
-      <div className='lg:container'>
-        <div className='navbar bg-base-100'>
+      <div className=''>
+        <div className='navbar bg-red-200'>
           <div className='navbar-start'>
             <div className='flex items-center gap-x-3'>
               <div className='drawer z-10 lg:hidden'>

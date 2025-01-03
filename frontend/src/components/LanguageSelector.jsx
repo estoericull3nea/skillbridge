@@ -15,7 +15,7 @@ const LanguageSelector = () => {
     <div>
       <select
         id='language'
-        className='select select-bordered w-full'
+        className='select select-bordered w-full bg-red-200'
         onChange={(e) => changeLanguage(e.target.value)}
         defaultValue={localStorage.getItem('language') || 'en'} // Default language from localStorage
       >
