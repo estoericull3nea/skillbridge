@@ -666,98 +666,69 @@ export const cancelMeeting = async (req, res) => {
 export const getTotalSpecificServices = async (req, res) => {
   const { timeframe, service } = req.params
 
-  const startDate = new Date()
-  let endDate = new Date()
-
-  switch (timeframe) {
-    case 'daily':
-      startDate.setHours(0, 0, 0, 0)
-      endDate.setHours(23, 59, 59, 999)
-      break
-    case 'weekly':
-      const day = startDate.getDay()
-      const diff = startDate.getDate() - day + (day === 0 ? -6 : 1)
-      startDate.setDate(diff)
-
-      break
-    case 'monthly':
-      startDate.setDate(1) // First day of the current month
-      break
-    case 'yearly':
-      startDate.setFullYear(startDate.getFullYear() - 1)
-      startDate.setHours(0, 0, 0, 0)
-      break
-    default:
-      return res.status(400).json({ message: 'Invalid timeframe' })
-  }
-
   try {
-    let result
-
-    if (timeframe === 'daily') {
-      result = await Booking.aggregate([
-        {
-          $match: {
-            status: 'done',
-            specificService: service,
-            date: { $gte: startDate, $lte: endDate },
-          },
-        },
-        {
-          $group: {
-            _id: {
-              $dateToString: { format: '%Y-%m-%d', date: '$createdAt' },
-            },
-            count: { $sum: 1 },
-          },
-        },
-        { $sort: { _id: 1 } },
-      ])
-
-      const dates = result.map((entry) => entry._id)
-      const counts = result.map((entry) => entry.count)
-
-      res.status(200).json({ dates, counts })
-    } else {
-      const totalCount = await Booking.countDocuments({
-        status: 'done',
-        specificService: service,
-        date: { $gte: startDate, $lte: endDate },
-      })
-
-      result = await Booking.aggregate([
-        {
-          $match: {
-            status: 'done',
-            specificService: service,
-            date: { $gte: startDate, $lte: endDate },
-          },
-        },
-        {
-          $group: {
-            _id: {
-              $switch: {
-                branches: [
-                  {
-                    case: { $eq: [timeframe, 'weekly'] },
-                    then: { $dateToString: { format: '%Y-%U', date: '$date' } },
+    let result = await Booking.aggregate([
+      {
+        $addFields: {
+          parsedDate: {
+            $ifNull: [
+              {
+                $dateFromString: {
+                  dateString: {
+                    $cond: {
+                      if: { $eq: [{ $type: '$date' }, 'string'] },
+                      then: '$date',
+                      else: null,
+                    },
                   },
-                  {
-                    case: { $eq: [timeframe, 'monthly'] },
-                    then: { $dateToString: { format: '%Y-%m', date: '$date' } },
-                  },
-                ],
-                default: 'yearly',
+                  format: '%m/%d/%Y',
+                },
               },
-            },
-            count: { $sum: 1 },
+              '$date', // Use existing date if conversion fails or date is already a Date object
+            ],
           },
         },
-        { $sort: { _id: 1 } },
-      ])
+      },
+      {
+        $match: {
+          status: 'done',
+          specificService: service,
+        },
+      },
+      {
+        $group: {
+          _id: {
+            $switch: {
+              branches: [
+                {
+                  case: { $eq: [timeframe, 'daily'] },
+                  then: {
+                    $dateToString: { format: '%Y-%m-%d', date: '$parsedDate' },
+                  },
+                },
+                {
+                  case: { $eq: [timeframe, 'weekly'] },
+                  then: {
+                    $dateToString: { format: '%Y-%U', date: '$parsedDate' },
+                  },
+                },
+                {
+                  case: { $eq: [timeframe, 'monthly'] },
+                  then: {
+                    $dateToString: { format: '%Y-%m', date: '$parsedDate' },
+                  },
+                },
+              ],
+              default: { $dateToString: { format: '%Y', date: '$parsedDate' } },
+            },
+          },
+          count: { $sum: 1 },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ])
 
-      res.status(200).json(result)
-    }
+    res.status(200).json(result)
   } catch (error) {
     console.error('Error fetching counts:', error)
     res.status(500).json({ message: 'Error fetching counts', error })

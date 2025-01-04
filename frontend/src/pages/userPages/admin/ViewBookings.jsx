@@ -34,7 +34,7 @@ const ViewBookings = () => {
         `${import.meta.env.VITE_PROD_BACKEND_URL}book`
       )
       setBookings(response.data)
-      setFilteredBookings(response.data) // Initialize filteredBookings
+      setFilteredBookings(response.data)
     } catch (err) {
       setError(err.response?.data?.message || 'Error fetching bookings')
     } finally {
@@ -49,7 +49,7 @@ const ViewBookings = () => {
         booking.service.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.specificService
           .toLowerCase()
-          .includes(searchTerm.toLowerCase()) || // Add this line
+          .includes(searchTerm.toLowerCase()) ||
         booking.date.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.time.toLowerCase().includes(searchTerm.toLowerCase()) ||
         booking.status.toLowerCase().includes(searchTerm.toLowerCase())
@@ -135,7 +135,7 @@ const ViewBookings = () => {
   }
 
   const handlePrint = () => {
-    const doneBookings = filteredBookings.filter((booking) => {
+    const doneBookings = bookings.filter((booking) => {
       const bookingDate = new Date(booking.date)
       const start = startDate ? new Date(startDate) : null
       const end = endDate ? new Date(endDate) : null
@@ -344,9 +344,8 @@ const ViewBookings = () => {
 
       <Button
         label='Print Filtered Bookings'
-        icon='pi pi-print'
         onClick={handlePrint}
-        className='p-button-primary mt-4'
+        className='bg-main btn text-white hover:bg-main'
       />
 
       {filteredBookings.length === 0 ? (

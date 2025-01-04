@@ -1,13 +1,12 @@
-// components/ServicesAverageChart.js
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Line } from 'react-chartjs-2'
-import 'daisyui/dist/full.css' // Import DaisyUI styles
+import 'daisyui/dist/full.css'
 
 const ServicesAverageChart = ({ trigger }) => {
   const [chartData, setChartData] = useState({})
   const [selectedService, setSelectedService] = useState('Customer Service')
-  const [timeframe, setTimeframe] = useState('monthly')
+  const [timeframe, setTimeframe] = useState('daily')
   const [loading, setLoading] = useState(true)
 
   const allServices = [
@@ -32,37 +31,24 @@ const ServicesAverageChart = ({ trigger }) => {
       )
       const data = response.data
 
-      // Existing logic
-      if (timeframe === 'daily' && data.dates?.length > 0) {
+      if (data.length > 0) {
         setChartData({
-          labels: data.dates, // Display dates directly on the x-axis
+          labels: data.map((entry) => entry._id),
           datasets: [
             {
-              label: `Daily Bookings for ${selectedService}`,
-              data: data.counts,
-              backgroundColor: 'rgba(75, 192, 192, 0.6)',
-              borderColor: 'rgba(75, 192, 192, 1)',
+              label: `${
+                timeframe.charAt(0).toUpperCase() + timeframe.slice(1)
+              } Bookings for ${selectedService}`,
+              data: data.map((entry) => entry.count),
+              backgroundColor: 'black',
+              borderColor: 'black',
               borderWidth: 2,
               fill: true,
               tension: 0.4,
             },
           ],
         })
-      } else if (Object.keys(data).length > 0) {
-        setChartData({
-          labels: [selectedService], // Use service name if not daily
-          datasets: [
-            {
-              label: `Total Bookings for ${selectedService}`,
-              data: [data[selectedService] || 0],
-              backgroundColor: 'rgba(153, 102, 255, 0.6)',
-              borderColor: 'rgba(153, 102, 255, 1)',
-              borderWidth: 2,
-            },
-          ],
-        })
       } else {
-        // Handle no data
         setChartData({
           labels: [],
           datasets: [],
@@ -106,9 +92,7 @@ const ServicesAverageChart = ({ trigger }) => {
         value={timeframe}
         className='mb-4 select select-bordered'
       >
-        <option value='daily' selected>
-          Daily
-        </option>
+        <option value='daily'>Daily</option>
         <option value='weekly'>Weekly</option>
         <option value='monthly'>Monthly</option>
         <option value='yearly'>Yearly</option>
