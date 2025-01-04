@@ -73,7 +73,6 @@ export const getAccessToken = async () => {
       const { access_token, refresh_token, expires_in } = response.data
       const newExpiresAt = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
 
-      // Update the database with the new tokens
       tokenRecord.accessToken = access_token
       tokenRecord.refreshToken = refresh_token
       tokenRecord.expiresAt = newExpiresAt
@@ -114,9 +113,8 @@ export const oAuthCallback = async (req, res) => {
     )
 
     const { access_token, refresh_token, expires_in } = response.data
-    const expiresAt = new Date(Date.now() + expires_in * 1000) // Calculate expiration date
+    const expiresAt = new Date(Date.now() + expires_in * 1000)
 
-    // Store or update the tokens in the database
     await ZoomToken.findOneAndUpdate(
       {},
       {
@@ -124,10 +122,9 @@ export const oAuthCallback = async (req, res) => {
         refreshToken: refresh_token,
         expiresAt,
       },
-      { upsert: true, new: true } // Create a new document if it doesn't exist
+      { upsert: true, new: true }
     )
 
-    // res.send('Zoom OAuth successful! Access token stored.')
     res.redirect('https://skillbridge-kappa.vercel.app/book-appointment')
   } catch (error) {
     console.error(
@@ -141,8 +138,6 @@ export const oAuthCallback = async (req, res) => {
 export const createMeeting = async (req, res) => {
   try {
     const { topic, start_time, duration, email } = req.body
-
-    // 10/2/2024 9:00
 
     const parsedDate = parse(start_time, 'MM/dd/yyyy H:mm', new Date())
     const isoStartTime = formatISO(parsedDate)
@@ -166,7 +161,6 @@ export const createMeeting = async (req, res) => {
       }
     )
 
-    // testing
     const userExists = await User.findOne({ email })
 
     if (userExists) {
@@ -205,7 +199,7 @@ export const createMeeting = async (req, res) => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: false, // Use 24-hour format
+        hour12: false,
       })
 
       await transporter.sendMail({
@@ -257,8 +251,6 @@ export const createMeeting = async (req, res) => {
         meetingDetails: response.data,
       })
     }
-
-    // testing
   } catch (error) {
     console.error(
       'Error creating Zoom meeting:',
@@ -284,7 +276,7 @@ export const getAllMeetings = async (req, res) => {
         },
         params: {
           page_size: 30,
-          type: 'waiting', // Try 'upcoming', 'scheduled', 'live', 'waiting'
+          type: 'waiting',
         },
       }
     )
@@ -350,15 +342,14 @@ export const getThreeUpcomingMeetingsByUser = async (req, res) => {
   }
 
   try {
-    const currentTime = new Date().toISOString() // Get the current time in ISO format
+    const currentTime = new Date().toISOString()
 
-    // Find the next 3 upcoming meetings for the user
     const upcomingMeetings = await Meeting.find({
-      user: userId, // Filter by userId
-      start_time: { $gte: currentTime }, // Only future meetings
+      user: userId,
+      start_time: { $gte: currentTime },
     })
-      .sort({ start_time: 1 }) // Sort by start_time in ascending order
-      .limit(3) // Limit to 3 results
+      .sort({ start_time: 1 })
+      .limit(3)
 
     res.status(200).json(upcomingMeetings)
   } catch (error) {

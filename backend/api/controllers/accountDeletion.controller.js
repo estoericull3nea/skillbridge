@@ -1,6 +1,5 @@
 import DeleteAccount from '../models/deletionRequest.model.js'
 import User from '../models/user.model.js'
-import Booking from '../models/booking.model.js'
 
 export const requestAccountDeletion = async (req, res) => {
   const { userId } = req.params

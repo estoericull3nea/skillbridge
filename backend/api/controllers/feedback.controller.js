@@ -46,7 +46,6 @@ export const getAllFeedbacks = async (req, res) => {
   }
 }
 
-// Get feedbacks by email
 export const getFeedbacksByEmail = async (req, res) => {
   const { email } = req.params
 
@@ -68,7 +67,6 @@ export const getFeedbacksByEmail = async (req, res) => {
   }
 }
 
-// Delete all feedbacks
 export const deleteAllFeedbacks = async (req, res) => {
   try {
     await Feedback.deleteMany({})

@@ -137,153 +137,6 @@ export const verifyEmail = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body
 
-  // try {
-  //   const thisUser = await User.findOne({ email })
-
-  //   if (thisUser) {
-  //     // Compare the provided password with the stored hashed password
-  //     const isPasswordCorrect = await bcrypt.compare(
-  //       password,
-  //       thisUser.password
-  //     )
-
-  //     if (isPasswordCorrect) {
-  //       const token = jwt.sign(
-  //         {
-  //           id: thisUser._id,
-  //           email: thisUser.email,
-  //           firstName: thisUser.firstName,
-  //           lastName: thisUser.lastName,
-  //           role: thisUser.role,
-  //         },
-  //         process.env.JWT_SECRET,
-  //         { expiresIn: '1h' }
-  //       )
-
-  //       if (!thisUser.isVerified) {
-  //         await Logger.create({
-  //           action: 'Failed Login Attempt',
-  //           details: { email, reason: 'User not verified' },
-  //         })
-
-  //         return res
-  //           .status(403)
-  //           .json({ message: 'Please verify your account before logging in.' })
-  //       }
-
-  //       // Log the login action
-  //       await Logger.create({
-  //         user: thisUser._id,
-  //         action: 'User Logged In',
-  //         details: { email: thisUser.email },
-  //       })
-
-  //       return res.status(200).json({
-  //         message: 'Login Successful',
-  //         token,
-  //       })
-  //     } else {
-  //       return res.status(401).json({
-  //         message: 'Incorrect password',
-  //       })
-  //     }
-  //   } else {
-  //     if (!thisUser) {
-  //       await Logger.create({
-  //         action: 'Failed Login Attempt',
-  //         details: { email, reason: 'User not found' },
-  //       })
-
-  //       return res
-  //         .status(404)
-  //         .json({ message: 'User not found with this email' })
-  //     }
-
-  //     if (!thisUser.isVerified) {
-  //       await Logger.create({
-  //         action: 'Failed Login Attempt',
-  //         details: { email, reason: 'User not verified' },
-  //       })
-
-  //       return res
-  //         .status(403)
-  //         .json({ message: 'Please verify your account before logging in.' })
-  //     }
-
-  //     const isLocked = thisUser.lockUntil && thisUser.lockUntil > Date.now()
-
-  //     if (isLocked) {
-  //       const lockDuration = Math.ceil(
-  //         (thisUser.lockUntil - Date.now()) / 1000 / 60
-  //       )
-
-  //       await Logger.create({
-  //         action: 'Failed Login Attempt',
-  //         details: { email, reason: 'Account is locked', lockDuration },
-  //       })
-
-  //       return res.status(403).json({
-  //         message: `Too many failed login attempts. Try again in ${lockDuration} minutes.`,
-  //       })
-  //     }
-
-  //     const isPasswordCorrect = await bcrypt.compare(
-  //       password,
-  //       thisUser.password
-  //     )
-
-  //     if (!isPasswordCorrect) {
-  //       thisUser.failedLoginAttempts += 1
-
-  //       if (thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS) {
-  //         thisUser.lockUntil = Date.now() + LOCK_TIME
-  //       }
-
-  //       await Logger.create({
-  //         action: 'Failed Login Attempt',
-  //         details: { email, reason: 'Incorrect password' },
-  //       })
-  //       await thisUser.save()
-
-  //       return res.status(401).json({
-  //         message:
-  //           thisUser.failedLoginAttempts >= MAX_FAILED_ATTEMPTS
-  //             ? `Too many login attempts. Try again after 15 minutes.`
-  //             : 'Incorrect email or password.',
-  //       })
-  //     }
-
-  //     thisUser.failedLoginAttempts = 0
-  //     thisUser.lockUntil = undefined
-  //     await thisUser.save()
-
-  //     const token = jwt.sign(
-  //       {
-  //         id: thisUser._id,
-  //         email: thisUser.email,
-  //         firstName: thisUser.firstName,
-  //         lastName: thisUser.lastName,
-  //         role: thisUser.role,
-  //       },
-  //       process.env.JWT_SECRET,
-  //       { expiresIn: '1h' }
-  //     )
-
-  //     await Logger.create({
-  //       user: thisUser._id,
-  //       action: 'User Logged In',
-  //       details: { email: thisUser.email },
-  //     })
-
-  //     return res.status(200).json({
-  //       message: 'Login Successful',
-  //       token,
-  //     })
-  //   }
-  // } catch (error) {
-  //   return res.status(500).json({ message: error.message })
-  // }
-
   const thisUser = await User.findOne({ email })
 
   if (!thisUser) {
@@ -483,7 +336,6 @@ export const forgotPassword = async (req, res) => {
 
     const resetTokenExpires = Date.now() + 15 * 60 * 1000 // 15 minutes from now
 
-    // Save the hashed token and its expiration in the user's document
     user.resetPasswordToken = hashedResetToken
     user.resetPasswordExpires = resetTokenExpires
     await user.save()
@@ -505,7 +357,6 @@ export const forgotPassword = async (req, res) => {
         return res.status(500).json({ message: 'Error sending email' })
       }
 
-      // Send success response
       res.status(200).json({
         message: 'Password reset link sent to your email',
         resetToken: hashedResetToken,
@@ -637,7 +488,6 @@ export const googleSignup = async (req, res) => {
           { expiresIn: '1h' }
         )
 
-        // Capture IP Address and User Agent from request
         const ipAddress = req.ip || req.connection.remoteAddress
         const userAgent = req.get('User-Agent')
 
@@ -647,7 +497,6 @@ export const googleSignup = async (req, res) => {
           details: { email: user.email, ipAddress, userAgent },
         })
 
-        // Save login activity to the LoginHistory model
         await LogLogin.create({
           user: existingUser._id,
           ipAddress,
@@ -715,11 +564,9 @@ export const googleSignup = async (req, res) => {
         { expiresIn: '1h' }
       )
 
-      // Capture IP Address and User Agent from request
       const ipAddress = req.ip || req.connection.remoteAddress
       const userAgent = req.get('User-Agent')
 
-      // Save login activity to the LoginHistory model
       await LogLogin.create({
         user: userGoogleRegistered[0]._id,
         ipAddress,
@@ -742,15 +589,14 @@ export const googleSignup = async (req, res) => {
 }
 
 export const googleSign = async (req, res) => {
-  // Backend example to handle Google OAuth login
   const { code } = req.body
   console.log(`google sign in`)
 
   try {
-    const googleData = await exchangeCodeForToken(code) // Exchange code for token
-    const user = await findOrCreateUser(googleData) // Find or create user in your database
+    const googleData = await exchangeCodeForToken(code)
+    const user = await findOrCreateUser(googleData)
 
-    const jwtToken = createJWT(user) // Create JWT token for the session
+    const jwtToken = createJWT(user)
     res.json({ token: jwtToken })
   } catch (error) {
     res.status(400).json({ message: 'Google login failed' })
@@ -765,7 +611,6 @@ export const oAuthSignUp = async (req, res) => {
   const { tokenId } = req.body
 
   try {
-    // Verify the tokenId with Google
     const ticket = await client.verifyIdToken({
       idToken: tokenId,
       audience: process.env.GOOGLE_CLIENT_ID,
@@ -774,10 +619,8 @@ export const oAuthSignUp = async (req, res) => {
     const payload = ticket.getPayload()
     const { sub, email, name, picture } = payload
 
-    // Here you can handle user logic (find or create the user in the database)
     const user = { id: sub, email, name, picture }
 
-    // Generate JWT token
     const token = generateToken(user)
 
     res.status(200).json({ token, user })

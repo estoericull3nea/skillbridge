@@ -1,6 +1,5 @@
 import Log from '../models/log.model.js'
 
-// Create a log entry
 export const createLog = async (req, res) => {
   const { user, action, details } = req.body
 
@@ -13,7 +12,6 @@ export const createLog = async (req, res) => {
   }
 }
 
-// Retrieve all logs
 export const getLogs = async (req, res) => {
   try {
     const logs = await Log.find().sort({ createdAt: -1 })

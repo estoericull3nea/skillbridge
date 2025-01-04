@@ -1,4 +1,3 @@
-// routes/logRoutes.js
 import express from 'express'
 import { createLog, getLogs } from '../controllers/logController.js'
 

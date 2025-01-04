@@ -9,8 +9,6 @@ const userSchema = new mongoose.Schema(
     },
     lastName: {
       type: String,
-      // required: [true, 'Last name is required'],
-      // trim: true,
     },
     email: {
       type: String,
@@ -22,8 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
-      // required: [true, 'Password is required'],
-      // minLength: [8, 'Password must be at least 8 characters long'],
+
       required: false,
     },
 

@@ -4,7 +4,6 @@ import axios from 'axios'
 import { parse, formatISO } from 'date-fns'
 import ZoomToken from '../models/zoomToken.model.js'
 import User from '../models/user.model.js'
-import Meeting from '../models/meeting.model.js'
 import nodemailer from 'nodemailer'
 
 import dotenv from 'dotenv'
@@ -49,7 +48,6 @@ export const getAccessToken = async () => {
       const { access_token, refresh_token, expires_in } = response.data
       const newExpiresAt = new Date(Date.now() + 10 * 24 * 60 * 60 * 1000)
 
-      // Update the database with the new tokens
       tokenRecord.accessToken = access_token
       tokenRecord.refreshToken = refresh_token
       tokenRecord.expiresAt = newExpiresAt
@@ -125,60 +123,7 @@ export const book = async (req, res) => {
 
     const month = new Date(date).toLocaleString('en-US', { month: 'long' })
 
-    const parsedDate = parse(startTimeZoom, 'MM/dd/yyyy H:mm', new Date())
-    const isoStartTime = formatISO(parsedDate)
-
-    const accessToken = await getAccessToken()
-
-    console.log('test b4')
-
-    // const response = await axios.post(
-    //   `https://api.zoom.us/v2/users/me/meetings`,
-    //   {
-    //     topic: service,
-    //     type: 2,
-    //     start_time: isoStartTime,
-    //     duration: 60,
-    //     timezone: 'Asia/Shanghai',
-    //   },
-    //   {
-    //     headers: {
-    //       Authorization: `Bearer ${accessToken}`,
-    //       'Content-Type': 'application/json',
-    //     },
-    //   }
-    // )
-
-    console.log('test afte')
-
-    // const {
-    //   host_id,
-    //   host_email,
-    //   topic,
-    //   status,
-    //   start_time,
-    //   duration,
-    //   timezone,
-    //   start_url,
-    //   join_url,
-    // } = response.data
-
     let userExists = await User.findOne({ email })
-
-    // const newMeeting = new Meeting({
-    //   user: userExists ? userExists._id : null,
-    //   host_id,
-    //   host_email,
-    //   topic,
-    //   status,
-    //   start_time,
-    //   duration,
-    //   timezone,
-    //   start_url,
-    //   join_url,
-    // })
-
-    // await newMeeting.save()
 
     const newBooking = new Booking({
       service,
@@ -249,7 +194,6 @@ export const book = async (req, res) => {
 
 export const getAllBookings = async (req, res) => {
   try {
-    // Find bookings where isDeleted is false and populate the 'user' field
     const bookings = await Booking.find({ isDeleted: { $ne: true } })
       .populate('user')
       .sort({ createdAt: -1 })
@@ -258,7 +202,6 @@ export const getAllBookings = async (req, res) => {
       return res.status(404).json({ message: 'No Bookings Found' })
     }
 
-    // Format the bookings as needed
     const formattedBookings = bookings.map((booking) => {
       return {
         ...booking._doc,
@@ -268,10 +211,8 @@ export const getAllBookings = async (req, res) => {
       }
     })
 
-    // Return the formatted bookings
     return res.status(200).json(formattedBookings)
   } catch (error) {
-    // Return an error response if something goes wrong
     return res.status(500).json({ message: error.message })
   }
 }
@@ -413,7 +354,7 @@ export const getBookingsByUser = async (req, res) => {
       isDeleted: { $ne: true },
     })
       .populate('user')
-      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+      .sort({ createdAt: -1 })
 
     if (!bookings.length) {
       return res
@@ -451,7 +392,6 @@ export const getHolidaysBasedOnUserIp = async (req, res) => {
       }
     )
 
-    // Send the holidays data back to the frontend
     res.json(holidayResponse.data.response.holidays)
   } catch (error) {
     return res.status(500).json({ message: error.message })
@@ -501,47 +441,11 @@ export const getThreeUpcomingPendingBookingsByUser = async (req, res) => {
   }
 }
 
-// export const updateBookingStatus = async (req, res) => {
-//   const { bookingId } = req.params // Extract bookingId from params
-//   const { status } = req.body // Extract status from request body
-
-//   try {
-//     // Check if the status is valid
-//     const validStatuses = Booking.schema.path('status').enumValues
-//     if (!validStatuses.includes(status)) {
-//       return res.status(400).json({
-//         message: `Invalid status. Valid statuses are: ${validStatuses.join(
-//           ', '
-//         )}.`,
-//       })
-//     }
-
-//     // Update the booking status by matching the bookingId
-//     const updatedBooking = await Booking.findOneAndUpdate(
-//       { _id: bookingId, isDeleted: false }, // Correct usage of bookingId here
-//       { status },
-//       { new: true }
-//     )
-
-//     // If booking not found
-//     if (!updatedBooking) {
-//       return res.status(404).json({ message: 'Booking not found.' })
-//     }
-
-//     return res
-//       .status(200)
-//       .json({ message: 'Update Successfully', updatedBooking })
-//   } catch (error) {
-//     return res.status(500).json({ message: error.message })
-//   }
-// }
-
 export const updateBookingStatus = async (req, res) => {
-  const { bookingId } = req.params // Extract bookingId from params
-  const { status, startTime, endTime } = req.body // Extract status and time fields from request body
+  const { bookingId } = req.params
+  const { status, startTime, endTime } = req.body
 
   try {
-    // Check if the status is valid
     const validStatuses = Booking.schema.path('status').enumValues
     if (!validStatuses.includes(status)) {
       return res.status(400).json({
@@ -551,49 +455,41 @@ export const updateBookingStatus = async (req, res) => {
       })
     }
 
-    // Prepare fields to update
     const updateFields = { status }
 
-    // Calculate duration and update startTime/endTime as needed
     if (status === 'ongoing' && startTime && endTime) {
       const start = new Date(startTime)
       const end = new Date(endTime)
 
-      // Check if startTime is before endTime
       if (start >= end) {
         return res
           .status(400)
           .json({ message: 'End time must be after start time.' })
       }
 
-      // Calculate duration in minutes
-      const duration = Math.ceil((end - start) / 1000 / 60) // Convert milliseconds to minutes
+      const duration = Math.ceil((end - start) / 1000 / 60)
       updateFields.startTime = startTime
       updateFields.endTime = endTime
       updateFields.duration = duration
     }
 
-    // If marking as done, set endTime to current time and calculate duration
     if (status === 'done') {
       const now = new Date()
-      updateFields.endTime = now // Set endTime to the current time
+      updateFields.endTime = now
 
-      // Assuming startTime is already set, calculate duration based on it
       if (updateFields.startTime) {
         const start = new Date(updateFields.startTime)
-        const duration = Math.ceil((now - start) / 1000 / 60) // Calculate duration in minutes
+        const duration = Math.ceil((now - start) / 1000 / 60)
         updateFields.duration = duration
       }
     }
 
-    // Update the booking status by matching the bookingId
     const updatedBooking = await Booking.findOneAndUpdate(
-      { _id: bookingId, isDeleted: false }, // Correct usage of bookingId here
-      updateFields, // Include the fields to update
+      { _id: bookingId, isDeleted: false },
+      updateFields,
       { new: true }
     )
 
-    // If booking not found
     if (!updatedBooking) {
       return res.status(404).json({ message: 'Booking not found.' })
     }
@@ -684,7 +580,7 @@ export const getTotalSpecificServices = async (req, res) => {
                   format: '%m/%d/%Y',
                 },
               },
-              '$date', // Use existing date if conversion fails or date is already a Date object
+              '$date',
             ],
           },
         },
