@@ -20,6 +20,9 @@ const ViewBookings = () => {
   const [displayDialog, setDisplayDialog] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
   const [trigger, setTrigger] = useState(0)
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('')
 
   useEffect(() => {
     fetchBookings()
@@ -132,13 +135,22 @@ const ViewBookings = () => {
   }
 
   const handlePrint = () => {
-    const doneBookings = filteredBookings.filter(
-      (booking) => booking.status === 'done'
-    )
+    const doneBookings = filteredBookings.filter((booking) => {
+      const bookingDate = new Date(booking.date)
+      const start = startDate ? new Date(startDate) : null
+      const end = endDate ? new Date(endDate) : null
+
+      return (
+        (!selectedStatus || booking.status === selectedStatus) &&
+        (!start || bookingDate >= start) &&
+        (!end || bookingDate <= end)
+      )
+    })
+
     const printWindow = window.open('', '', 'height=400,width=600')
-    printWindow.document.write('<html><head><title>Done Bookings</title>')
+    printWindow.document.write('<html><head><title>Filtered Bookings</title>')
     printWindow.document.write('</head><body>')
-    printWindow.document.write('<h1>Done Bookings List</h1>')
+    printWindow.document.write('<h1>Filtered Bookings List</h1>')
     printWindow.document.write('<table border="1"><thead><tr>')
     printWindow.document.write(
       '<th>Email</th><th>Service</th><th>Date</th><th>Time</th><th>Status</th></tr></thead><tbody>'
@@ -274,11 +286,67 @@ const ViewBookings = () => {
         </span>
       </div>
 
+      <div className='flex gap-4 mb-4'>
+        <div>
+          <label
+            htmlFor='start-date'
+            className='block text-sm font-medium text-gray-700'
+          >
+            Start Date
+          </label>
+          <InputText
+            type='date'
+            id='start-date'
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className='mt-1 p-3 block w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none'
+          />
+        </div>
+        <div>
+          <label
+            htmlFor='end-date'
+            className='block text-sm font-medium text-gray-700'
+          >
+            End Date
+          </label>
+          <InputText
+            type='date'
+            id='end-date'
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className='mt-1 p-3 block w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none'
+          />
+        </div>
+      </div>
+
+      <div className='mb-4'>
+        <label
+          htmlFor='status'
+          className='block text-sm font-medium text-gray-700'
+        >
+          Select Status to Print
+        </label>
+        <select
+          id='status'
+          value={selectedStatus}
+          onChange={(e) => setSelectedStatus(e.target.value)}
+          className='mt-1 p-3 block w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none'
+        >
+          <option value=''>All</option>
+          <option value='pending'>Pending</option>
+          <option value='ongoing'>Ongoing</option>
+          <option value='canceled'>Canceled</option>
+          <option value='rejected'>Rejected</option>
+          <option value='done'>Done</option>
+          <option value='missed'>Missed</option>
+        </select>
+      </div>
+
       <Button
-        label='Print Done Bookings'
+        label='Print Filtered Bookings'
         icon='pi pi-print'
         onClick={handlePrint}
-        className='p-button-help mb-4'
+        className='p-button-primary mt-4'
       />
 
       {filteredBookings.length === 0 ? (
