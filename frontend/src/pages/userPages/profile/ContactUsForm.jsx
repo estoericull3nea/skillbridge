@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { useTranslation } from 'react-i18next' // Import the useTranslation hook
+import { useTranslation } from 'react-i18next'
 
 import { io } from 'socket.io-client'
 const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const ContactUsForm = () => {
-  const { t } = useTranslation() // Initialize the translation function
+  const { t } = useTranslation()
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [subject, setSubject] = useState('')
@@ -29,9 +29,9 @@ const ContactUsForm = () => {
         setEmail(email)
       } catch (error) {
         console.error('Error fetching user data:', error)
-        toast.error(t('error_fetching_user')) // Show error message using toast
+        toast.error(t('error_fetching_user'))
       } finally {
-        setLoading(false) // Set loading to false after fetching
+        setLoading(false)
       }
     }
 
@@ -56,7 +56,7 @@ const ContactUsForm = () => {
       )
 
       if (response.status === 201) {
-        toast.success(t('message_sent')) // Show success message
+        toast.success(t('message_sent'))
         setSubject('')
         setMessage('')
 

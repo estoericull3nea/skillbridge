@@ -37,7 +37,6 @@ const UserManagement = () => {
   const [viewDialog, setViewDialog] = useState(false)
   const [loadingUser, setLoadingUser] = useState(false)
 
-  // Fetch all users
   const fetchUsers = async () => {
     setIsLoading(true)
     try {
@@ -54,13 +53,11 @@ const UserManagement = () => {
     }
   }
 
-  // Handle input change
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setUserForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  // Create user
   const createUser = async () => {
     try {
       const { status, data } = await axios.post(
@@ -79,7 +76,6 @@ const UserManagement = () => {
     }
   }
 
-  // Update user
   const updateUser = async (userId) => {
     try {
       const { status, data } = await axios.patch(
@@ -99,7 +95,6 @@ const UserManagement = () => {
     }
   }
 
-  // Delete user
   const deleteUser = async (userId) => {
     try {
       const { status } = await axios.delete(
@@ -114,7 +109,6 @@ const UserManagement = () => {
     }
   }
 
-  // Promote user to admin
   const promoteToAdmin = async (userId) => {
     try {
       const { status, data } = await axios.patch(
@@ -131,7 +125,6 @@ const UserManagement = () => {
     }
   }
 
-  // Demote user from admin
   const demoteFromAdmin = async (userId) => {
     try {
       const { status, data } = await axios.patch(
@@ -148,7 +141,6 @@ const UserManagement = () => {
     }
   }
 
-  // Open dialog for creating or updating user
   const openDialog = (user = null) => {
     if (user) {
       setSelectedUser(user)
@@ -156,7 +148,7 @@ const UserManagement = () => {
         firstName: user.firstName || '',
         lastName: user.lastName || '',
         email: user.email || '',
-        password: '', // Handle password differently if needed
+        password: '',
         active: user.active,
         isVerified: user.isVerified,
       })
@@ -166,7 +158,6 @@ const UserManagement = () => {
     setShowDialog(true)
   }
 
-  // Open view dialog
   const openViewDialog = async (userId) => {
     setLoadingUser(true)
     try {
@@ -182,7 +173,6 @@ const UserManagement = () => {
     }
   }
 
-  // Reset form fields
   const resetForm = () => {
     setUserForm({
       firstName: '',
@@ -195,7 +185,6 @@ const UserManagement = () => {
     setSelectedUser(null)
   }
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault()
     if (selectedUser) {
@@ -205,7 +194,6 @@ const UserManagement = () => {
     }
   }
 
-  // Print user table
   const printTable = () => {
     const printWindow = window.open('', '_blank')
     printWindow.document.write(`
@@ -252,7 +240,6 @@ const UserManagement = () => {
     printWindow.print()
   }
 
-  // Effect to fetch users on mount
   useEffect(() => {
     fetchUsers()
   }, [])

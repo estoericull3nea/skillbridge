@@ -5,10 +5,10 @@ import { useParams } from 'react-router-dom'
 import axios from 'axios'
 import { InputText } from 'primereact/inputtext'
 import { FilterMatchMode } from 'primereact/api'
-import { useTranslation } from 'react-i18next' // Import the useTranslation hook
+import { useTranslation } from 'react-i18next'
 
 const LoginActivity = () => {
-  const { t } = useTranslation() // Initialize the translation function
+  const { t } = useTranslation()
   const [isLoadingAllLoginHistory, setIsLoadingAllLoginHistory] =
     useState(false)
   const [allLoginHistory, setAllLoginHistory] = useState([])
@@ -64,7 +64,6 @@ const LoginActivity = () => {
     fetchAllLoginHistory()
   }, [])
 
-  // Global filter change handler
   const onGlobalFilterChange = (e) => {
     const value = e.target.value
     let _filters = { ...filters }
@@ -74,7 +73,6 @@ const LoginActivity = () => {
     setGlobalFilterValue(value)
   }
 
-  // Table header with global filter input
   const renderHeader = () => {
     return (
       <div className='table-header'>
@@ -83,7 +81,7 @@ const LoginActivity = () => {
           <InputText
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-            placeholder={t('global_search')} // Use translation for placeholder
+            placeholder={t('global_search')}
             className='py-3 shadow-lg px-3'
           />
         </span>
@@ -97,7 +95,6 @@ const LoginActivity = () => {
     <>
       {isLoadingAllLoginHistory ? (
         <div className='space-y-3'>
-          {/* Skeleton Table Header */}
           <div className='flex space-x-4'>
             <div className='skeleton h-9 rounded-lg w-full'></div>
             <div className='skeleton h-9 rounded-lg w-full'></div>
@@ -105,7 +102,6 @@ const LoginActivity = () => {
             <div className='skeleton h-9 rounded-lg w-full'></div>
             <div className='skeleton h-9 rounded-lg w-full'></div>
           </div>
-          {/* Skeleton Rows */}
           {Array.from({ length: 5 }).map((_, index) => (
             <div key={index} className='flex space-x-4'>
               <div className='skeleton h-9 rounded-lg w-full'></div>
@@ -124,32 +120,32 @@ const LoginActivity = () => {
           header={header}
           filters={filters}
           globalFilterFields={['_id', 'ipAddress', 'userAgent', 'createdAt']}
-          emptyMessage={t('no_login_history')} // Use translation for empty message
+          emptyMessage={t('no_login_history')}
         >
           <Column
             field='_id'
-            header={t('login_history_id')} // Use translation
+            header={t('login_history_id')}
             filter
             filterPlaceholder='Search by ID'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='ipAddress'
-            header={t('ip_address')} // Use translation
+            header={t('ip_address')}
             filter
             filterPlaceholder='Search by IP'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='userAgent'
-            header={t('user_agent')} // Use translation
+            header={t('user_agent')}
             filter
             filterPlaceholder='Search by User Agent'
             style={{ width: '25%' }}
           ></Column>
           <Column
             field='createdAt'
-            header={t('login_at')} // Use translation
+            header={t('login_at')}
             body={(rowData) => formatDate(rowData.createdAt)}
             filter
             filterPlaceholder='Search by Date'

@@ -1,4 +1,3 @@
-// src/pages/userPages/profile/Profile.jsx
 import React, { useState, useEffect } from 'react'
 import { useParams, Routes, Route, useNavigate } from 'react-router-dom'
 import Sidebar from './Sidebar'
@@ -13,7 +12,6 @@ import DataExport from './DataExport'
 import Dashboard from './Dashboard'
 import { convertDateToWords } from '../../../utils/convertDaysToWords.js'
 import { CiCalendar } from 'react-icons/ci'
-import { IoMdNotificationsOutline } from 'react-icons/io'
 import Breadcrumbs from '../../../components/Breadcrumbs.jsx'
 import UserInfo from './UserInfo.jsx'
 import { isTokenValid } from '../../../utils/isTokenValid.js'
@@ -59,24 +57,6 @@ const Profile = () => {
                   </p>
                 </div>
               </div>
-
-              {/* <div className='mb-3 px-3 py-2 text-end bg-white shadow max-w-max rounded-full flex items-center justify-center '>
-                <div className='dropdown dropdown-hover dropdown-end'>
-                  <IoMdNotificationsOutline tabIndex={0} role='button' />
-
-                  <ul
-                    tabIndex={0}
-                    className='dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow'
-                  >
-                    <li>
-                      <a>Item 1</a>
-                    </li>
-                    <li>
-                      <a>Item 2</a>
-                    </li>
-                  </ul>
-                </div>
-              </div> */}
             </div>
           </div>
 

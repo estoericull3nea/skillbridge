@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
-import { useTranslation } from 'react-i18next' // Import the useTranslation hook
+import { useTranslation } from 'react-i18next'
 
 const DataExport = () => {
-  const { t } = useTranslation() // Initialize the translation function
+  const { t } = useTranslation()
   const { userId } = useParams()
   const [format, setFormat] = useState('json')
   const [loading, setLoading] = useState(false)
@@ -27,7 +27,7 @@ const DataExport = () => {
       link.setAttribute('download', `user_data_${userId}.${fileExtension}`)
       document.body.appendChild(link)
       link.click()
-      link.remove() // Cleanup after download
+      link.remove()
     } catch (error) {
       console.error('Error exporting data:', error.message)
     } finally {

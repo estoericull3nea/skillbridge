@@ -11,7 +11,6 @@ const VerifyEmail = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    // Extract the token from the URL query string
     const params = new URLSearchParams(location.search)
     const token = params.get('token')
 
@@ -23,7 +22,6 @@ const VerifyEmail = () => {
         setMessage('Email verified successfully. You can now log in.')
         setIsVerified(true)
 
-        // Start the countdown
         const countdownInterval = setInterval(() => {
           setCountdown((prevCountdown) => {
             if (prevCountdown <= 1) {
@@ -34,7 +32,6 @@ const VerifyEmail = () => {
           })
         }, 1000)
 
-        // Cleanup interval when component unmounts
         return () => clearInterval(countdownInterval)
       } catch (error) {
         setMessage('Invalid or expired token. Please try again.')
@@ -60,7 +57,6 @@ const VerifyEmail = () => {
             : 'Email Verification Failed'}
         </h1>
 
-        {/* Message body */}
         <p className='text-lg text-gray-700 mb-6'>{message}</p>
 
         <div
@@ -91,7 +87,6 @@ const VerifyEmail = () => {
           </div>
         </div>
 
-        {/* Button and Countdown */}
         {isVerified && (
           <div className='flex justify-center items-center mt-6'>
             redirecting...

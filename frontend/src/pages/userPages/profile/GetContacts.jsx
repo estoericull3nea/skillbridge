@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
-import { useTranslation } from 'react-i18next' // Import the useTranslation hook
+import { useTranslation } from 'react-i18next'
 
 const GetContacts = () => {
-  const { t } = useTranslation() // Initialize the translation function
+  const { t } = useTranslation()
   const [contacts, setContacts] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const email = localStorage.getItem('email') // Get email once to avoid multiple calls
+  const email = localStorage.getItem('email')
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -27,7 +27,7 @@ const GetContacts = () => {
     }
 
     fetchContacts()
-  }, [email]) // Dependency on email
+  }, [email])
 
   const formatDate = (dateString) => {
     const dateOptions = { year: 'numeric', month: 'long', day: 'numeric' }

@@ -14,7 +14,6 @@ const UserLoginActivity = () => {
   const [first, setFirst] = useState(0)
   const [rows, setRows] = useState(10)
 
-  // State to manage sorting
   const [sortField, setSortField] = useState(null)
   const [sortOrder, setSortOrder] = useState(null)
 
@@ -22,7 +21,6 @@ const UserLoginActivity = () => {
     const newSearchTerm = e.target.value
     setSearchTerm(newSearchTerm)
 
-    // Clear login history when a new search is initiated
     if (newSearchTerm.length < 2) {
       setUser(null)
       setLoginHistory([])
@@ -81,7 +79,6 @@ const UserLoginActivity = () => {
     setSortOrder(event.sortOrder)
   }
 
-  // Calculate the total number of records for pagination
   const totalRecords = filteredLoginHistory.length
 
   return (

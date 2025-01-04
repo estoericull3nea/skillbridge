@@ -4,16 +4,15 @@ import { FaLongArrowAltLeft } from 'react-icons/fa'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
 import axios from 'axios'
-import { useTranslation } from 'react-i18next' // Import the translation hook
+import { useTranslation } from 'react-i18next'
 
 const ForgotPassword = () => {
-  const { t } = useTranslation() // Use the translation hook
+  const { t } = useTranslation()
 
   const [email, setEmail] = useState('')
   const [showVerificationModal, setShowVerificationModal] = useState(false)
   const [loadingResend, setLoadingResend] = useState(false)
 
-  // Forgot password mutation
   const forgotPasswordMutation = useMutation({
     mutationFn: async (email) => {
       const response = await axios.post(
@@ -30,14 +29,13 @@ const ForgotPassword = () => {
       const errorMessage =
         error.response?.data?.message || t('AnErrorOccurredPleaseTryAgain')
       if (errorMessage === t('AccountNotVerifiedPleaseVerify')) {
-        setShowVerificationModal(true) // Show the modal if account is not verified
+        setShowVerificationModal(true)
       } else {
         toast.error(errorMessage)
       }
     },
   })
 
-  // Resend verification mutation
   const resendVerificationMutation = useMutation({
     mutationFn: async () => {
       setLoadingResend(true)
@@ -66,11 +64,11 @@ const ForgotPassword = () => {
       return
     }
 
-    forgotPasswordMutation.mutate(email) // Trigger forgot password mutation
+    forgotPasswordMutation.mutate(email)
   }
 
   const handleResendVerification = () => {
-    resendVerificationMutation.mutate() // Trigger resend verification mutation
+    resendVerificationMutation.mutate()
   }
 
   return (
@@ -127,7 +125,6 @@ const ForgotPassword = () => {
         </div>
       </section>
 
-      {/* Daisy UI Modal for Resending Verification */}
       {showVerificationModal && (
         <div className='modal modal-open'>
           <div className='modal-box'>

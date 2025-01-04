@@ -518,8 +518,6 @@ const Navbar = () => {
                     <span className='text-xl block font-bold'>
                       {user?.picture ? (
                         <img
-                          // src={localStorage.getItem('picture')}
-                          // src={`https://skillbridge-p5g5.onrender.com/${user?.picture}`}
                           src={localStorage.getItem('picture')}
                           alt=''
                           className='w-full'

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
-import { useTranslation } from 'react-i18next' // Import the useTranslation hook
+import { useTranslation } from 'react-i18next'
 
 import { io } from 'socket.io-client'
 const socket = io('https://skillbridge-p5g5.onrender.com')
 
 const Feedback = () => {
-  const { t } = useTranslation() // Initialize the translation function
+  const { t } = useTranslation()
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [bookingExperience, setBookingExperience] = useState('')
@@ -41,15 +41,13 @@ const Feedback = () => {
         suggestions,
       }
 
-      // Sending feedback data to the backend
       await axios.post(
         `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks`,
         feedbackData
       )
 
-      toast.success(t('thank_you_feedback')) // Use translation here
+      toast.success(t('thank_you_feedback'))
 
-      // Reset the form after submission
       setBookingExperience('')
       setServiceQuality('')
       setOverallSatisfaction('')

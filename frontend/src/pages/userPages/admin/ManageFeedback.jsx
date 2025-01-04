@@ -3,7 +3,7 @@ import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
 import { Column } from 'primereact/column'
 import { Button } from 'primereact/button'
-import { FiTrash } from 'react-icons/fi' // Importing trash icon from react-icons
+import { FiTrash } from 'react-icons/fi'
 
 import { io } from 'socket.io-client'
 const socket = io('https://skillbridge-p5g5.onrender.com')
@@ -30,7 +30,7 @@ const ManageFeedback = () => {
     try {
       const response = await axios.get(
         `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks`
-      ) // Adjust the endpoint as necessary
+      )
       setFeedbacks(response.data)
     } catch (error) {
       console.error('Error fetching feedbacks:', error)
@@ -53,8 +53,8 @@ const ManageFeedback = () => {
       await axios.post(
         `${import.meta.env.VITE_PROD_BACKEND_URL}/feedbacks`,
         formData
-      ) // Adjust the endpoint as necessary
-      fetchFeedbacks() // Refresh the feedback list
+      )
+      fetchFeedbacks()
       setFormData({
         name: '',
         email: '',
@@ -63,7 +63,7 @@ const ManageFeedback = () => {
         overallSatisfaction: '',
         feedbackType: 'General Feedback',
         suggestions: '',
-      }) // Reset form data
+      })
     } catch (error) {
       console.error('Error submitting feedback:', error)
     }
@@ -73,8 +73,8 @@ const ManageFeedback = () => {
     try {
       await axios.delete(
         `${import.meta.env.VITE_PROD_BACKEND_URL}feedbacks/${id}`
-      ) // Adjust the endpoint as necessary
-      fetchFeedbacks() // Refresh the feedback list
+      )
+      fetchFeedbacks()
     } catch (error) {
       console.error('Error deleting feedback:', error)
     }
@@ -92,13 +92,11 @@ const ManageFeedback = () => {
 
   return (
     <div className='p-5'>
-      {/* Feedback Table */}
       {loading ? (
         <div className='animate-pulse'>
           <div className='h-4 bg-gray-300 rounded w-1/4 mb-2'></div>
           <div className='h-4 bg-gray-300 rounded w-1/2 mb-2'></div>
           <div className='h-4 bg-gray-300 rounded w-3/4 mb-2'></div>
-          {/* Add more skeletons as needed */}
         </div>
       ) : (
         <DataTable
@@ -118,11 +116,11 @@ const ManageFeedback = () => {
           <Column
             body={(rowData) => (
               <Button
-                icon={<FiTrash />} // Using React Icons for the delete button
+                icon={<FiTrash />}
                 className='p-button-danger'
                 onClick={() => handleDelete(rowData._id)}
                 tooltip='Delete'
-                tooltipOptions={{ position: 'bottom' }} // Optional tooltip
+                tooltipOptions={{ position: 'bottom' }}
               />
             )}
             header='Actions'

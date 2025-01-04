@@ -77,23 +77,19 @@ const Dashboard = () => {
       )
       setUpcommingBookings(filteredData || 0)
     } catch (error) {
-      // Check if the error response exists before accessing its data
       if (
         error.response &&
         error.response.data &&
         error.response.data.message
       ) {
-        // This is the case when the error has a response and message
         const errorMessage = error.response.data.message
 
-        // Example logic (you can customize this depending on your use case)
         if (errorMessage === 'No Bookings Found') {
-          setUpcommingBookings([]) // Clear or update bookings accordingly
+          setUpcommingBookings([])
         }
 
         console.error('Error fetching pending bookings:', errorMessage)
       } else {
-        // If the error doesn't have the expected structure, log a general message
         console.error(
           'An error occurred while fetching pending bookings:',
           error.message || error
@@ -594,7 +590,6 @@ const Dashboard = () => {
               }
             ></Column>
 
-            {/* Handle null or undefined 'status' */}
             <Column
               field='phone'
               header={t('phone')}
@@ -637,7 +632,7 @@ const Dashboard = () => {
                   <button
                     onClick={() => cancelMeeting(rowData._id)}
                     className='btn bg-transparent text-black hover:text-main rounded-full shadow-lg'
-                    disabled={loadingCancel[rowData._id]} // Disable while loading
+                    disabled={loadingCancel[rowData._id]}
                   >
                     {loadingCancel[rowData._id] ? (
                       <span

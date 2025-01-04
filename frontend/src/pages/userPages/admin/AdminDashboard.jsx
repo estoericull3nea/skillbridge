@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { GrSchedules } from 'react-icons/gr'
 import axios from 'axios'
-import RecentBookings from './components/RecentBookings'
 import RecentNewAndActiveUsers from './components/RecentNewAndActiveUsers'
 import RecentFeedback from './components/RecentFeedback'
 import DashboardCharts from './components/ChartComponent'

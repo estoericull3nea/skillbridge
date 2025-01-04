@@ -7,10 +7,8 @@ import { PrimeReactProvider } from 'primereact/api'
 
 import 'primereact/resources/themes/lara-light-cyan/theme.css'
 
-// Initialize the QueryClient instance
 const queryClient = new QueryClient()
 
-// Use React's createRoot to render the app
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>

@@ -1,4 +1,3 @@
-// src/pages/userPages/profile/Content.jsx
 import React from 'react'
 
 const Content = ({ section }) => {

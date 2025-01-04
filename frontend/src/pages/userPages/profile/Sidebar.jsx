@@ -82,16 +82,7 @@ const Sidebar = () => {
               {t('userInfo')}
             </NavLink>
           </li>
-          {/* <li>
-            <NavLink
-              to={`/profile/${userId}/${firstName}/notifications`}
-              className={({ isActive }) =>
-                isActive ? 'font-bold text-blue-500' : ''
-              }
-            >
-              {t('notifications')}
-            </NavLink>
-          </li> */}
+
           <li>
             <NavLink
               to={`/profile/${userId}/${firstName}/deletion`}

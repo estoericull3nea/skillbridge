@@ -26,7 +26,6 @@ import GoogleCallback from './pages/userPages/GoogleCallback'
 import About from './pages/userPages/About'
 import Profile from './pages/userPages/profile/Profile'
 import Admin from './pages/userPages/admin/Admin'
-import ProtectRoute from './components/ProtectRoute'
 import './i18n/i18n.js'
 import AllowedRoute from './components/AllowedRoute.jsx'
 import Unauthorized from './pages/userPages/Unauthorized.jsx'
@@ -86,7 +85,6 @@ const App = () => {
             <AllowedRoute element={<Admin />} allowedRoles={['admin']} />
           }
         />
-        {/* <Route exact path='/admin/*' element={<Admin />} /> */}
 
         <Route path='/about' element={<About />} />
 

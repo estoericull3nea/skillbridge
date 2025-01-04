@@ -1,5 +1,3 @@
-// src/components/ApproveBookings.js
-
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { DataTable } from 'primereact/datatable'
@@ -17,7 +15,7 @@ const ApproveBookings = () => {
     const fetchPendingBookings = async () => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_PROD_BACKEND_URL}book/status/pending` // Adjust your API endpoint as needed
+          `${import.meta.env.VITE_PROD_BACKEND_URL}book/status/pending`
         )
         setBookings(response.data)
       } catch (err) {
@@ -36,7 +34,7 @@ const ApproveBookings = () => {
         `${
           import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
-        { status: 'ongoing' } // Update with the appropriate status
+        { status: 'ongoing' }
       )
       setBookings(bookings.filter((booking) => booking._id !== bookingId))
       toast.current.show({
@@ -61,7 +59,7 @@ const ApproveBookings = () => {
         `${
           import.meta.env.VITE_PROD_BACKEND_URL
         }book/update-status/${bookingId}`,
-        { status: 'rejected' } // Update with the appropriate status
+        { status: 'rejected' }
       )
       setBookings(bookings.filter((booking) => booking._id !== bookingId))
       toast.current.show({

@@ -17,19 +17,16 @@ const UserActivityLogs = () => {
 
         setUserActivityLogs(logs)
 
-        // Create an array of unique user IDs to fetch user details
         const userIds = Array.from(new Set(logs.map((log) => log.user))).filter(
           Boolean
         )
 
-        // Fetch users in parallel
         const userResponses = await Promise.all(
           userIds.map((userId) =>
             axios.get(`${import.meta.env.VITE_PROD_BACKEND_URL}users/${userId}`)
           )
         )
 
-        // Create a mapping of userId to user details
         const users = userResponses.reduce((acc, response) => {
           acc[response.data._id] = response.data
           return acc
@@ -62,12 +59,6 @@ const UserActivityLogs = () => {
         </div>
       ) : (
         <DataTable value={userActivityLogs} paginator rows={30}>
-          {/* <Column
-            field='user'
-            header='User ID'
-            sortable
-            body={(rowData) => rowData.user || 'N/A'}
-          /> */}
           <Column
             header='Full Name'
             body={(rowData) => {

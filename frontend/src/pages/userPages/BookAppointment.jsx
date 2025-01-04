@@ -56,7 +56,6 @@ const createMeeting = async ({ topic, startTime, duration, email }) => {
   )
   return response.data
 }
-// zoom
 
 const BookAppointment = () => {
   const navigate = useNavigate()
@@ -160,13 +159,11 @@ const BookAppointment = () => {
 
       setSelectedService(selectedService)
       setSpecificService(specificService)
-      setSelectedDate(new Date(selectedDate)) // Ensure date is restored as a Date object
+      setSelectedDate(new Date(selectedDate))
       setSelectedTime(selectedTime)
 
-      // Set step to 2 to resume from the date and time selection step
       setStep(2)
 
-      // Clear the stored data after restoring
       localStorage.removeItem('bookingData')
     }
   }, [])
@@ -183,18 +180,17 @@ const BookAppointment = () => {
   const handleNextStep = () => {
     if (step === 1) {
       if (!selectedService) {
-        toast.error(t('Please select a service')) // Show error if no service selected
+        toast.error(t('Please select a service'))
         return
       }
       if (!specificService) {
-        toast.error(t('Please select a specific service')) // Show error if no specific service selected
+        toast.error(t('Please select a specific service'))
         return
       }
     }
 
     if (step === 2) {
       if (!isTokenValid()) {
-        // Save the current booking data to localStorage
         localStorage.setItem(
           'bookingData',
           JSON.stringify({
@@ -205,12 +201,11 @@ const BookAppointment = () => {
           })
         )
 
-        // Save the redirect path (URL including step)
         const redirectUrl = encodeURIComponent('/book-appointment?step=2')
         localStorage.setItem('redirectPath', redirectUrl)
 
         toast.error(t('Please log in to proceed'))
-        navigate(`/login?redirect=${redirectUrl}`) // Pass redirect URL as a query parameter
+        navigate(`/login?redirect=${redirectUrl}`)
         return
       }
     }
@@ -218,12 +213,12 @@ const BookAppointment = () => {
     if (step === 3) {
       const formErrors = validateForm()
       if (Object.keys(formErrors).length > 0) {
-        setErrors(formErrors) // If errors exist, show them
+        setErrors(formErrors)
         return
       }
     }
-    setStep((prevStep) => prevStep + 1) // Move to the next step
-    setErrors({}) // Clear errors on successful validation
+    setStep((prevStep) => prevStep + 1)
+    setErrors({})
   }
 
   const handlePreviousStep = () => {
@@ -233,8 +228,8 @@ const BookAppointment = () => {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    const formattedDate = selectedDate.toLocaleDateString('en-US') // e.g., 10/2/2024
-    const startTime = `${formattedDate} ${selectedTime}` // Concatenate the selected date and time
+    const formattedDate = selectedDate.toLocaleDateString('en-US')
+    const startTime = `${formattedDate} ${selectedTime}`
 
     const bookingData = {
       service: selectedService,
@@ -246,26 +241,6 @@ const BookAppointment = () => {
     }
 
     const bookingResponse = await mutation.mutateAsync(bookingData)
-
-    // try {
-    //   // First, submit the booking
-    //   const bookingResponse = await mutation.mutateAsync(bookingData)
-
-    //   // If booking is successful, create the meeting
-    //   const meetingData = {
-    //     topic:
-    //       selectedService === 'recruitment_services'
-    //         ? 'Recruitment Meeting'
-    //         : 'Virtual Assistance Meeting',
-    //     startTime, // Uses the concatenated date and time
-    //     duration: 60, // Adjust duration as needed
-    //     email: bookingData.email,
-    //   }
-
-    //   const meetingResponse = await createMeeting(meetingData)
-
-    //   toast.success('Zoom Meeting Created, Check your email!')
-    // } catch (error) {}
   }
 
   const [errors, setErrors] = useState({})
@@ -276,9 +251,7 @@ const BookAppointment = () => {
       formErrors.firstName = t('FirstNameIsRequired')
     if (!formData.lastName.trim()) formErrors.lastName = t('LastNameIsRequired')
     if (!formData.email.trim()) formErrors.email = t('EmailIsRequired')
-    // if (!formData.phoneNumber.trim())
-    //   formErrors.phoneNumber = 'Phone Number is required'
-    // if (!formData.notes.trim()) formErrors.notes = 'Notes is required'
+
     return formErrors
   }
 
@@ -651,7 +624,6 @@ const BookAppointment = () => {
                   name='email'
                   id='email'
                   placeholder='john@example.com'
-                  // value={formData.email}
                   value={localStorage.getItem('email')}
                   onChange={handleInputChange}
                   className='input input-bordered w-full '
@@ -677,11 +649,6 @@ const BookAppointment = () => {
                   onChange={handleInputChange}
                   className='input input-bordered w-full '
                 />
-                {/* {errors.phoneNumber && (
-                  <p className='text-red-500 text-sm mt-1'>
-                    {errors.phoneNumber}
-                  </p>
-                )} */}
               </div>
 
               <div>
@@ -699,9 +666,6 @@ const BookAppointment = () => {
                   onChange={handleInputChange}
                   className='input input-bordered w-full h-24'
                 ></textarea>
-                {/* {errors.notes && (
-                  <p className='text-red-500 text-sm mt-1'>{errors.notes}</p>
-                )} */}
               </div>
             </form>
           </div>

@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios' // Assuming Axios for HTTP requests
+import axios from 'axios'
 
 const RecentBookings = ({ trigger }) => {
-  const [isLoading, setIsLoading] = useState(true) // Loading state
+  const [isLoading, setIsLoading] = useState(true)
   const [recentBookings, setRecentBookings] = useState([])
 
   useEffect(() => {
-    // Fetch recent bookings from the backend
     const fetchRecentBookings = async () => {
       try {
         const { data } = await axios.get(
           `${import.meta.env.VITE_PROD_BACKEND_URL}admin/recent-bookings`
         )
-        setRecentBookings(data) // Set the fetched data
-        setIsLoading(false) // Stop loading after data is fetched
+        setRecentBookings(data)
+        setIsLoading(false)
       } catch (error) {
         console.error('Error fetching recent bookings:', error)
       }
@@ -22,7 +21,7 @@ const RecentBookings = ({ trigger }) => {
     fetchRecentBookings()
   }, [trigger])
 
-  const skeletonRows = Array(5).fill(0) // Creating 5 skeleton rows for loading
+  const skeletonRows = Array(5).fill(0)
 
   return (
     <div className='recent-bookings-section'>
@@ -90,7 +89,7 @@ const RecentBookings = ({ trigger }) => {
                           timeZone: booking.meeting.timezone,
                           hour: 'numeric',
                           minute: 'numeric',
-                          hour12: false, // Use false for 24-hour format
+                          hour12: false,
                         }
                       )}
                     </td>

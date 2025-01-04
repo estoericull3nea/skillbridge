@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
-import { jwtDecode } from 'jwt-decode' // Adjust based on your import style
+import { jwtDecode } from 'jwt-decode'
 
 const AllowedRoute = ({ element, allowedRoles }) => {
   const token = localStorage.getItem('token')
@@ -8,14 +8,13 @@ const AllowedRoute = ({ element, allowedRoles }) => {
 
   if (token) {
     const decodedToken = jwtDecode(token)
-    userRole = decodedToken?.role // Get the role from the token
+    userRole = decodedToken?.role
   }
 
-  // Check if user role is allowed
   return allowedRoles.includes(userRole) ? (
-    element // Render the component if allowed
+    element
   ) : (
-    <Navigate to='/unauthorized' replace /> // Redirect if not allowed
+    <Navigate to='/unauthorized' replace />
   )
 }
 

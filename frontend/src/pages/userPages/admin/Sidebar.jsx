@@ -1,6 +1,5 @@
 import React from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { MdOutlineMailOutline } from 'react-icons/md'
 import SBLogo from '../../../assets/icons/sb_logo.png'
 
 const AdminSidebar = () => {
@@ -18,7 +17,6 @@ const AdminSidebar = () => {
           <h1 className='text-2xl font-semibold'>Admin Panel</h1>
         </div>
 
-        {/* Dashboard */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Dashboard</span>
@@ -35,7 +33,6 @@ const AdminSidebar = () => {
           </li>
         </ul>
 
-        {/* User Management */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>User Management</span>
@@ -62,7 +59,6 @@ const AdminSidebar = () => {
           </li>
         </ul>
 
-        {/* Booking Management */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Booking Management</span>
@@ -79,7 +75,6 @@ const AdminSidebar = () => {
           </li>
         </ul>
 
-        {/* Feedback & Support */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Feedback & Support</span>
@@ -107,7 +102,6 @@ const AdminSidebar = () => {
           </li>
         </ul>
 
-        {/* Security & Permissions */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Security & Permissions</span>
@@ -124,7 +118,6 @@ const AdminSidebar = () => {
           </li>
         </ul>
 
-        {/* Account Deletion Management */}
         <ul className='menu rounded-box'>
           <li className='menu-title'>
             <span>Account Deletion Management</span>

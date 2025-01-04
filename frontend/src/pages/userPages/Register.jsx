@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { FcGoogle } from 'react-icons/fc'
 import axios from 'axios'
 import { toast } from 'react-hot-toast'
 import { useMutation } from '@tanstack/react-query'
@@ -10,7 +9,7 @@ import SBLogo from '../../assets/icons/sb_logo.png'
 const Register = () => {
   const { t } = useTranslation()
   useEffect(() => {
-    document.title = t('Register') // Set the page title
+    document.title = t('Register')
   }, [t])
 
   const [formData, setFormData] = useState({
