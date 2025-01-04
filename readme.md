@@ -82,12 +82,3 @@ The appointment booking system aims to:
 ## Technical Solutions
 
 The system architecture employed a client-server model, JavaScript, Node.js, MongoDB, RESTful APIs, JWT, and WebSocket technology to ensure scalability, security, and usability. Vercel managed deployment and hosting.
-
-## Functional Requirements
-
-Functional requirements describe the specific behavior and functions the system must perform. These include user inputs, system processes, and expected outputs. The system must:
-
-- Allow clients to browse services and book appointments.
-- Enable admins to manage schedules and view booking analytics.
-- Provide notifications and reminders for upcoming appointments.
-- Ensure secure user authentication and role-based access.
