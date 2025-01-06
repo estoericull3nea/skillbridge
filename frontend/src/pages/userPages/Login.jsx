@@ -19,7 +19,7 @@ const Login = () => {
   const loginMutation = useMutation({
     mutationFn: async (loginData) => {
       const response = await axios.post(
-        `${import.meta.env.VITE_PROD_BACKEND_URL}auth/login`,
+        `${import.meta.env.BACKEND_URL_PRODUCTION}auth/login`,
         loginData
       )
       return response.data
