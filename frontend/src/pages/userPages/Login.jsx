@@ -16,6 +16,8 @@ const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  console.log(process.env.VITE_PROD_BACKEND_URL)
+
   const loginMutation = useMutation({
     mutationFn: async (loginData) => {
       const response = await axios.post(
