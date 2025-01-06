@@ -247,7 +247,12 @@ const ViewBookings = () => {
     }
 
     return (
-      <span className={`p-2 rounded-md ${getStatusColor(rowData.status)}`}>
+      <span
+        className={`p-2 rounded-md inline-block text-center ${getStatusColor(
+          rowData.status
+        )}`}
+        style={{ width: '100px' }}
+      >
         {rowData.status}
       </span>
     )
