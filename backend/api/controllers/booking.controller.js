@@ -561,27 +561,19 @@ export const cancelMeeting = async (req, res) => {
 
 export const getTotalSpecificServices = async (req, res) => {
   const { timeframe, service } = req.params
+  const { startDate, endDate } = req.query
 
   try {
     let result = await Booking.aggregate([
       {
         $addFields: {
           parsedDate: {
-            $ifNull: [
-              {
-                $dateFromString: {
-                  dateString: {
-                    $cond: {
-                      if: { $eq: [{ $type: '$date' }, 'string'] },
-                      then: '$date',
-                      else: null,
-                    },
-                  },
-                  format: '%m/%d/%Y',
-                },
-              },
-              '$date',
-            ],
+            $dateFromString: {
+              dateString: '$date',
+              format: '%m/%d/%Y',
+              onError: '$date',
+              onNull: '$date',
+            },
           },
         },
       },
@@ -589,6 +581,8 @@ export const getTotalSpecificServices = async (req, res) => {
         $match: {
           status: 'done',
           specificService: service,
+          ...(startDate && { parsedDate: { $gte: new Date(startDate) } }),
+          ...(endDate && { parsedDate: { $lte: new Date(endDate) } }),
         },
       },
       {

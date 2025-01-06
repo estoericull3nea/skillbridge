@@ -9,6 +9,9 @@ const ServicesAverageChart = ({ trigger }) => {
   const [timeframe, setTimeframe] = useState('daily')
   const [loading, setLoading] = useState(true)
 
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+
   const allServices = [
     'Customer Service',
     'Writing and Editing',
@@ -21,16 +24,28 @@ const ServicesAverageChart = ({ trigger }) => {
     'Onboarding (Optional)',
   ]
 
-  const fetchServiceCount = async () => {
+  const fetchServiceCount = async (useDateRange = false) => {
     setLoading(true)
     try {
+      const params = {
+        timeframe,
+        service: selectedService,
+      }
+
+      // Only apply start and end dates if 'useDateRange' is true
+      if (useDateRange) {
+        if (startDate) params.startDate = startDate
+        if (endDate) params.endDate = endDate
+      }
+
       const response = await axios.get(
         `${
           import.meta.env.VITE_PROD_BACKEND_URL
-        }book/count/${timeframe}/${selectedService}`
+        }book/count/${timeframe}/${selectedService}`,
+        { params }
       )
-      const data = response.data
 
+      const data = response.data
       if (data.length > 0) {
         setChartData({
           labels: data.map((entry) => entry._id),
@@ -64,6 +79,87 @@ const ServicesAverageChart = ({ trigger }) => {
       setLoading(false)
     }
   }
+
+  const handleFetchWithDate = () => {
+    fetchServiceCount(true) // Pass 'true' to use date range
+  }
+
+  useEffect(() => {
+    fetchServiceCount(false) // Fetch without date on load
+  }, [timeframe, selectedService, trigger])
+
+  // Add date range inputs to UI
+  return (
+    <div>
+      <h2 className='text-xl font-bold mb-4'>Admin Panel - Service Count</h2>
+
+      <label className='block mb-2'>Select Service:</label>
+      <select
+        onChange={(e) => setSelectedService(e.target.value)}
+        value={selectedService}
+        className='mb-4 select select-bordered'
+      >
+        {allServices.map((service) => (
+          <option key={service} value={service}>
+            {service}
+          </option>
+        ))}
+      </select>
+
+      <label className='block mb-2'>Select Timeframe:</label>
+      <select
+        onChange={(e) => setTimeframe(e.target.value)}
+        value={timeframe}
+        className='mb-4 select select-bordered'
+      >
+        <option value='daily'>Daily</option>
+        <option value='weekly'>Weekly</option>
+        <option value='monthly'>Monthly</option>
+        <option value='yearly'>Yearly</option>
+      </select>
+
+      {/* Date Range Inputs */}
+      <div className='flex gap-4 mb-4'>
+        <div>
+          <label className='block'>Start Date:</label>
+          <input
+            type='date'
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+            className='input input-bordered w-full'
+          />
+        </div>
+        <div>
+          <label className='block'>End Date:</label>
+          <input
+            type='date'
+            value={endDate}
+            onChange={(e) => setEndDate(e.target.value)}
+            className='input input-bordered w-full'
+          />
+        </div>
+      </div>
+
+      <button
+        onClick={handleFetchWithDate}
+        className='btn btn-primary w-full mb-4'
+      >
+        Fetch Data
+      </button>
+
+      {loading ? (
+        <div className='animate-pulse'>
+          <div className='skeleton h-48 w-full bg-gray-200 rounded'></div>
+        </div>
+      ) : (
+        <Line data={chartData} />
+      )}
+
+      {!loading && chartData.labels.length === 0 && (
+        <div className='text-center text-gray-500 mt-4'>No data available</div>
+      )}
+    </div>
+  )
 
   useEffect(() => {
     fetchServiceCount()
