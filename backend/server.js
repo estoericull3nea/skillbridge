@@ -30,7 +30,11 @@ const allowedOrigins = [
 // Cleaning of expired token every hour
 import './api/utils/cronJobs.js'
 
-dotenv.config()
+// Serve static files (for serving the uploaded profile pictures)
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') })
 
 const PORT = process.env.PORT || 5000
 const app = express()
@@ -115,9 +119,6 @@ io.on('connection', (socket) => {
   })
 })
 
-// Serve static files (for serving the uploaded profile pictures)
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 // app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 // http://localhost:5000/api/uploads/profile-pics/1726394178484-Screenshot-(254).png
 
